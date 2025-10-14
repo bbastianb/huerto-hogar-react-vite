@@ -1,0 +1,73 @@
+/* Header y navegación */
+.header-login {
+    /*Hace que le header"Barra" use siempre el 100% del ancho de la página*/
+    width: 100%;
+    /*Fondo del header"Barra"*/
+    background-color: rgba(247, 247, 247, 0.95);
+    /*Sombra debajo del header"Barra"*/
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
+
+}
+
+.navbar-login {
+    /*Activa el modo flexbox para la barra de navegación*/
+    display: flex;
+    /*Alinea los items verticalmente al centro de box en este caso*/
+    align-items: center;
+    /*Espacio entre logo y enlaces. Los distribuye de izquierda a derecha los box que estan dentro en este caso la etiqueta a(logo con link) y ul(links)*/
+    justify-content: space-between;
+    /*Limita el ancho maximo del contenedor y lo centra en la pagina*/
+    max-width: 1350px;
+    /**Centrado horizontal, se uso para centrar el contenido en la pagina**/
+    margin: 0 auto;
+    /*Relleno interno del contenedor, se uso para crear espacio alrededor del contenido*/
+    padding: 10px 22px;
+    /*Permite que los elementos dentro del contenedor se ajusten a la siguiente línea si no hay suficiente espacio horizontal*/
+    flex-wrap: wrap;
+}
+
+#link-registro-login {
+    /*Para el header del login en el boton de registrarse */
+    border-radius: 12px;
+    background-color: #2E8B57;
+    color: #F7F7F7;
+}
+
+#link-registro-login:hover {
+    /*Modificacion del boton/link registrarse de login header*/
+    background-color: #8B4513;
+    transition: 0.2s;
+}
+
+.navbar-links {
+    /*Quita los puntos de las listas predeterminadas*/
+    list-style: none;
+    /*Activa el modo flexbox para los enlaces de la barra de navegación*/
+    display: flex;
+    /*Espacio entre los enlaces*/
+    gap: 15px;
+    /*Permite que los elementos dentro del contenedor se ajusten a la siguiente línea si no hay suficiente espacio horizontal*/
+    flex-wrap: wrap;
+}
+
+.navbar-links a {
+    /*Color de los enlaces*/
+    color: #2E8B57;
+    /*Quita el subrayado de los enlaces*/
+    text-decoration: none;
+    /*Fuente y tamaño de los enlaces*/
+    /*Modificar a los del profe*/
+    font-family: "Montserrat", sans-serif;
+    /*Tamaño de fuente*/
+    font-size: 18px;
+    font-weight: 500;
+    /*Transición suave para el cambio de color al pasar el mouse*/
+    transition: color 0.2s;
+    /*Margen interno de los links de header*/
+    padding: 9px;
+}
+
+.navbar-links a:hover {
+    /*Color de los enlaces al pasar el mouse*/
+    color: #8B4513;
+}
