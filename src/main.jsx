@@ -6,6 +6,8 @@ import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import ListadoProd from "./pages/ListadoProd.jsx";
+import Registro from "./pages/Registro.jsx";
+import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -13,7 +15,9 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
-      {path:"/productos", element:<ListadoProd/>}
+      { path: "productos", element: <ListadoProd /> },
+      { path: "registro", element: <Registro /> },
+      { path: "admin", element: <HomeAdmin /> },
     ],
   },
 ]);
