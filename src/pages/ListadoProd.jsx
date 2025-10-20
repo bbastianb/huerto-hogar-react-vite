@@ -1,67 +1,163 @@
-
 import React, { useState, useEffect } from "react";
 
 const productos = [
-  { id:"FR001", nombre:"Manzana Fuji", precio:1200, unidad:"x kilo", stock:"150 kilos", img:"img/manzanas.jpg", desc:"Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule." },
-  { id:"FR003", nombre:"Naranjas Valencia", precio:1000, unidad:"x kilo", stock:"200 kilos", img:"img/naranja.jpg", desc:"Jugosas y ricas en vitamina C, ideales para zumos frescos." },
-  { id:"FR002", nombre:"Platano", precio:800, unidad:"x kilo", stock:"250 kilos", img:"img/platanos.jpg", desc:"Plátanos maduros y dulces, perfectos para el desayuno." },
-  { id:"FR004", nombre:"Frutillas", precio:3990, unidad:"x 500gr", stock:"100 kilos", img:"img/frutillas.jpg", desc:"Bayas jugosas y vibrantes para postres y batidos." },
-  { id:"FR005", nombre:"Kiwi", precio:2990, unidad:"x kilo", stock:"250 kilos", img:"img/kiwi.jpg", desc:"Dulce y ácido, ideal para ensaladas, postres y snacks." },
-  { id:"VR001", nombre:"Zanahorias Orgánicas", precio:900, unidad:"x kilo", stock:"100 kilos", img:"img/zanahoria.jpg", desc:"Crujientes y sin pesticidas, excelentes para ensaladas o jugos." },
-  { id:"VR002", nombre:"Espinacas Frescas", precio:700, unidad:"x bolsa de 500gr", stock:"80 bolsas", img:"img/espinaca.jpg", desc:"Frescas y nutritivas, perfectas para ensaladas y batidos." },
-  { id:"VR003", nombre:"Pimientos Tricolor", precio:1500, unidad:"x kilo", stock:"120 kilos", img:"img/pimenton.jpg", desc:"Rojos, amarillos y verdes, ricos en vitaminas A y C." },
-  { id:"VR004", nombre:"Limón", precio:1490, unidad:"x kilo", stock:"200 kilos", img:"img/limon.jpg", desc:"Jugoso y de acidez equilibrada, ideal para múltiples recetas." },
-  { id:"VR005", nombre:"Cebolla Blanca", precio:1600, unidad:"x kilo", stock:"150 kilos", img:"img/cebolla.jpg", desc:"Versátil, perfecta para sofritos y ensaladas." },
-  { id:"PO001", nombre:"Miel Orgánica", precio:5000, unidad:"x frasco de 500gr", stock:"50 frascos", img:"img/miel.jpg", desc:"Pura y local, rica en antioxidantes." }
+  {
+    id: "FR001",
+    nombre: "Manzana Fuji",
+    precio: 1200,
+    unidad: "x kilo",
+    stock: "150 kilos",
+    img: "img/manzanas.jpg",
+    desc: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule.",
+  },
+  {
+    id: "FR003",
+    nombre: "Naranjas Valencia",
+    precio: 1000,
+    unidad: "x kilo",
+    stock: "200 kilos",
+    img: "img/naranja.jpg",
+    desc: "Jugosas y ricas en vitamina C, ideales para zumos frescos.",
+  },
+  {
+    id: "FR002",
+    nombre: "Platano",
+    precio: 800,
+    unidad: "x kilo",
+    stock: "250 kilos",
+    img: "img/platanos.jpg",
+    desc: "Plátanos maduros y dulces, perfectos para el desayuno.",
+  },
+  {
+    id: "FR004",
+    nombre: "Frutillas",
+    precio: 3990,
+    unidad: "x 500gr",
+    stock: "100 kilos",
+    img: "img/frutillas.jpg",
+    desc: "Bayas jugosas y vibrantes para postres y batidos.",
+  },
+  {
+    id: "FR005",
+    nombre: "Kiwi",
+    precio: 2990,
+    unidad: "x kilo",
+    stock: "250 kilos",
+    img: "img/kiwi.jpg",
+    desc: "Dulce y ácido, ideal para ensaladas, postres y snacks.",
+  },
+  {
+    id: "VR001",
+    nombre: "Zanahorias Orgánicas",
+    precio: 900,
+    unidad: "x kilo",
+    stock: "100 kilos",
+    img: "img/zanahoria.jpg",
+    desc: "Crujientes y sin pesticidas, excelentes para ensaladas o jugos.",
+  },
+  {
+    id: "VR002",
+    nombre: "Espinacas Frescas",
+    precio: 700,
+    unidad: "x bolsa de 500gr",
+    stock: "80 bolsas",
+    img: "img/espinaca.jpg",
+    desc: "Frescas y nutritivas, perfectas para ensaladas y batidos.",
+  },
+  {
+    id: "VR003",
+    nombre: "Pimientos Tricolor",
+    precio: 1500,
+    unidad: "x kilo",
+    stock: "120 kilos",
+    img: "img/pimenton.jpg",
+    desc: "Rojos, amarillos y verdes, ricos en vitaminas A y C.",
+  },
+  {
+    id: "VR004",
+    nombre: "Limón",
+    precio: 1490,
+    unidad: "x kilo",
+    stock: "200 kilos",
+    img: "img/limon.jpg",
+    desc: "Jugoso y de acidez equilibrada, ideal para múltiples recetas.",
+  },
+  {
+    id: "VR005",
+    nombre: "Cebolla Blanca",
+    precio: 1600,
+    unidad: "x kilo",
+    stock: "150 kilos",
+    img: "img/cebolla.jpg",
+    desc: "Versátil, perfecta para sofritos y ensaladas.",
+  },
+  {
+    id: "PO001",
+    nombre: "Miel Orgánica",
+    precio: 5000,
+    unidad: "x frasco de 500gr",
+    stock: "50 frascos",
+    img: "img/miel.jpg",
+    desc: "Pura y local, rica en antioxidantes.",
+  },
 ];
 
 function getCategoria(p) {
   if (p.categoria) {
     const c = p.categoria.trim().toLowerCase();
-    if (c.startsWith('frut')) return 'frutas';
-    if (c.startsWith('verdu')) return 'verduras';
-    return 'otros';
+    if (c.startsWith("frut")) return "frutas";
+    if (c.startsWith("verdu")) return "verduras";
+    return "otros";
   }
-  const pref = String(p.id || '').slice(0, 2).toUpperCase();
-  if (pref === 'FR') return 'frutas';
-  if (pref === 'VR') return 'verduras';
-  return 'otros';
+  const pref = String(p.id || "")
+    .slice(0, 2)
+    .toUpperCase();
+  if (pref === "FR") return "frutas";
+  if (pref === "VR") return "verduras";
+  return "otros";
 }
 
 export default function ListadoProd() {
-  const [categoriaActiva, setCategoriaActiva] = useState('todos');
+  const [categoriaActiva, setCategoriaActiva] = useState("todos");
   const [productosFiltrados, setProductosFiltrados] = useState(productos);
   const [carrito, setCarrito] = useState(() => {
     // Carga carrito de localStorage o vacío
-    const saved = localStorage.getItem('carrito');
+    const saved = localStorage.getItem("carrito");
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    if (categoriaActiva === 'todos') {
+    if (categoriaActiva === "todos") {
       setProductosFiltrados(productos);
     } else {
-      setProductosFiltrados(productos.filter(p => getCategoria(p) === categoriaActiva));
+      setProductosFiltrados(
+        productos.filter((p) => getCategoria(p) === categoriaActiva)
+      );
     }
   }, [categoriaActiva]);
 
   useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+    localStorage.setItem("carrito", JSON.stringify(carrito));
   }, [carrito]);
 
   const agregarAlCarrito = (producto) => {
-    setCarrito(prev => {
-      const existe = prev.find(p => p.title === producto.nombre);
+    setCarrito((prev) => {
+      const existe = prev.find((p) => p.title === producto.nombre);
       if (existe) {
-        return prev.map(p => p.title === producto.nombre ? { ...p, quantity: p.quantity + 1 } : p);
+        return prev.map((p) =>
+          p.title === producto.nombre ? { ...p, quantity: p.quantity + 1 } : p
+        );
       } else {
-        return [...prev, { quantity: 1, title: producto.nombre, price: producto.precio }];
+        return [
+          ...prev,
+          { quantity: 1, title: producto.nombre, price: producto.precio },
+        ];
       }
     });
   };
 
   const eliminarDelCarrito = (title) => {
-    setCarrito(prev => prev.filter(p => p.title !== title));
+    setCarrito((prev) => prev.filter((p) => p.title !== title));
   };
 
   // Calculos para mostrar totales
@@ -75,14 +171,26 @@ export default function ListadoProd() {
 
       {/* Icono carrito y contador */}
       <div className="container-icon">
-        <div className="container-cart-icon" onClick={() => {
-          const elem = document.querySelector('.container-cart-producto');
-          if(elem) elem.classList.toggle('hidden-cart');
-        }}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            strokeWidth="1.5" stroke="currentColor" className="icon-cart">
-            <path strokeLinecap="round" strokeLinejoin="round"
-              d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+        <div
+          className="container-cart-icon"
+          onClick={() => {
+            const elem = document.querySelector(".container-cart-producto");
+            if (elem) elem.classList.toggle("hidden-cart");
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="icon-cart"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
+            />
           </svg>
           <div className="count-producto">
             <span id="contador-productos">{totalProductos}</span>
@@ -92,21 +200,33 @@ export default function ListadoProd() {
         {/* Carrito desplegable */}
         <div className="container-cart-producto hidden-cart">
           <div className="row-product">
-            {carrito.length === 0 && <p className="cart-empty">El carrito está vacío</p>}
-            {carrito.map(p => (
+            {carrito.length === 0 && (
+              <p className="cart-empty">El carrito está vacío</p>
+            )}
+            {carrito.map((p) => (
               <div key={p.title} className="cart-producto">
                 <div className="info-cart-product">
-                  <span className="cantidad-producto-carrito">{p.quantity}</span>
+                  <span className="cantidad-producto-carrito">
+                    {p.quantity}
+                  </span>
                   <p className="titulo-producto-carrito">{p.title}</p>
                   <span className="precio-producto-carrito">${p.price}</span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg"
-                  fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                  stroke="currentColor" className="icon-close"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="icon-close"
                   onClick={() => eliminarDelCarrito(p.title)}
-                  style={{cursor: 'pointer'}}
+                  style={{ cursor: "pointer" }}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
                 </svg>
               </div>
             ))}
@@ -123,10 +243,10 @@ export default function ListadoProd() {
 
       {/* Filtros */}
       <div className="filters" data-filtros>
-        {['todos', 'frutas', 'verduras', 'otros'].map(cat => (
+        {["todos", "frutas", "verduras", "otros"].map((cat) => (
           <button
             key={cat}
-            className={`filtro ${categoriaActiva === cat ? 'active' : ''}`}
+            className={`filtro ${categoriaActiva === cat ? "active" : ""}`}
             data-cat={cat}
             onClick={() => setCategoriaActiva(cat)}
           >
@@ -137,7 +257,7 @@ export default function ListadoProd() {
 
       {/* Listado de productos */}
       <div className="container-items">
-        {productosFiltrados.map(p => (
+        {productosFiltrados.map((p) => (
           <div key={p.id} className="item">
             <a
               className="link-detalle"
@@ -145,17 +265,19 @@ export default function ListadoProd() {
               aria-label={`Ver ${p.nombre}`}
             >
               <figure>
-                <img src={p.img} alt={p.nombre} />
+                <img src={manzana} />
               </figure>
             </a>
             <div className="info-producto">
               <h2>
-                <a href={`detalle-producto.html?id=${encodeURIComponent(p.id)}`}>
+                <a
+                  href={`detalle-producto.html?id=${encodeURIComponent(p.id)}`}
+                >
                   {p.nombre}
                 </a>
               </h2>
               <p className="precio" data-precio={p.precio}>
-                ${p.precio} {p.unidad ?? ''}
+                ${p.precio} {p.unidad ?? ""}
               </p>
               {p.stock && <p className="stock">{p.stock}</p>}
               <button
@@ -171,7 +293,7 @@ export default function ListadoProd() {
     </section>
   );
 }
-  /*return (
+/*return (
 
     <section>
       <title>Listado Producto</title>
@@ -207,4 +329,3 @@ export default function ListadoProd() {
       </div>
     </section>
   )*/
-

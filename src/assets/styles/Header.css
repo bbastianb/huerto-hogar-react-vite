@@ -3,9 +3,9 @@
     /*Hace que le header"Barra" use siempre el 100% del ancho de la página*/
     width: 100%;
     /*Fondo del header"Barra"*/
-    background-color: rgba(247, 247, 247, 0.95);
+    background-color: rgba(247, 247, 247, 0.1);
     /*Sombra debajo del header"Barra"*/
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.20);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
 }
 
