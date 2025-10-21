@@ -20,7 +20,9 @@ export default function Login() {
     }
 
     const usuarios = getUsuarios();
-    const usuariovalido = usuarios.find((u) => u.email === email);
+    const usuariovalido = usuarios.find(
+      (u) => u.email.toLowerCase() === email.toLowerCase()
+    );
 
     if (usuariovalido && usuariovalido.contrasena === contrasena) {
       setError("");
@@ -58,9 +60,7 @@ export default function Login() {
           </div>
           <h1 className="login-title">Inicio de Sesión</h1>
           <form className="login-form" onSubmit={handleSubmit}>
-            {error && (
-              <p style={{ color: "red", textAlign: "center" }}>{error}</p>
-            )}
+            {error && <p className="error-message">{error}</p>}
             <div className="form-group">
               <input
                 className="form-input"

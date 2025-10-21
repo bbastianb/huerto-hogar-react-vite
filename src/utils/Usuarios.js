@@ -67,7 +67,7 @@ if (!listaUsuario) {
       tipo: "usuario",
     },
     {
-      id: 7,
+      id: 6,
       nombre: "Agustin",
       apellido: "Martinez",
       email: "agustin@gmail.com",
