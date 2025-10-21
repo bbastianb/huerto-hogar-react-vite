@@ -1,232 +1,333 @@
 .main-registro {
-    /*Hace que el contenedor principal del registro use flexbox*/
-    display: flex;
-    /*Centra el contenido horizontalmente*/
-    justify-content: center;
-    /*Centra el contenido verticalmente*/
-    align-items: center;
-    /*Espacio alrededor del contenido*/
-    min-height: calc(100vh - 80px);
-    /* Ajusta según el alto del header */
-    /*Margen superior para separar el contenedor del registro del header*/
-    margin-top: 2%;
-    padding-right: 50px;
-    padding-left: 50px;
-    /*Seperacion entre los elementos del main*/
-    gap: 4%;
-}
-
-#link-inicio-sesion {
-    /*Para el header del registro */
-    border-radius: 12px;
-    background-color: #2E8B57;
-    color: #F7F7F7;
-}
-
-#link-inicio-sesion:hover {
-    /*Modificacion del boton/link inicio de sesion header*/
-    background-color: #8B4513;
-    transition: 0.2s;
-}
-
-/* --- Estilos para el Carrusel de Registro --- */
-.carrusel-registro {
-    position: relative;
-    /* Posiciona los botones dentro del carrusel */
-    width: 100%;
-    /* El carrusel ocupa todo el ancho disponible */
-    max-width: 800px;
-    /* Tamaño máximo del carrusel (ajústalo a gusto) */
-    height: 530px;
-    /* Alto fijo del carrusel */
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: stretch;
+    max-width: 1120px;
+    margin: 40px auto;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, .12);
     overflow: hidden;
-    /* Oculta cualquier contenido que se salga del área */
-    border-radius: 12px;
-    /* Bordes redondeados para darle estilo */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
-    /* Sombra para resaltar el carrusel */
+    background: #fff;
+    min-height: 540px;
+    gap: 0;
+    padding: 0;
 }
-
-.carrusel-container {
-    display: flex;
-    /* Organiza los slides en fila */
-    width: 100%;
-    /* Ocupar el 100% del carrusel */
-    height: 100%;
-    /* Ajusta al alto del carrusel */
-}
-
-.carrusel-slide {
-    position: absolute;
-    /* se apilan unos sobre otros */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    /* invisibles por defecto */
-    transition: opacity 0.8s ease-in-out;
-    /* animación suave */
-}
-
-.carrusel-slide.active {
-    opacity: 1;
-    /* el slide activo aparece */
-    z-index: 1;
-    /* se muestra sobre los demás */
-}
-
-.carrusel-slide img {
-    width: 100%;
-    /* Imagen ocupa todo el ancho del slide */
-    height: 100%;
-    /* Imagen ocupa toda la altura del slide */
-    object-fit: cover;
-    /* Hace que la imagen se recorte para llenar el espacio sin deformarse */
-}
-
-/* --- Botones del carrusel --- */
-.carrusel-btn {
-    position: absolute;
-    /* Posición absoluta dentro del carrusel */
-    top: 50%;
-    /* Centra el botón verticalmente */
-    transform: translateY(-50%);
-    /* Ajuste para que quede perfectamente centrado */
-    background: rgba(0, 0, 0, 0.5);
-    /* Fondo semi-transparente */
-    color: white;
-    /* Color del ícono (flechas) */
-    border: none;
-    /* Sin bordes */
-    font-size: 2rem;
-    /* Tamaño grande de las flechas */
-    cursor: pointer;
-    /* Cambia el cursor al pasar encima */
-    padding: 5px 10px;
-    /* Espaciado interno del botón */
-    border-radius: 50%;
-    /* Forma redondeada (círculo) */
-    transition: background 0.3s;
-    /* Efecto suave al pasar el mouse */
-    z-index: 10;
-    /* Asegura que los botones estén por encima de las imágenes */
-}
-
-.carrusel-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
-    /* Fondo más oscuro al pasar el mouse */
-}
-
-.carrusel-btn.prev {
-    left: 10px;
-    /* Ubicación a la izquierda */
-}
-
-.carrusel-btn.next {
-    right: 10px;
-    /* Ubicación a la derecha */
-}
-
 
 .registro-section {
-    /*Le da un fondo blanco al contenedor del registro*/
-    background-color: rgb(255, 255, 255);
-    /*Activa el modo flexbox para organizar los elementos dentro del contenedor del registro*/
+    padding: 48px 56px;
+    background: linear-gradient(135deg, #fff 0%, #f8fdf9 100%);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    position: relative;
+}
+
+.registro-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #8B4513, #2E8B57);
+}
+
+.imagen-section {
     display: flex;
-    /*Organiza los elementos en una columna*/
-    flex-direction: column;
-    /*Alinea los elementos horizontalmente al centro*/
     align-items: center;
-    /*redeondea los bordes del contenedor del registro*/
-    border-radius: 16px;
-    /*Sombra alrededor del contenedor del registro*/
-    box-shadow: 0 3px 11px rgba(0, 0, 0, 0.30);
-    /*espacio interno del contenedor del registro*/
-    padding: 48px 58px;
-    /*margen alrededor del contenedor del registro*/
-    margin: 10px;
-    min-width: 400px;
-    max-width: 400px;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #246b44 0%, #1e5536 100%);
+}
+
+
+.imagen-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo-container {
+    width: 120px;
+    height: 120px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    padding: 15px;
+}
+
+.logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.imagen-title {
+    font-family: "Playfair Display", serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.imagen-subtitle {
+    font-family: "Montserrat", sans-serif;
+    font-size: 1.1rem;
+    opacity: 0.9;
+    max-width: 300px;
+    line-height: 1.5;
 }
 
 .registro-title {
-    /*Color del h1 "Crear Cuenta"*/
     color: #8B4513;
-    /*Fuente y tamaño del h1 "Crear Cuenta"*/
     font-family: "Playfair Display", serif;
-    font-weight: 700;
-    font-size: 2rem;
-    /*Margen inferior para separar el título del formulario*/
-    margin-bottom: 40px;
-    /*Alinea el texto al centro*/
-    margin-top: 20px;
-    /*Alinea el texto al centro*/
-    text-align: center;
+    font-weight: 800;
+    font-size: 2.1rem;
+    margin: 0 0 28px;
+    text-align: left;
+    position: relative;
+}
+
+.registro-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #8B4513, #2E8B57);
+    border-radius: 2px;
 }
 
 .registro-form {
-    /*Hace que el formulario use todo el ancho disponible dentro de su contenedor*/
-    width: 100%;
-    /*Usa flexbox para organizar los elementos dentro del formulario*/
-    display: flex;
-    /*Organiza los elementos en una columna*/
-    flex-direction: column;
-    /*Espacio entre los elementos del formulario*/
-    gap: 10px;
-    font-family: "Playfair Display", serif;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 22px;
+    row-gap: 18px;
+    font-family: "Montserrat", sans-serif;
 }
 
-.form-group input {
-    /*Quita la forma predeterminada de los input del form para que no sean redondos*/
-    border-radius: 0px;
-    /*Desactiva los bordes de los input*/
-    border: none;
-    /*Le da una linea abajo de los input*/
-    border-bottom: 2px solid #8B4513;
-    /*Controla los espacios interno de los input*/
-    padding: 10px;
+.registro-form .form-group:nth-child(3),
+.registro-form .form-group:nth-child(6),
+.registro-form .form-group:nth-child(7),
+.registro-form .form-group:nth-child(8) {
+    grid-column: 1 / -1;
+}
 
+.form-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
 }
 
 .form-group label {
-    /*Tipo de letras para el formulario no es la especificada pero mejora la legibilidad*/
-    font-family: "Montserrat", sans-serif;
-    font-size: 1rem;
-    /*Color de los label del formulario*/
     color: #8B4513;
-    /*Le da un espacio en la parte de abajo del los label*/
-    margin-bottom: 2px;
-    /*Ancho de las letras de los label*/
-    font-weight: 500;
+    font-weight: 600;
+    font-size: .98rem;
+    margin-bottom: 6px;
+    transition: all 0.3s ease;
+}
+
+.form-input {
+    border: none;
+    border-bottom: 1.8px solid #e0e0e0;
+    padding: 12px 4px 8px;
+    font-size: 1rem;
+    outline: none;
+    background: transparent;
+    transition: all 0.3s ease;
+    border-radius: 0;
+}
+
+.form-input:focus {
+    border-color: #2E8B57;
+    background: rgba(46, 139, 87, 0.05);
+    padding-left: 8px;
+}
+
+.form-input:focus+label {
+    color: #2E8B57;
+    transform: translateY(-2px);
+}
+
+.form-group::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #8B4513, #2E8B57);
+    transition: width 0.3s ease;
+}
+
+.form-group:focus-within::after {
+    width: 100%;
 }
 
 .registro-btn {
-    /*Le da una separacion al boton de registrarse en la parte superior ademas de ajustarlo automaticamente al centro*/
-    margin: 20px auto 0 auto;
-    /*Color de la letra del bontom*/
-    color: #F7F7F7;
-    /*Color de fondo del boton*/
-    background-color: #2E8B57;
-    /*Le da separacion "Ancho visible del boton"*/
-    padding: 12px;
-    /*Redondea el borde del boton*/
-    border-radius: 12px;
-    /*Le quita el border del boton que viene predeterminado*/
+    grid-column: 1 / -1;
+    margin-top: 16px;
+    background: linear-gradient(135deg, #2E8B57 0%, #246b44 100%);
+    color: #fff;
     border: none;
-    /*Tamaño y Grosor de la fuente*/
-    font-weight: 700;
-    font-size: 1.1rem;
-    /*Ancho del boton */
-    width: 85%;
-
+    border-radius: 12px;
+    padding: 14px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(46, 139, 87, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
 .registro-btn:hover {
-    /*Cambia el color del fondo del boton al pasar el mouse*/
-    background-color: #8B4513;
-    /*Pambia el diseño del cursor al pasarlo por encima*/
-    cursor: pointer;
-    /*Animacion del boton cuando cambia el color "Tiempo"*/
-    transition: 0.2s;
+    background: linear-gradient(135deg, #246b44 0%, #1e5536 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 139, 87, 0.4);
+}
+
+.registro-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(46, 139, 87, 0.3);
+}
+
+.registro-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+}
+
+.registro-btn:hover::after {
+    width: 300px;
+    height: 300px;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-family: "Montserrat", sans-serif;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    animation: slideDown 0.3s ease;
+    border-left: 4px solid #ff4757;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.form-group:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.form-group:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.form-group:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.form-group:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.form-group:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.form-group:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.form-group:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.form-group:nth-child(8) {
+    animation-delay: 0.8s;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 980px) {
+    .main-registro {
+        grid-template-columns: 1fr;
+        border-radius: 18px;
+        margin: 20px;
+    }
+
+    .imagen-section {
+        height: 200px;
+        order: -1;
+        padding: 20px;
+    }
+
+    .imagen-title {
+        font-size: 1.8rem;
+    }
+
+    .imagen-subtitle {
+        font-size: 1rem;
+    }
+
+    .registro-section {
+        padding: 32px 22px 28px;
+    }
+
+    .registro-form {
+        grid-template-columns: 1fr;
+    }
+
+    .registro-title {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .registro-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
