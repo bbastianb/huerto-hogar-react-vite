@@ -1,43 +1,27 @@
-import "/src/assets/styles/Header.css";
-import "/src/App.css";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import logo from "../assets/img/logo.png";
+import "../assets/styles/Header.css";
+import "../App.css";
 
 export default function Header() {
   return (
     <header className="header-login">
       <nav className="navbar-login">
         <Link to="/" className="navbar-logo">
-          <img
-            src="/src/assets/img/logo.png"
-            width="120"
-            alt="Logo Huerto Hogar"
-          />
+          <img src={logo} width="120" alt="Logo Huerto Hogar" />
         </Link>
 
         <ul className="navbar-links">
-          <li>
-            <Link to="/">Inicio</Link>
-          </li>
-          <li>
-            <Link to="/contacto">Contacto</Link>
-          </li>
-          <li>
-            <Link to="/noticias">Noticias</Link>
-          </li>
-          <li>
-            <Link to="/nosotros">Nosotros</Link>
-          </li>
-          <li>
-            <Link to="/blog">Blog</Link>
-          </li>
-          <li>
-            <Link to="/login">Iniciar Sesión</Link>
-          </li>
-          <li>
-            <Link id="link-registro-login" to="/registro">
-              Registrarme
-            </Link>
-          </li>
+          <li><NavLink to="/" end>Inicio</NavLink></li>
+          <li><NavLink to="/nosotros">Nosotros</NavLink></li>
+          <li><NavLink to="/contacto">Contacto</NavLink></li>
+          <li><NavLink to="/noticias">Noticias</NavLink></li>
+          <li><NavLink to="/blog">Blog</NavLink></li>
+          {/* 🔒 Rutas de otros equipos — no mostrar:
+          <li><NavLink to="/login">Iniciar Sesión</NavLink></li>
+          <li><NavLink to="/registro" id="link-registro-login">Registrarme</NavLink></li>
+          <li><NavLink to="/productos">Productos</NavLink></li>
+          */}
         </ul>
       </nav>
     </header>

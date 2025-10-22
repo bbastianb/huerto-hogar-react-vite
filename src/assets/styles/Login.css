@@ -1,0 +1,202 @@
+.main-login {
+    /*Hace que el contenedor principal del login use flexbox*/
+    display: flex;
+    /*Centra el contenido horizontalmente*/
+    justify-content: center;
+    /*Centra el contenido verticalmente*/
+    align-items: center;
+    /*Espacio alrededor del contenido*/
+    min-height: calc(100vh - 80px);
+    /* Ajusta según el alto del header */
+}
+
+.login-section {
+    /*Bordes redondeados*/
+    border-radius: 16px;
+    /*Sombra alrededor del contenedor del login*/
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+
+    /*Usa flexbox para organizar los elementos dentro del contenedor del login*/
+    display: flex;
+    /*Estira los elementos para que ocupen toda la altura del contenedor padre*/
+    align-items: stretch;
+    /*Ancho mínimo y máximo del contenedor del login para diferentes tamaños de pantalla los establece*/
+    min-width: 940px;
+    max-width: 200px;
+    /*Margen superior para separar el contenedor del login del header*/
+    margin-top: 3%;
+    /*Evita que el contenido dentro del contenedor del login se desborde*/
+    overflow: hidden;
+}
+
+.login-container {
+    /*Hace que el contenedor del login crezca para llenar el espacio disponible*/
+    flex: 1;
+    /*Relleno interno del contenedor del login para crear espacio alrededor del contenido*/
+    padding: 40px 62px;
+    /*Hace que el contenedor del login use todo el ancho disponible dentro de su contenedor padre*/
+    width: 100%;
+    /*Usa flexbox para organizar los elementos dentro del contenedor del login*/
+    display: flex;
+    /*Organiza los elementos en una columna*/
+    flex-direction: column;
+    /*Espacio entre los elementos dentro del contenedor del login*/
+    gap: 20px;
+    /*Alinea los elementos horizontalmente al centro*/
+    align-items: center;
+}
+
+.login-fondo {
+    flex: 1;
+}
+
+
+.login-fondo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.login-icon {
+    /*Le da un margen inferior al icono del usuario para separar este box de siguiente*/
+    margin-bottom: 16px;
+}
+
+.login-title {
+    /*Color del h1 "Inicio de Sesión"*/
+    color: #8B4513;
+    /*Fuente y tamaño del h1 "Inicio de Sesión"*/
+    font-family: "Playfair Display", serif;
+
+    font-weight: 700;
+    font-size: 2.2rem;
+
+    /*Margen inferior para separar el título del formulario*/
+    margin-bottom: 20px;
+    /*Alinea el texto al centro*/
+    text-align: center;
+}
+
+.login-form {
+    /*Hace que el formulario use todo el ancho disponible dentro de su contenedor*/
+    width: 100%;
+    /*Usa flexbox para organizar los elementos dentro del formulario*/
+    display: flex;
+    /*Organiza los elementos en una columna*/
+    flex-direction: column;
+    /*Espacio entre los elementos del formulario*/
+    gap: 19px;
+    max-width: 350px;
+}
+
+.form-group {
+    /*Hace que el grupo de formulario use todo el ancho disponible dentro de su contenedor*/
+    /*Solo para evitar espacios innecesarios*/
+    width: 100%;
+}
+
+.form-input {
+    /*Fondo semi-transparente para los inputs*/
+    background: rgba(255, 255, 255, 0.1);
+    /*Cambiar el 3 para la transparencia*/
+    /*Hace que los inputs usen todo el ancho disponible dentro de su contenedor*/
+    width: 100%;
+    /*Relleno interno del input para que el texto no esté pegado a los bordes*/
+    padding: 12px 14px;
+    /*Bordes del input con color y grosor*/
+    border: 1px solid #8B4513;
+    /*Bordes redondeados del input*/
+    border-radius: 6px;
+    /*Fuente, tamaño y estilo del texto dentro del input*/
+    font-size: 1rem;
+    font-family: "Montserrat", sans-serif;
+    /*Quita el contorno del input al hacer focus(entrar al input)*/
+    outline: none;
+    /*Transición suave para el cambio de color del borde al hacer focus(entrar al input)*/
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+    /*Color de los bordes del input al hacer focus(entrar al input)*/
+    border-color: #2E8B57;
+    box-shadow: 0 0 0 4px rgba(46, 139, 87, 0.05);
+}
+
+.form-links {
+    /*Alinea los enlaces dentro del formulario al centro "Olvidaste tu contraseña?"*/
+    text-align: center;
+}
+
+.forgot-form-link {
+    /*Color del enlace "Olvidaste tu contraseña?"*/
+    color: #2E8B57;
+    /*Tamaño del enlace "Olvidaste tu contraseña?"*/
+    font-size: 0.95rem;
+    /*Quita el subrayado del enlace*/
+    text-decoration: none;
+    /*Transición suave para el cambio de color al pasar el mouse*/
+    transition: color 0.2s;
+}
+
+.forgot-form-link:hover {
+    /*Color del enlace al pasar el mouse*/
+    color: #8B4513;
+    /*Subraya el enlace al pasar el mouse*/
+    text-decoration: underline;
+}
+
+.login-btn {
+    /*Hace que el botón use todo el ancho disponible dentro de su contenedor*/
+    width: 100%;
+    /*Relleno interno del botón para hacerlo más grande y cómodo de usar*/
+    padding: 12px 0;
+    /*Color de fondo del botón*/
+    background-color: #2E8B57;
+    /*Color del texto del botón*/
+    color: #fff;
+    /*Quita el borde predeterminado del botón*/
+    border: none;
+    /*Bordes redondeados del botón*/
+    border-radius: 12px;
+    /*Tamaño y estilo del texto dentro del botón*/
+    font-size: 1.1rem;
+    font-family: "Montserrat", sans-serif;
+    /*Hace que el texto del botón sea un poco más grueso*/
+    font-weight: 600;
+    /*Cambia el cursor al pasar sobre el botón para indicar que es clickeable*/
+    cursor: pointer;
+    /*Transición suave para el cambio de color de fondo al pasar el mouse*/
+    transition: background 0.2s;
+}
+
+.login-btn:hover {
+    /*Color de fondo del botón al pasar el mouse*/
+    background-color: #8B4513;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-family: "Montserrat", sans-serif;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+    animation: slideDown 0.3s ease;
+    border-left: 4px solid #ff4757;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

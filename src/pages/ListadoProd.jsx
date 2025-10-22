@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import "/src/assets/styles/style-listado.css"
 import manzana from "../assets/img/manzanas.jpg";
@@ -29,50 +28,59 @@ const productos = [
 function getCategoria(p) {
   if (p.categoria) {
     const c = p.categoria.trim().toLowerCase();
-    if (c.startsWith('frut')) return 'frutas';
-    if (c.startsWith('verdu')) return 'verduras';
-    return 'otros';
+    if (c.startsWith("frut")) return "frutas";
+    if (c.startsWith("verdu")) return "verduras";
+    return "otros";
   }
-  const pref = String(p.id || '').slice(0, 2).toUpperCase();
-  if (pref === 'FR') return 'frutas';
-  if (pref === 'VR') return 'verduras';
-  return 'otros';
+  const pref = String(p.id || "")
+    .slice(0, 2)
+    .toUpperCase();
+  if (pref === "FR") return "frutas";
+  if (pref === "VR") return "verduras";
+  return "otros";
 }
 
 export default function ListadoProd() {
-  const [categoriaActiva, setCategoriaActiva] = useState('todos');
+  const [categoriaActiva, setCategoriaActiva] = useState("todos");
   const [productosFiltrados, setProductosFiltrados] = useState(productos);
   const [carrito, setCarrito] = useState(() => {
     // Carga carrito de localStorage o vacío
-    const saved = localStorage.getItem('carrito');
+    const saved = localStorage.getItem("carrito");
     return saved ? JSON.parse(saved) : [];
   });
 
   useEffect(() => {
-    if (categoriaActiva === 'todos') {
+    if (categoriaActiva === "todos") {
       setProductosFiltrados(productos);
     } else {
-      setProductosFiltrados(productos.filter(p => getCategoria(p) === categoriaActiva));
+      setProductosFiltrados(
+        productos.filter((p) => getCategoria(p) === categoriaActiva)
+      );
     }
   }, [categoriaActiva]);
 
   useEffect(() => {
-    localStorage.setItem('carrito', JSON.stringify(carrito));
+    localStorage.setItem("carrito", JSON.stringify(carrito));
   }, [carrito]);
 
   const agregarAlCarrito = (producto) => {
-    setCarrito(prev => {
-      const existe = prev.find(p => p.title === producto.nombre);
+    setCarrito((prev) => {
+      const existe = prev.find((p) => p.title === producto.nombre);
       if (existe) {
-        return prev.map(p => p.title === producto.nombre ? { ...p, quantity: p.quantity + 1 } : p);
+        return prev.map((p) =>
+          p.title === producto.nombre ? { ...p, quantity: p.quantity + 1 } : p
+        );
       } else {
-        return [...prev, { quantity: 1, title: producto.nombre, price: producto.precio }];
+        return [
+          ...prev,
+          { quantity: 1, title: producto.nombre, price: producto.precio },
+        ];
       }
     });
   };
 
   const eliminarDelCarrito = (title) => {
-    setCarrito(prev => prev.filter(p => p.title !== title));
+    setCarrito((prev) => prev.filter((p) => p.title !== title));
   };
 
   // Calculos para mostrar totales
@@ -103,21 +111,33 @@ export default function ListadoProd() {
         {/* Carrito desplegable */}
         <div className="container-cart-producto hidden-cart">
           <div className="row-product">
-            {carrito.length === 0 && <p className="cart-empty">El carrito está vacío</p>}
-            {carrito.map(p => (
+            {carrito.length === 0 && (
+              <p className="cart-empty">El carrito está vacío</p>
+            )}
+            {carrito.map((p) => (
               <div key={p.title} className="cart-producto">
                 <div className="info-cart-product">
-                  <span className="cantidad-producto-carrito">{p.quantity}</span>
+                  <span className="cantidad-producto-carrito">
+                    {p.quantity}
+                  </span>
                   <p className="titulo-producto-carrito">{p.title}</p>
                   <span className="precio-producto-carrito">${p.price}</span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg"
-                  fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
-                  stroke="currentColor" className="icon-close"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="icon-close"
                   onClick={() => eliminarDelCarrito(p.title)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
                 </svg>
               </div>
             ))}
@@ -134,10 +154,10 @@ export default function ListadoProd() {
 
       {/* Filtros */}
       <div className="filters" data-filtros>
-        {['todos', 'frutas', 'verduras', 'otros'].map(cat => (
+        {["todos", "frutas", "verduras", "otros"].map((cat) => (
           <button
             key={cat}
-            className={`filtro ${categoriaActiva === cat ? 'active' : ''}`}
+            className={`filtro ${categoriaActiva === cat ? "active" : ""}`}
             data-cat={cat}
             onClick={() => setCategoriaActiva(cat)}
           >
@@ -148,7 +168,7 @@ export default function ListadoProd() {
 
       {/* Listado de productos */}
       <div className="container-items">
-        {productosFiltrados.map(p => (
+        {productosFiltrados.map((p) => (
           <div key={p.id} className="item">
             <a
               className="link-detalle"
@@ -156,17 +176,19 @@ export default function ListadoProd() {
               aria-label={`Ver ${p.nombre}`}
             >
               <figure>
-                <img src={p.img} alt={p.nombre} />
+                <img src={manzana} />
               </figure>
             </a>
             <div className="info-producto">
               <h2>
-                <a href={`detalle-producto.html?id=${encodeURIComponent(p.id)}`}>
+                <a
+                  href={`detalle-producto.html?id=${encodeURIComponent(p.id)}`}
+                >
                   {p.nombre}
                 </a>
               </h2>
               <p className="precio" data-precio={p.precio}>
-                ${p.precio} {p.unidad ?? ''}
+                ${p.precio} {p.unidad ?? ""}
               </p>
               {p.stock && <p className="stock">{p.stock}</p>}
               <button
