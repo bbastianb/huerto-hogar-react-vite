@@ -16,6 +16,12 @@ import Login from "./pages/Login.jsx";
 import ListadoProd from "./pages/ListadoProd.jsx";
 import Registro from "./pages/Registro.jsx";
 import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
+
+import DetalleProd from "./pages/DetalleProd.jsx";
+import { CartProvider } from "./pages/CartContext.jsx";
+import CartPage from "./pages/CartPage.jsx"; 
+import Checkout from "./pages/Checkout.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,13 +38,20 @@ const router = createBrowserRouter([
       { path: "productos", element: <ListadoProd /> },
       { path: "registro", element: <Registro /> },
       { path: "admin", element: <HomeAdmin /> },
+      
+      { path: "productos/:id", element: <DetalleProd /> },
+      { path: "carrito", element: <CartPage /> },
+      {path: "checkout" ,element:<Checkout/>}, 
 
+      
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <CartProvider>
     <RouterProvider router={router} />
+    </CartProvider>
   </React.StrictMode>
 );
