@@ -1,0 +1,7 @@
+.field{ display:flex; flex-direction:column; gap:6px; margin-bottom:12px; }
+input, textarea{
+  width: 100%; padding:12px 14px; border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.14); outline: none;
+  font-size: 1rem; color: var(--text); background: #fff;
+}
+label{ font-weight:600; color: var(--text); }

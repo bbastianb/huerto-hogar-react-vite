@@ -71,3 +71,4 @@
     /*Color de los enlaces al pasar el mouse*/
     color: #8B4513;
 }
+.navbar-links a.active{ background: var(--accent); color:#fff; border-radius:10px; }
