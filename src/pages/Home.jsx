@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import Carousel from "../components/Carousel";
 import heroImg     from "../assets/img/pimentones2.jpg";
@@ -64,5 +65,7 @@ export default function Home(){
         </div>
       </section>
     </main>
+
+
   );
 }
