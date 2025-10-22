@@ -1,0 +1,42 @@
+.news-header h1 {
+    color: var(--title);
+    margin: 6px 0 4px;
+  }
+  
+  .news-subtitle {
+    color: var(--text2);
+    margin: 0 0 12px;
+  }
+  
+  .news-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text2);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+  
+  .news-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(0,0,0,.06);
+    font-size: 0.8rem;
+  }
+  
+  .news-title {
+    margin: 6px 0 4px;
+    color: var(--text);
+  }
+  
+  .news-excerpt {
+    color: var(--text2);
+    margin: 0;
+  }
+  
