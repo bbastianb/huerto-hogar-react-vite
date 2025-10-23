@@ -1,0 +1,134 @@
+.sidebar-admin {
+    width: 250px;
+    height: 100vh;
+    background-color: #f5f7fa;
+    color: #22663f;
+    padding: 20px 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.sidebar-header {
+    padding: 0 15px 20px;
+    border-bottom: 1px solid #e0e6ed;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    font-family: "Playfair Display", serif;
+    color: #22663f;
+}
+
+.sidebar-subtitle {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin: 0;
+    color: #22663f;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 0 10px;
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    margin-bottom: 3px;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #22663f;
+    /* Cambiado de white a verde oscuro */
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    border-radius: 6px;
+    margin: 0 5px;
+}
+
+.menu-link:hover {
+    background: rgba(34, 102, 63, 0.1);
+    /* Verde muy suave */
+    border-left-color: rgba(34, 102, 63, 0.7);
+    /* Verde */
+}
+
+.menu-link.active {
+    background: rgba(34, 102, 63, 0.15);
+    /* Verde suave */
+    border-left-color: #22663f;
+    /* Verde sólido */
+    font-weight: 600;
+}
+
+.menu-icon {
+    font-size: 1.1rem;
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.menu-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #22663f;
+
+}
+
+.sidebar-footer {
+    padding: 15px 10px 0;
+    border-top: 1px solid #e0e6ed;
+
+}
+
+.sidebar-footer .menu-link {
+    margin: 5px 0;
+}
+
+.logout-link {
+    color: #dc2626 !important;
+    /
+}
+
+.logout-link:hover {
+    background: rgba(220, 38, 38, 0.1) !important;
+
+}
+
+.logout-icon-img {
+    filter: brightness(0) saturate(100%) invert(26%) sepia(89%) saturate(2035%) hue-rotate(350deg) brightness(93%) contrast(89%);
+}
+
+.logout-link:hover .logout-icon-img {
+    filter: brightness(0) saturate(100%) invert(16%) sepia(89%) saturate(2035%) hue-rotate(350deg) brightness(93%) contrast(89%);
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.admin-main {
+    flex: 1;
+    margin-left: 250px;
+    padding: 30px;
+    background: #f5f7fa;
+    min-height: 100vh;
+}
