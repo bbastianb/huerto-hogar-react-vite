@@ -1,7 +1,9 @@
 import imgHuerto     from "../assets/img/huerto1.jpg";
 import imgVegetales  from "../assets/img/vegetales.jpg";
-import imgBolsa from "../assets/img/bolsa.jpg";
-
+import imgBolsa      from "../assets/img/bolsa.jpg";
+import MapaTiendas   from "../components/MapaTiendas";
+import { TIENDAS }   from "../utils/tiendas";
+console.log("TIENDAS (Nosotros):", TIENDAS); 
 export default function Nosotros(){
   return (
     <main className="section">
@@ -37,6 +39,39 @@ export default function Nosotros(){
             </div>
           </article>
         </div>
+
+        {/* Mapa */}
+        <section className="section" style={{ marginTop: 24 }}>
+          <h2 style={{ color: "var(--title)" }}>Nuestras Tiendas</h2>
+          <p style={{ color: "var(--text2)" }}>
+            Haz clic en un pin para ver dirección y contacto.
+          </p>
+          <MapaTiendas height={420} />
+        </section>
+
+        {/* Lista debajo del mapa */}
+        <section className="section" style={{ marginTop: 16 }}>
+          <div className="card" style={{ padding: 12 }}>
+            <h3 style={{ marginTop: 0 }}>Direcciones y horarios</h3>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {TIENDAS.map(t => {
+                const telRaw  = t.phone || "";
+                const telHref = telRaw.replace(/\s+/g, "");
+                return (
+                  <li
+                    key={t.id || t.name}
+                    style={{ padding: "10px 0", borderBottom: "1px solid rgba(0,0,0,.08)", color: "var(--text)" }}
+                  >
+                    <strong>{t.name}</strong><br/>
+                    {t.address && <>📍 {t.address}<br/></>}
+                    {t.hours   && <>🕒 {t.hours}<br/></>}
+                    {telRaw    && <>📞 <a href={`tel:${telHref}`}>{telRaw}</a></>}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
       </div>
     </main>
   );
