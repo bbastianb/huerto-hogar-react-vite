@@ -7,13 +7,18 @@ import Blog from "./pages/Blog";
 import "./assets/styles/tokens.css";
 import "./assets/styles/base.css";
 import "./assets/styles/components.css";
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from "react-router-dom";
 function App() {
+  const location = useLocation();
+  const isAdminPage = location.pathname.startsWith("/admin");
+
   return (
     <div className="App">
-      <Header />
-      <Outlet/>
-      <Footer />
+      {!isAdminPage && <Header />}
+
+      <Outlet />
+
+      {!isAdminPage && <Footer />}
     </div>
   );
 }

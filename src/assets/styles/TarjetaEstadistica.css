@@ -1,0 +1,109 @@
+.tarjeta-estadistica {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    height: 100%;
+}
+
+.tarjeta-estadistica:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.encabezado-tarjeta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.icono-tarjeta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.icono-tarjeta svg {
+    width: 24px;
+    height: 24px;
+}
+
+.titulo-tarjeta {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+.valor-tarjeta {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0;
+    line-height: 1;
+}
+
+/* Colores de las tarjetas */
+.tarjeta-verde .icono-tarjeta {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.tarjeta-verde {
+    border-left: 4px solid #10b981;
+}
+
+.tarjeta-azul .icono-tarjeta {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.tarjeta-azul {
+    border-left: 4px solid #3b82f6;
+}
+
+.tarjeta-rojo .icono-tarjeta {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.tarjeta-rojo {
+    border-left: 4px solid #ef4444;
+}
+
+.tarjeta-amarillo .icono-tarjeta {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.tarjeta-amarillo {
+    border-left: 4px solid #f59e0b;
+}
+
+@media (max-width: 768px) {
+    .tarjeta-estadistica {
+        padding: 1.25rem;
+    }
+
+    .valor-tarjeta {
+        font-size: 2rem;
+    }
+
+    .icono-tarjeta {
+        width: 40px;
+        height: 40px;
+    }
+
+    .icono-tarjeta svg {
+        width: 20px;
+        height: 20px;
+    }
+}
