@@ -5,6 +5,7 @@ import TarjetaEstadistica from "../../components/TarjetaEstadistica.jsx";
 import BarraAdmin from "../../components/BarraAdmin.jsx";
 import "../../assets/styles/HomeAdmin.css";
 import { Link } from "react-router-dom";
+import { encontrarUsuarioValido } from "../../pages/Login.jsx";
 
 export default function HomeAdmin() {
   const [estadisticas, setEstadisticas] = useState({
@@ -12,6 +13,8 @@ export default function HomeAdmin() {
     usuariosRecientes: [],
     totalProductos: 0,
   });
+
+  const [usuarioActual, setUsuarioActual] = useState(null);
 
   const userIcono = (
     <svg
@@ -56,6 +59,15 @@ export default function HomeAdmin() {
     const totalUsuarios = usuarios.length;
     const usuariosRecientes = usuarios.slice(-5).reverse();
 
+    const usuarioStorage = JSON.parse(localStorage.getItem("usuarioActual"));
+    if (usuarioStorage) {
+      const usuarioEncontrado = encontrarUsuarioValido(
+        usuarioStorage.email,
+        usuarios
+      );
+      setUsuarioActual(usuarioEncontrado);
+    }
+
     setEstadisticas({
       totalUsuarios,
       usuariosRecientes,
@@ -69,7 +81,9 @@ export default function HomeAdmin() {
       <main className="admin-main">
         <div className="home-admin">
           <header className="header-admin">
-            <h1 className="titulo-admin">Panel de Administración</h1>
+            <h1 className="titulo-admin">
+              ¡Hola {usuarioActual?.nombre || "Administrador"}!
+            </h1>
             <p className="subtitulo-admin">
               Bienvenido al centro de control de Huerto Hogar
             </p>

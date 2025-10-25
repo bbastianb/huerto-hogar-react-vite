@@ -1,4 +1,3 @@
-// src/data/products.js
 import manzana from "../assets/img/manzanas.jpg";
 import naranja from "../assets/img/naranja.jpg";
 import platanos from "../assets/img/platanos.jpg";

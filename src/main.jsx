@@ -9,17 +9,20 @@ import Home from "./pages/Home.jsx";
 import Nosotros from "./pages/Nosotros.jsx";
 import Contacto from "./pages/Contacto.jsx";
 import Blog from "./pages/Blog.jsx";
-import Noticias from "./pages/Noticias.jsx"; // asegúrate de tenerlo
-
+import Noticias from "./pages/Noticias.jsx";
 
 import Login from "./pages/Login.jsx";
 import ListadoProd from "./pages/ListadoProd.jsx";
 import Registro from "./pages/Registro.jsx";
 import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
+import Usuarios from "./pages/admin/Usuarios.jsx";
+import ProductosAdmin from "./pages/admin/ProductosAdmin.jsx";
+import ConfiAdmin from "./pages/admin/ConfiAdmin.jsx";
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // App tiene <Header/><Outlet/><Footer/>
+    element: <App />,
     children: [
       { index: true, element: <Home /> },
 
@@ -27,12 +30,14 @@ const router = createBrowserRouter([
       { path: "contacto", element: <Contacto /> },
       { path: "blog", element: <Blog /> },
       { path: "noticias", element: <Noticias /> },
-
+      //
       { path: "login", element: <Login /> },
       { path: "productos", element: <ListadoProd /> },
       { path: "registro", element: <Registro /> },
-      { path: "admin", element: <HomeAdmin /> },
-
+      { path: "admin", element: <HomeAdmin /> }, // Todas las que tiene admin no muestran el header ni el footer
+      { path: "admin/usuarios", element: <Usuarios /> },
+      { path: "admin/productos", element: <ProductosAdmin /> },
+      { path: "admin/confiAdmin", element: <ConfiAdmin /> },
     ],
   },
 ]);

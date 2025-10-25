@@ -1,0 +1,279 @@
+.pagina-admin {
+    display: flex;
+    min-height: 100vh;
+    background-color: #F7F7F7;
+}
+
+.contenido-admin {
+    flex: 1;
+    padding: 2rem;
+    margin-left: 250px;
+}
+
+.cabecera-configuracion {
+    margin-bottom: 2rem;
+}
+
+.cabecera-configuracion h1 {
+    font-family: 'Playfair Display', serif;
+    color: #2E8B57;
+    margin: 0 0 0.5rem 0;
+    font-size: 2rem;
+}
+
+.cabecera-configuracion p {
+    color: #666666;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.contenedor-configuracion {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.form-configuracion {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+
+.campo-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.campo-form label {
+    font-weight: 500;
+    color: #333333;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+.campo-form input {
+    padding: 0.75rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    background-color: #F9FAFB;
+    transition: border-color 0.3s ease;
+}
+
+.campo-form input:focus {
+    outline: none;
+    border-color: #2E8B57;
+    background-color: white;
+}
+
+.campo-form input::placeholder {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+}
+
+
+.grupo-contraseña {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #E5E7EB;
+}
+
+.grupo-contraseña .campo-form {
+    margin-bottom: 1rem;
+}
+
+.acciones-form {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-top: 2.5rem;
+}
+
+.btn-guardar {
+    background: #2E8B57;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-guardar:hover {
+    background: #247347;
+}
+
+.btn-cancelar {
+    background: white;
+    color: #666666;
+    border: 1px solid #D1D5DB;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancelar:hover {
+    background: #F9FAFB;
+    border-color: #9CA3AF;
+}
+
+.mensaje {
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.mensaje-exito {
+    background: #E8F5E8;
+    color: #2E8B57;
+    border: 1px solid #2E8B57;
+}
+
+.mensaje-error {
+    background: #F8D7DA;
+    color: #721C24;
+    border: 1px solid #721C24;
+}
+
+.info-admin {
+    position: sticky;
+    top: 2rem;
+}
+
+.tarjeta-info {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: fit-content;
+}
+
+.avatar-admin {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #E8F5E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: #2E8B57;
+}
+
+.avatar-admin svg {
+    width: 28px;
+    height: 28px;
+}
+
+.tarjeta-info h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: #333333;
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.tarjeta-info p {
+    color: #666666;
+    margin: 0.4rem 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+.email-admin {
+    color: #2E8B57 !important;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+.badge-admin {
+    display: inline-block;
+    background: #FFD700;
+    color: #333333;
+    padding: 0.4rem 1rem;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 0.75rem;
+}
+
+@media (max-width: 1024px) {
+    .contenedor-configuracion {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .info-admin {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .contenido-admin {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .cabecera-configuracion h1 {
+        font-size: 1.75rem;
+    }
+
+    .form-configuracion {
+        padding: 1.5rem;
+    }
+
+    .acciones-form {
+        flex-direction: column;
+    }
+
+    .btn-guardar,
+    .btn-cancelar {
+        width: 100%;
+        text-align: center;
+    }
+
+    .tarjeta-info {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-configuracion {
+        padding: 1.25rem;
+    }
+
+    .avatar-admin {
+        width: 50px;
+        height: 50px;
+    }
+
+    .avatar-admin svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .tarjeta-info h3 {
+        font-size: 1rem;
+    }
+
+    .badge-admin {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.7rem;
+    }
+}
