@@ -4,6 +4,8 @@ import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
 import { products } from '../utils/products';
 import RelatedProducts from '../components/RelatedProducts';
+import '../assets/styles/style-detalle.css';
+
 
 const DetalleProd = () => {
     const { id } = useParams();
