@@ -25,7 +25,7 @@ export default function Home() {
               productores locales. Compra simple, entrega rápida.
             </p>
             <div className="cta">
-              <Link className="btn" to="/contacto">
+              <Link className="btn" to="/productos">
                 Hacer pedido
               </Link>
               <Link className="btn secondary" to="/nosotros">
