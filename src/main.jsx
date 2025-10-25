@@ -16,6 +16,16 @@ import Login from "./pages/Login.jsx";
 import ListadoProd from "./pages/ListadoProd.jsx";
 import Registro from "./pages/Registro.jsx";
 import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
+
+import DetalleProd from "./pages/DetalleProd.jsx";
+import { CartProvider } from "./pages/CartContext.jsx";
+import CartPage from "./pages/CartPage.jsx"; 
+import Checkout from "./pages/Checkout.jsx";
+import OrderSummary from "./pages/OrderSummary.jsx";
+import PaymentSuccess from "./pages/PaymentSuccess.jsx";
+import PaymentFailed from "./pages/PaymentFailed.jsx";
+import { UserProvider } from "./pages/UserContext"; 
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,13 +42,25 @@ const router = createBrowserRouter([
       { path: "productos", element: <ListadoProd /> },
       { path: "registro", element: <Registro /> },
       { path: "admin", element: <HomeAdmin /> },
+      
+      { path: "productos/:id", element: <DetalleProd /> },
+      { path: "carrito", element: <CartPage /> },
+      {path: "checkout" ,element:<Checkout/>}, 
+       { path: "resumen-pedido", element: <OrderSummary /> },
+      { path: "pago-exitoso", element: <PaymentSuccess /> },
+      { path: "pago-fallido", element: <PaymentFailed /> },
 
+      
     ],
   },
 ]);
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider> {/* ← UserProvider debe envolver todo */}
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
+    </UserProvider>
   </React.StrictMode>
 );

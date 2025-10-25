@@ -27,7 +27,7 @@ export default function Home(){
             </p>
             <div className="cta">
               {/* 👇 solo rutas tuyas */}
-              <Link className="btn" to="/contacto">Hacer pedido</Link>
+              <Link className="btn" to="/productos">Hacer pedido</Link>
               <Link className="btn secondary" to="/nosotros">Conócenos</Link>
             </div>
           </div>
