@@ -101,43 +101,6 @@ const OrderSummary = () => {
             <div className="checkout-content">
                 <h1>Resumen del Pedido</h1>
                 
-                {/* 🔧 BOTONES DE TESTING - FÁCIL ACCESO */}
-                <div className="testing-buttons">
-                    <h4>🔧 Botones de Testing (Desarrollo):</h4>
-                    <div className="testing-buttons-container">
-                        <button 
-                            onClick={() => {
-                                // Crear orden de prueba para éxito
-                                const testOrder = {
-                                    id: 'ORD-TEST-' + Date.now().toString().slice(-6),
-                                    fecha: new Date().toISOString(),
-                                    productos: [...carrito],
-                                    shipping: shippingData,
-                                    total: total,
-                                    estado: 'completado'
-                                };
-                                navigate('/pago-exitoso', { state: { order: testOrder } });
-                            }}
-                            className="btn-testing-success"
-                        >
-                            ✅ Probar Pago Exitoso
-                        </button>
-                        <button 
-                            onClick={() => {
-                                navigate('/pago-fallido', { 
-                                    state: { 
-                                        errorType: 'Error de prueba',
-                                        orderId: 'ORD-TEST-' + Date.now().toString().slice(-6)
-                                    } 
-                                });
-                            }}
-                            className="btn-testing-error"
-                        >
-                            ❌ Probar Pago Fallido
-                        </button>
-                    </div>
-                </div>
-                
                 <div className="order-summary-layout">
                     {/* Detalles del pedido */}
                     <div className="order-details-section">

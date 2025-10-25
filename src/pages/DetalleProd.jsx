@@ -5,7 +5,8 @@ import { useCart } from '../pages/CartContext';
 import { products } from '../utils/products';
 import RelatedProducts from '../components/RelatedProducts';
 import '../assets/styles/style-detalle.css';
-
+import { FaStar } from 'react-icons/fa';
+import{FaStarHalfAlt} from 'react-icons/fa';
 
 const DetalleProd = () => {
     const { id } = useParams();
@@ -49,7 +50,14 @@ const DetalleProd = () => {
                     <h6>
                         <Link to="/">Home</Link> / <Link to="/productos">Productos</Link>
                     </h6>
+                    <div className="stard">
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStarHalfAlt/>
+                    </div>
                     <h4 id="nombre">{product.nombre}</h4>
+                    
                     <h2 id="precio" data-precio={product.precio}>
                         ${product.precio} {product.unidad}
                     </h2>

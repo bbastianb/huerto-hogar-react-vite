@@ -3,7 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
 import { products, getCategory } from '../utils/products';
-
+import { FaStar } from 'react-icons/fa';
+import{FaStarHalfAlt} from 'react-icons/fa';
 const RelatedProducts = ({ currentProduct, addToCart }) => {
     const { agregarAlCarrito } = useCart();
 
@@ -57,11 +58,10 @@ const RelatedProducts = ({ currentProduct, addToCart }) => {
                                 </Link>
                             </h5>
                             <div className="star">
-                                <i className="fa-solid fa-star"></i>
-                                <i className="fa-solid fa-star"></i>
-                                <i className="fa-solid fa-star"></i>
-                                <i className="fa-solid fa-star"></i>
-                                <i className="fa-solid fa-star"></i>
+                                <FaStar />
+                                <FaStar />
+                                <FaStar />
+                                <FaStarHalfAlt/>
                             </div>
                             <h4>${product.precio} {product.unidad ?? ''}</h4>
                             <div className="carr">

@@ -117,7 +117,7 @@ const CartPage = () => {
                                                 onClick={() => handleEliminarProducto(producto.id)}
                                                 title="Eliminar producto"
                                             >
-                                                <i className="fas fa-trash"></i>
+                                                <FaTrash />
                                             </button>
                                         </div>
                                     );
