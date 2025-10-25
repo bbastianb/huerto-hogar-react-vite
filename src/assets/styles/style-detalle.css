@@ -1,0 +1,262 @@
+/* src/styles/ProductDetail.css */
+/* Los estilos específicos de detalle que ya tenías */
+#prodetails {
+  display: flex;
+  gap: 2rem;
+  margin-top: 20px;
+  align-items: flex-start;
+  padding: 0 1rem;
+}
+
+#prodetails .single-pro-image {
+  flex: 1 1 55%;
+  margin-right: 0;
+}
+
+#prodetails .single-pro-image img {
+  width: 80%;
+  display: block;
+  border-radius: 12px;
+  margin-left: 25px;
+}
+
+#prodetails .single-pro-details {
+  width: 50%;
+  padding-top: 30px;
+}
+
+#prodetails .single-pro-details h4 {
+  padding: 20px 0 20px 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+#prodetails .single-pro-details h2 {
+  font-size: 26px;
+  margin-bottom: 15px;
+  color: var(--accent);
+}
+
+#prodetails .single-pro-details input {
+  width: 50px;
+  height: 47px;
+  padding-left: 10px;
+  font-size: 16px;
+  margin-right: 10px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+#prodetails .single-pro-details h6 {
+  font-size: 18px;
+  margin-bottom: 1rem;
+}
+
+#prodetails .single-pro-details h6 a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+#prodetails .single-pro-details h6 a:hover {
+  text-decoration: underline;
+}
+
+#prodetails .single-pro-details button {
+  border: none;
+  background: none;
+  background-color: #2E8B57;
+  color: #ffffff;
+  padding: 15px 10px;
+  cursor: pointer;
+  margin-top: auto;
+  border-radius: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+#prodetails .single-pro-details button:hover:not(:disabled) {
+  background-color: #3CB371;
+  color: #0c0c0c;
+}
+
+#prodetails .single-pro-details button:disabled {
+  background-color: #7cb798;
+  cursor: not-allowed;
+}
+
+#prodetails .single-pro-details span {
+  line-height: 25px;
+  color: #555;
+}
+
+/* Related Products */
+.container-related-products {
+  margin-top: 80px;
+  padding: 0 1rem;
+}
+
+.container-related-products h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: 'Playfair Display', serif;
+  color: #333;
+}
+
+.cart-list-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 24px;
+  align-items: start;
+  padding-top: 20px;
+  padding: 60px;
+}
+
+.pro {
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+  width: auto;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #088178;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 20px 20px 30px rgba(0,0,0,0.2);
+  margin: 15px 0;
+  transition: 0.2s ease;
+  position: relative;
+  background-color: white;
+  text-decoration: none;
+  color: inherit;
+}
+
+.pro:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+  transform: translateY(-5px);
+}
+
+.pro img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 20px;
+  display: block;
+}
+
+.pro .des {
+  text-align: start;
+  padding: 10px 0;
+  flex: 1;
+}
+
+.pro .des span {
+  color: #050505;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.pro .des h5 {
+  padding-top: 7px;
+  font-size: 14px;
+  color: #1a1a1a;
+  margin: 0.5rem 0;
+}
+
+.star {
+  font-size: 18px;
+  color: rgb(243,181, 25);
+  
+}
+.stard{
+  font-size: 18px;
+  color: rgb(243,181, 25);
+  padding-top: 20px;
+}
+.pro .des h4 {
+  padding-top: 7px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #088178;
+  margin: 0.5rem 0;
+}
+
+.pro .des .btn-add-cart {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  #prodetails {
+    flex-direction: column;
+  }
+  
+  #prodetails .single-pro-image,
+  #prodetails .single-pro-details {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+  
+  #prodetails .single-pro-image img {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .cart-list-products {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* Mejoras para productos relacionados */
+.product-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.pro .des h5 a {
+    color: #1a1a1a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.pro .des h5 a:hover {
+    color: var(--accent);
+}
+
+.carr .btn-add-cart {
+    width: 100%;
+    padding: 0.5rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+}
+
+.carr .btn-add-cart:hover {
+    background: #3CB371;
+    transform: translateY(-2px);
+}
+
+/* Efectos hover mejorados para las tarjetas de productos relacionados */
+.pro {
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.pro:hover {
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+}
+
+/* Asegurar que las imágenes sean clickeables */
+.pro img {
+    cursor: pointer;
+}

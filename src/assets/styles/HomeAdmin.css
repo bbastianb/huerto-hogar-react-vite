@@ -1,0 +1,239 @@
+.header-admin {
+    margin-bottom: 2rem;
+    text-align: center;
+    padding: 1.5rem 2rem;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    position: relative;
+    overflow: hidden;
+}
+
+.header-admin::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #10b981, #059669, #047857);
+}
+
+.titulo-admin {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d8453;
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+}
+
+.subtitulo-admin {
+    font-size: 1.1rem;
+    color: #64748b;
+    font-weight: 400;
+    max-width: 500px;
+    line-height: 1.5;
+    margin: 0 auto;
+}
+
+.header-admin:hover .titulo-admin {
+    background: linear-gradient(135deg, #047857 0%, #059669 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.admin-main {
+    flex: 1;
+    margin-left: 280px;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.home-admin {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.seccion-estadisticas {
+    margin-bottom: 3rem;
+}
+
+.seccion-estadisticas h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1.5rem;
+}
+
+.grid-estadisticas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.grid-estadisticas a {
+    text-decoration: none;
+}
+
+.seccion-usuarios {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+}
+
+.seccion-usuarios h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1.5rem;
+}
+
+.lista-usuarios {
+    display: grid;
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Scroll simple */
+.lista-usuarios::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lista-usuarios::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+}
+
+.lista-usuarios::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.lista-usuarios::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.tarjeta-usuario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+}
+
+.info-usuario h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 0.25rem 0;
+}
+
+.info-usuario p {
+    color: #6b7280;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.badge-tipo {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.badge-tipo.admin {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge-tipo.usuario {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.detalles-usuario {
+    text-align: right;
+}
+
+.detalles-usuario small {
+    display: block;
+    color: #6b7280;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .admin-main {
+        margin-left: 0;
+    }
+
+    .home-admin {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-estadisticas {
+        grid-template-columns: 1fr;
+    }
+
+    .tarjeta-usuario {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .detalles-usuario {
+        text-align: left;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .titulo-admin {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-admin {
+        padding: 0.5rem;
+    }
+
+    .seccion-usuarios {
+        padding: 1rem;
+    }
+
+    .tarjeta-usuario {
+        padding: 1rem;
+    }
+
+    .detalles-usuario {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+}
