@@ -1,0 +1,236 @@
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #F7F7F7;
+}
+
+.admin-main {
+    flex: 1;
+    padding: 2rem;
+    margin-left: 250px;
+}
+
+.home-admin {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+
+/* Barra de búsqueda */
+.barra-busqueda-clientes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.input-busqueda-clientes {
+    flex: 1;
+    min-width: 300px;
+    padding: 0.75rem 1rem;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.input-busqueda-clientes:focus {
+    outline: none;
+    border-color: #2E8B57;
+}
+
+.contador-clientes {
+    font-family: 'Montserrat', sans-serif;
+    color: #666666;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Lista de clientes */
+.lista-clientes {
+    margin-top: 2rem;
+}
+
+.sin-clientes {
+    text-align: center;
+    padding: 3rem;
+    color: #666666;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.grid-clientes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Tarjeta de cliente */
+.tarjeta-cliente {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    border: 1px solid #E0E0E0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-cliente:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.cliente-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.cliente-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #E8F5E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2E8B57;
+    flex-shrink: 0;
+}
+
+.cliente-avatar svg {
+    width: 24px;
+    height: 24px;
+}
+
+.cliente-info {
+    flex: 1;
+}
+
+.cliente-nombre {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 0 0 0.25rem 0;
+}
+
+.cliente-email {
+    font-family: 'Montserrat', sans-serif;
+    color: #666666;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+.cliente-tipo {
+    display: inline-block;
+    background-color: #E8F5E8;
+    color: #2E8B57;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.cliente-detalles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.detalle-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #666666;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+.detalle-item svg {
+    width: 16px;
+    height: 16px;
+    color: #8B4513;
+    flex-shrink: 0;
+}
+
+.cliente-acciones {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.btn-eliminar-cliente {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #F8D7DA;
+    color: #721C24;
+}
+
+.btn-eliminar-cliente:hover {
+    background-color: #F1B0B7;
+    transform: translateY(-1px);
+}
+
+.btn-eliminar-cliente svg {
+    width: 16px;
+    height: 16px;
+}
+
+@media (max-width: 768px) {
+    .admin-main {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .barra-busqueda-clientes {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-busqueda-clientes {
+        min-width: auto;
+    }
+
+    .grid-clientes {
+        grid-template-columns: 1fr;
+    }
+
+    .cliente-acciones {
+        justify-content: stretch;
+    }
+
+    .btn-eliminar-cliente {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-admin {
+        font-size: 2rem;
+    }
+
+    .cliente-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .cliente-avatar {
+        align-self: center;
+    }
+}

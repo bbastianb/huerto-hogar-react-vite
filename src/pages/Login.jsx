@@ -4,6 +4,10 @@ import { useNavigate, Link } from "react-router-dom";
 import fondo2 from "../assets/img/fondo2.png";
 import { getUsuarios, setUsuarioActual } from "../utils/Usuarios.js";
 
+export const encontrarUsuarioValido = (email, usuarios) => {
+  return usuarios.find((u) => u.email.toLowerCase() === email.toLowerCase());
+};
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
@@ -18,7 +22,6 @@ export default function Login() {
       setError("Por favor, ingresa un formato de email válido.");
       return;
     }
-
     const usuarios = getUsuarios();
     const usuariovalido = usuarios.find(
       (u) => u.email.toLowerCase() === email.toLowerCase()
@@ -26,12 +29,19 @@ export default function Login() {
 
     if (usuariovalido && usuariovalido.contrasena === contrasena) {
       setError("");
+      const usuarioParaGuardar = {
+        id: usuariovalido.id,
+        nombre: usuariovalido.nombre,
+        apellido: usuariovalido.apellido,
+        email: usuariovalido.email,
+        tipo: usuariovalido.tipo,
+      };
       if (usuariovalido.tipo === "admin") {
         navigate("/admin");
       } else {
         navigate("/");
       }
-      setUsuarioActual(usuariovalido);
+      setUsuarioActual(usuarioParaGuardar);
     } else {
       setError("Email o contraseña incorrectos");
     }
