@@ -39,6 +39,24 @@ export const UserProvider = ({ children }) => {
         );
         localStorage.setItem('usuarios', JSON.stringify(updatedUsuarios));
     };
+    // 🔄 Mantener el contexto sincronizado con localStorage
+useEffect(() => {
+    const syncUser = () => {
+      const u = getUsuarioActual();
+      setUser(u || null);
+    };
+  
+    // Mismo tab (nuestro evento) y entre pestañas (evento nativo de storage)
+    window.addEventListener("usuarioActual:changed", syncUser);
+    const onStorage = (e) => { if (e.key === "usuarioActual") syncUser(); };
+    window.addEventListener("storage", onStorage);
+  
+    return () => {
+      window.removeEventListener("usuarioActual:changed", syncUser);
+      window.removeEventListener("storage", onStorage);
+    };
+  }, []);
+  
 
     return (
         <UserContext.Provider value={{

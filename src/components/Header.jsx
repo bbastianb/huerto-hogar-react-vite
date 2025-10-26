@@ -1,11 +1,27 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import "../assets/styles/Header.css";
-import "../App.css";
-import { useCart } from '../pages/CartContext.jsx';
-
+import { useCart } from "../pages/CartContext.jsx";
+import { useUser } from "../pages/UserContext.jsx";
+import { FaShoppingCart } from "react-icons/fa";
+import { useState } from "react"; 
 export default function Header() {
-  const { cartCount, toggleCart } = useCart();
+  const { cartCount } = useCart();
+  const { user, logout } = useUser(); // 👈 lee el usuario desde el contexto
+  const navigate = useNavigate();
+
+  const [openMenu, setOpenMenu] = useState(false);
+
+
+  const handleLogout = () => {
+    logout();               // limpia contexto y localStorage (ya lo hace tu UserContext)
+    navigate("/");          // vuelve al inicio
+  };
+  const displayName =
+  user?.nombre ||
+  user?.name ||
+  user?.username ||
+  (user?.email ? user.email.split("@")[0] : "Mi cuenta");
 
   return (
     <header className="header-login">
@@ -16,39 +32,56 @@ export default function Header() {
 
         <ul className="navbar-links">
           <li><NavLink to="/" end>Inicio</NavLink></li>
-          <li><NavLink to="/nosotros">Nosotros</NavLink></li>
           <li><NavLink to="/contacto">Contacto</NavLink></li>
           <li><NavLink to="/noticias">Noticias</NavLink></li>
+          <li><NavLink to="/nosotros">Nosotros</NavLink></li>
           <li><NavLink to="/blog">Blog</NavLink></li>
-          {/* 🔒 Rutas de otros equipos — no mostrar:
-          <li><NavLink to="/login">Iniciar Sesión</NavLink></li>
-          <li><NavLink to="/registro" id="link-registro-login">Registrarme</NavLink></li>
-          <li><NavLink to="/productos">Productos</NavLink></li>
-          */}
-        
-      {/* Icono del carrito */}
-            <div className="container-icon">
-                 <Link to="/carrito" className="container-cart-icon">
-                    <svg 
-                        xmlns="http://www.w3.org/2000/svg" 
-                        fill="none" 
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5" 
-                        stroke="currentColor" 
-                        className="icon-cart"
-                    >
-                        <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round"
-                            d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-                        />
-                    </svg>
-                    <div className="count-producto">
-                        <span id="contador-productos">{cartCount}</span>
-                    </div>
-                    </Link>
-                </div>
-                </ul>
+
+          {/* 👉 Zona de usuario */}
+          {!user ? (
+            // Si NO hay usuario: muestra Iniciar sesión
+            <li><NavLink to="/login">Iniciar Sesión</NavLink></li>
+          ) : (
+            <li className="user-menu">
+              <button type="button" className="user-menu__button">
+                {displayName}
+                <span className="user-menu__chev">▾</span>
+              </button>
+              <div className="user-menu__dropdown">
+                <span className="user-menu__hello">Hola, {displayName}</span>
+                <button type="button" className="user-menu__logout" onClick={handleLogout}>
+                  Cerrar sesión
+                </button>
+              </div>
+            </li>
+          )}
+
+          {/* Carrito */}
+          <li>
+  <Link to="/carrito" className="container-cart-icon" aria-label="Abrir carrito">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="icon-cart"
+      role="img"
+      aria-hidden="true"
+    >
+      <path d="M2.25 3h1.386c.51 0 .957.344 1.09.836l.383 1.437M7.5 14.25h9M4.25 5.273 5.84 11.5A1 1 0 0 0 6.81 12.25H18a1 1 0 0 0 .97-.75l1.5-6A1 1 0 0 0 19.5 4.25H5.84a1 1 0 0 0-.97 1.023zM16.5 17.25a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+    </svg>
+
+    <div className="count-producto">
+      <span id="contador-productos">{cartCount}</span>
+    </div>
+  </Link>
+</li>
+
+
+        </ul>
       </nav>
     </header>
   );
