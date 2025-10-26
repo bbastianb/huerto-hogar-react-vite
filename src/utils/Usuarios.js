@@ -96,5 +96,13 @@ export const getUsuarioActual = () => {
 };
 
 export const setUsuarioActual = (u) => {
-  localStorage.setItem("usuarioActual", JSON.stringify(u));
-};
+    if (u) {
+      localStorage.setItem("usuarioActual", JSON.stringify(u));
+    } else {
+      localStorage.removeItem("usuarioActual");
+    }
+    // 🔔 Avisar a la app (misma pestaña) que cambió el usuario
+    window.dispatchEvent(new Event("usuarioActual:changed"));
+  };
+
+
