@@ -1,13 +1,16 @@
-/* Header y navegación */
-.header-login {
-    /*Hace que le header"Barra" use siempre el 100% del ancho de la página*/
-    width: 100%;
-    /*Fondo del header"Barra"*/
-    background-color: rgba(247, 247, 247, 0.1);
-    /*Sombra debajo del header"Barra"*/
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-}
+.header-login {
+    width: 100%;
+    background-color: #fff;           /* ← blanco sólido SIEMPRE */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: sticky;                 /* si quieres que quede pegado arriba */
+    top: 0;
+    z-index: 3000;                    /* por encima del carrusel */
+    opacity: 1;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  
 
 .navbar-login {
     /*Activa el modo flexbox para la barra de navegación*/
@@ -311,4 +314,118 @@
 .nav_links {
     gap: 0.5rem;
   }
+/* Menú usuario */
+.user-menu { position: relative; }
+.user-menu__button {
+  background: transparent; border: 0; cursor: pointer; font-weight: 600;
+}
+.user-menu__chev { margin-left: 4px; opacity: .7; }
+.user-menu__dropdown {
+  position: absolute; right: 0; top: 100%;
+  background: #fff; border: 1px solid #e6e6e6; border-radius: 10px;
+  padding: .75rem; min-width: 180px; box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  display: none; z-index: 30;
+}
+.user-menu:hover .user-menu__dropdown { display: block; }
+.user-menu__hello { display:block; margin-bottom:.5rem; color:#2E8B57; }
+.user-menu__logout {
+  width:100%; background:#2E8B57; color:#fff; border:0; padding:.5rem .75rem;
+  border-radius:8px; cursor:pointer;
+}
+.user-menu__logout:hover { background:#3CB371; }
+
+/* Evita clipping y mejora alineación del ícono dentro de los links */
+.navbar-links a,
+.navbar-links button {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  line-height: 1.2;
+}
+
+.navbar-links svg,
+.icon-cart {
+  overflow: visible;  /* clave para que no se “corte” */
+}
+/* 1) Quitar márgenes del <ul> de navegación */
+.navbar-links {
+    margin: 0;              /* ← clave */
+    padding: 0;             /* ← clave */
+  }
+  
+  /* 2) El logo como bloque para no dejar “línea” debajo */
+  .navbar-logo img {
+    display: block;
+    height: auto;
+  }
+  
+  /* 3) Evitar el “baseline gap” del SVG del carrito */
+  .container-cart-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 6px;           /* si lo ves alto, baja este padding */
+  }
+  
+  .icon-cart {
+    display: block;         /* ← clave para que no deje espacio extra */
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    overflow: visible;      /* ya lo tienes, lo mantengo */
+  }
+  
+  /* 4) Evitar que el primer margen del contenido “empuje” al header (margin collapse) */
+  .header-login {
+    overflow: visible;       /* truco simple para cortar el colapso de márgenes */
+  }
+  
+  /* Alternativa/complemento: quita el margin-top del primer elemento del main */
+  main > *:first-child {
+    margin-top: 0;
+  }
+/* — 1) Mismo estilo para el botón del usuario que para los links — */
+.navbar-links .user-menu__button {
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #2E8B57;
+    padding: 9px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    line-height: 1.2;
+  }
+  .navbar-links .user-menu__button:hover {
+    color: #8B4513;
+  }
+  
+ 
+  
+  /* dropdown del usuario */
+  .user-menu { position: relative; }
+  .user-menu__dropdown {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    padding: .75rem;
+    min-width: 200px;
+    box-shadow: 0 10px 20px rgba(0,0,0,.08);
+    display: none;
+    z-index: 4000; /* por encima del carrusel */
+  }
+  .user-menu:hover .user-menu__dropdown { display: block; }
+  .user-menu__hello { display:block; margin-bottom:.5rem; color:#2E8B57; }
+  .user-menu__logout {
+    width:100%; background:#2E8B57; color:#fff; border:0; padding:.5rem .75rem;
+    border-radius:8px; cursor:pointer;
+  }
+  .user-menu__logout:hover { background:#3CB371; }
   
