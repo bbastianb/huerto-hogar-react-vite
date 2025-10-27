@@ -132,3 +132,69 @@
     background: #f5f7fa;
     min-height: 100vh;
 }
+
+/* PROTECCIÓN FUERTE - MANTIENE ESTILOS DEL DASHBOARD */
+.sidebar-admin .sidebar-header h2.sidebar-title {
+    font-size: 1.3rem !important;
+    font-family: "Playfair Display", serif !important;
+    color: #22663f !important;
+    font-weight: 700 !important;
+    margin: 0 0 5px 0 !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+}
+
+.sidebar-admin .sidebar-header p.sidebar-subtitle {
+    font-size: 0.8rem !important;
+    color: #22663f !important;
+    margin: 0 !important;
+    opacity: 0.8 !important;
+    font-family: "Montserrat", sans-serif !important;
+    text-align: center !important;
+    font-weight: 400 !important;
+    line-height: 1.4 !important;
+}
+
+/* Reset completo para todos los textos del sidebar Por que hay css que afectaron este !*/
+.sidebar-admin,
+.sidebar-admin * {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.sidebar-admin h1,
+.sidebar-admin h2,
+.sidebar-admin h3,
+.sidebar-admin h4,
+.sidebar-admin h5,
+.sidebar-admin h6 {
+    font-family: "Playfair Display", serif !important;
+    color: #22663f !important;
+    font-weight: 700 !important;
+}
+
+.sidebar-admin .sidebar-header {
+    display: flex !important;
+    /* Activa flexbox */
+    flex-direction: column !important;
+    /* Organiza elementos en columna (vertical) */
+    align-items: center !important;
+    /* Centra horizontalmente todos los elementos */
+    justify-content: center !important;
+    /* Centra verticalmente (opcional) */
+}
+
+.sidebar-admin .sidebar-header .sidebar-logo-link {
+    display: block !important;
+    /* Hace que ocupe todo el ancho disponible */
+    text-align: center !important;
+    /* Centra contenido inline/inline-block */
+    margin: 0 auto 15px auto !important;
+    /* Margen: arriba 0, laterales auto (centra), abajo 15px */
+}
+
+.sidebar-admin .sidebar-header .sidebar-logo-link img {
+    display: inline-block !important;
+    /* Permite que text-align: center funcione */
+    margin: 0 auto !important;
+    /* Centra la imagen horizontalmente */
+}
