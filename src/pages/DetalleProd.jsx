@@ -1,26 +1,45 @@
 // src/pages/DetalleProd.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
-import { products } from '../utils/products';
+import { getProducts } from '../utils/products'; // ✅ Importar la función
 import RelatedProducts from '../components/RelatedProducts';
 import '../assets/styles/style-detalle.css';
 import { FaStar } from 'react-icons/fa';
-import{FaStarHalfAlt} from 'react-icons/fa';
+import { FaStarHalfAlt } from 'react-icons/fa';
 
 const DetalleProd = () => {
     const { id } = useParams();
     const { agregarAlCarrito } = useCart();
     const [quantity, setQuantity] = useState(1);
     const [addedToCart, setAddedToCart] = useState(false);
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
     
-    const product = products.find(p => p.id === id);
+    // ✅ Cargar productos desde localStorage
+    useEffect(() => {
+        const productos = getProducts(); // Esto obtiene los productos actualizados
+        const productoEncontrado = productos.find(p => p.id === id);
+        setProduct(productoEncontrado);
+        setLoading(false);
+    }, [id]);
+
+    if (loading) {
+        return (
+            <div className="content-all">
+                <div style={{ textAlign: 'center', padding: '2rem' }}>
+                    <h2>Cargando producto...</h2>
+                </div>
+            </div>
+        );
+    }
     
     if (!product) {
         return (
             <div className="content-all">
                 <div style={{ textAlign: 'center', padding: '2rem' }}>
                     <h2>Producto no encontrado</h2>
+                    <p>El producto con ID "{id}" no existe.</p>
                     <Link to="/productos">Volver a productos</Link>
                 </div>
             </div>
@@ -28,7 +47,6 @@ const DetalleProd = () => {
     }
 
     const handleAddToCart = () => {
-        // Agregar la cantidad seleccionada
         for (let i = 0; i < quantity; i++) {
             agregarAlCarrito(product);
         }
