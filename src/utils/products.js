@@ -1,4 +1,3 @@
-import manzana from "../assets/img/manzanas.jpg";
 import naranja from "../assets/img/naranja.jpg";
 import platanos from "../assets/img/platanos.jpg";
 import frutillas from "../assets/img/frutillas.jpg";
@@ -17,7 +16,7 @@ export const products = [
     precio: 1200,
     unidad: "x kilo",
     stock: "150 kilos",
-    img: manzana,
+    img: "manzanas.jpg",
     desc: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule.",
   },
   {
@@ -113,12 +112,21 @@ export const products = [
 ];
 
 export const getCategory = (product) => {
+  if (!product || !product.id) return 'otros';
+  
   const pref = String(product.id).slice(0, 2).toUpperCase();
   if (pref === "FR") return "frutas";
   if (pref === "VR") return "verduras";
+  if (pref === "PO") return "otros";
   return "otros";
 };
 
+// Función para obtener todas las categorías
+export const getCategories = () => {
+  const products = getProducts();
+  const categorias = [...new Set(products.map(p => getCategory(p)))];
+  return ['todos', ...categorias];
+};
 if (!localStorage.getItem("products")) {
   localStorage.setItem("products", JSON.stringify(products));
 }
@@ -130,4 +138,28 @@ export const getProducts = () => {
 
 export const setProducts = (arr) => {
   localStorage.setItem("products", JSON.stringify(arr));
+};
+
+// products.js - FUNCIONES ADICIONALES
+export const resetToDefault = () => {
+  localStorage.removeItem("products");
+  return products; // Retorna los productos por defecto
+};
+
+export const exportProducts = () => {
+  const currentProducts = getProducts();
+  const dataStr = JSON.stringify(currentProducts, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  return URL.createObjectURL(dataBlob);
+};
+
+export const importProducts = (jsonData) => {
+  try {
+    const importedProducts = JSON.parse(jsonData);
+    setProducts(importedProducts);
+    return true;
+  } catch (error) {
+    console.error('Error importing products:', error);
+    return false;
+  }
 };

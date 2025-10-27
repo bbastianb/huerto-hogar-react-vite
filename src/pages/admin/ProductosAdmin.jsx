@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import BarraAdmin from "../../components/BarraAdmin";
 import "../../assets/styles/ProductosAdmin.css";
 import { getProducts, setProducts } from "../../utils/products";
+// ✅ Importa la imagen por defecto
+import imagenDefault from "../../assets/img/default.jpg";
 
 const ProductosAdmin = () => {
   const [productos, setProductos] = useState([]);
   const [busqueda, setBusqueda] = useState("");
   const [mostrarForm, setMostrarForm] = useState(false);
   const [productoEditando, setProductoEditando] = useState(null);
+  const [notificacion, setNotificacion] = useState('');
+  const [imagenPreview, setImagenPreview] = useState(imagenDefault);
 
   useEffect(() => {
     cargarProductos();
@@ -27,22 +31,53 @@ const ProductosAdmin = () => {
     if (window.confirm(`¿Eliminar "${nombre}"?`)) {
       const actualizados = productos.filter((p) => p.id !== id);
       guardarProductos(actualizados);
+      mostrarNotificacion(`Producto "${nombre}" eliminado correctamente`);
     }
   };
 
   const abrirEditar = (producto) => {
     setProductoEditando(producto);
+    setImagenPreview(producto.img || imagenDefault);
     setMostrarForm(true);
   };
 
   const abrirNuevo = () => {
     setProductoEditando(null);
+    setImagenPreview(imagenDefault);
     setMostrarForm(true);
   };
 
   const cerrarForm = () => {
     setMostrarForm(false);
     setProductoEditando(null);
+    setImagenPreview(imagenDefault);
+  };
+
+  const mostrarNotificacion = (mensaje) => {
+    setNotificacion(mensaje);
+    setTimeout(() => setNotificacion(''), 3000);
+  };
+
+  const generarId = (categoria) => {
+    const categorias = {
+      frutas: "FR",
+      verduras: "VR",
+      otros: "PO"
+    };
+
+    const prefijo = categorias[categoria] || "PR";
+    const productosCategoria = productos.filter(p => p.id.startsWith(prefijo));
+    const numero = (productosCategoria.length + 1).toString().padStart(3, '0');
+    return `${prefijo}${numero}`;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    
+    // Actualizar vista previa si cambia la imagen
+    if (name === "img") {
+      setImagenPreview(value || imagenDefault);
+    }
   };
 
   const guardarProducto = (e) => {
@@ -50,12 +85,13 @@ const ProductosAdmin = () => {
     const formData = new FormData(e.target);
 
     const producto = {
-      id: productoEditando ? productoEditando.id : `PR${Date.now()}`,
+      id: productoEditando ? productoEditando.id : generarId(formData.get("categoria")),
       nombre: formData.get("nombre"),
       precio: Number(formData.get("precio")),
       unidad: formData.get("unidad"),
       stock: formData.get("stock"),
-      img: productoEditando ? productoEditando.img : "/img/default.jpg",
+      // ✅ Usa la imagen del input O la imagen por defecto importada
+      img: formData.get("img") || imagenDefault,
       desc: formData.get("desc"),
     };
 
@@ -70,6 +106,9 @@ const ProductosAdmin = () => {
 
     guardarProductos(nuevosProductos);
     cerrarForm();
+    mostrarNotificacion(
+      productoEditando ? "Producto actualizado" : "Producto creado"
+    );
   };
 
   const productosFiltrados = productos.filter(
@@ -116,6 +155,12 @@ const ProductosAdmin = () => {
           </span>
         </div>
 
+        {notificacion && (
+          <div className="notificacion">
+            {notificacion}
+          </div>
+        )}
+
         {mostrarForm && (
           <div className="modal-overlay">
             <div className="modal-producto">
@@ -130,6 +175,46 @@ const ProductosAdmin = () => {
                     defaultValue={productoEditando?.nombre}
                     required
                   />
+                </div>
+
+                <div className="campo-form">
+                  <label>Categoría</label>
+                  <select
+                    name="categoria"
+                    defaultValue={productoEditando ? getCategory(productoEditando) : "frutas"}
+                    required
+                  >
+                    <option value="frutas">Frutas</option>
+                    <option value="verduras">Verduras</option>
+                    <option value="otros">Otros</option>
+                  </select>
+                </div>
+
+                <div className="campo-form">
+                  <label>Imagen del producto</label>
+                  <input
+                    type="text"
+                    name="img"
+                    defaultValue={productoEditando?.img || ""}
+                    onChange={handleInputChange}
+                    placeholder="Dejar vacío para usar imagen por defecto"
+                  />
+                  <small>
+                    Si dejas vacío, se usará la imagen por defecto automáticamente
+                  </small>
+                  
+                  {/* Vista previa de la imagen */}
+                  <div className="vista-previa">
+                    <img 
+                      src={imagenPreview} 
+                      alt="Vista previa" 
+                      onError={(e) => {
+                        // Si falla la imagen, usar la por defecto
+                        e.target.src = imagenDefault;
+                      }}
+                    />
+                    <small>Vista previa</small>
+                  </div>
                 </div>
 
                 <div className="campo-form">
@@ -204,7 +289,13 @@ const ProductosAdmin = () => {
             productosFiltrados.map((producto) => (
               <div key={producto.id} className="tarjeta-producto">
                 <div className="imagen-producto">
-                  <img src={producto.img} alt={producto.nombre} />
+                  <img 
+                    src={producto.img} 
+                    alt={producto.nombre}
+                    onError={(e) => {
+                      e.target.src = imagenDefault;
+                    }}
+                  />
                 </div>
 
                 <div className="info-producto">
@@ -243,6 +334,15 @@ const ProductosAdmin = () => {
       </main>
     </div>
   );
+};
+
+// Función auxiliar para obtener categoría (agrégala si no existe)
+const getCategory = (product) => {
+  if (!product || !product.id) return 'otros';
+  const pref = String(product.id).slice(0, 2).toUpperCase();
+  if (pref === "FR") return "frutas";
+  if (pref === "VR") return "verduras";
+  return "otros";
 };
 
 export default ProductosAdmin;
