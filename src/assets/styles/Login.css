@@ -1,53 +1,42 @@
 .main-login {
-    /*Hace que el contenedor principal del login use flexbox*/
     display: flex;
-    /*Centra el contenido horizontalmente*/
     justify-content: center;
-    /*Centra el contenido verticalmente*/
     align-items: center;
-    /*Espacio alrededor del contenido*/
     min-height: calc(100vh - 80px);
-    /* Ajusta según el alto del header */
+    padding: 40px 20px;
+    /* Más espacio arriba y abajo */
 }
 
 .login-section {
-    /*Bordes redondeados*/
     border-radius: 16px;
-    /*Sombra alrededor del contenedor del login*/
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-
-    /*Usa flexbox para organizar los elementos dentro del contenedor del login*/
     display: flex;
-    /*Estira los elementos para que ocupen toda la altura del contenedor padre*/
     align-items: stretch;
-    /*Ancho mínimo y máximo del contenedor del login para diferentes tamaños de pantalla los establece*/
-    min-width: 940px;
-    max-width: 200px;
-    /*Margen superior para separar el contenedor del login del header*/
-    margin-top: 3%;
-    /*Evita que el contenido dentro del contenedor del login se desborde*/
+    width: 90%;
+    max-width: 900px;
+    /* Un poco más ancho para dos columnas */
+    margin: 0 auto;
+    /* Centrado sin márgenes verticales conflictivos */
     overflow: hidden;
+    background: white;
 }
 
 .login-container {
-    /*Hace que el contenedor del login crezca para llenar el espacio disponible*/
     flex: 1;
-    /*Relleno interno del contenedor del login para crear espacio alrededor del contenido*/
-    padding: 40px 62px;
-    /*Hace que el contenedor del login use todo el ancho disponible dentro de su contenedor padre*/
-    width: 100%;
-    /*Usa flexbox para organizar los elementos dentro del contenedor del login*/
+    padding: 50px 40px;
+    /* Más padding para mejor espaciado */
     display: flex;
-    /*Organiza los elementos en una columna*/
     flex-direction: column;
-    /*Espacio entre los elementos dentro del contenedor del login*/
-    gap: 20px;
-    /*Alinea los elementos horizontalmente al centro*/
+    gap: 25px;
     align-items: center;
+    justify-content: center;
+    /* Centra verticalmente el contenido */
 }
 
 .login-fondo {
     flex: 1;
+    display: block;
+    /* Muestra la imagen de fondo */
 }
 
 
