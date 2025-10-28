@@ -16,7 +16,7 @@ export const products = [
     precio: 1200,
     unidad: "x kilo",
     stock: "150 kilos",
-    img: "manzanas",
+    img: manzanas,
     desc: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule.",
   },
   {
