@@ -8,7 +8,7 @@ import pimenton from "../assets/img/pimenton.jpg";
 import limon from "../assets/img/limon.jpg";
 import cebolla from "../assets/img/cebolla.jpg";
 import miel from "../assets/img/miel.jpg";
-
+import manzanas from "../assets/img/manzanas.jpg";
 export const products = [
   {
     id: "FR001",
@@ -16,7 +16,7 @@ export const products = [
     precio: 1200,
     unidad: "x kilo",
     stock: "150 kilos",
-    img: "manzanas.jpg",
+    img: "manzanas",
     desc: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule.",
   },
   {
@@ -112,8 +112,8 @@ export const products = [
 ];
 
 export const getCategory = (product) => {
-  if (!product || !product.id) return 'otros';
-  
+  if (!product || !product.id) return "otros";
+
   const pref = String(product.id).slice(0, 2).toUpperCase();
   if (pref === "FR") return "frutas";
   if (pref === "VR") return "verduras";
@@ -124,8 +124,8 @@ export const getCategory = (product) => {
 // Función para obtener todas las categorías
 export const getCategories = () => {
   const products = getProducts();
-  const categorias = [...new Set(products.map(p => getCategory(p)))];
-  return ['todos', ...categorias];
+  const categorias = [...new Set(products.map((p) => getCategory(p)))];
+  return ["todos", ...categorias];
 };
 if (!localStorage.getItem("products")) {
   localStorage.setItem("products", JSON.stringify(products));
@@ -149,7 +149,7 @@ export const resetToDefault = () => {
 export const exportProducts = () => {
   const currentProducts = getProducts();
   const dataStr = JSON.stringify(currentProducts, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const dataBlob = new Blob([dataStr], { type: "application/json" });
   return URL.createObjectURL(dataBlob);
 };
 
@@ -159,7 +159,7 @@ export const importProducts = (jsonData) => {
     setProducts(importedProducts);
     return true;
   } catch (error) {
-    console.error('Error importing products:', error);
+    console.error("Error importing products:", error);
     return false;
   }
 };
