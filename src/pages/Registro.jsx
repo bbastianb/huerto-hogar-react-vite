@@ -4,6 +4,7 @@ import { getUsuarios, setUsuarios } from "../utils/Usuarios.js";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import { useEffect, useState } from "react";
+import "../utils/Registro.logic.js";
 
 export default function Registro() {
   const [nombre, setNombre] = useState("");
@@ -34,73 +35,41 @@ export default function Registro() {
 
   const valform = (e) => {
     e.preventDefault();
+
+    // Limpia mensajes previos
     setError("");
 
-    if (contrasena !== contrasenaConfirma) {
-      setError("Las contraseñas no coinciden");
-      return;
-    }
+    // Trae usuarios actuales de tu storage/util
+    const usuarios = Array.isArray(getUsuarios()) ? getUsuarios() : [];
 
-    if (contrasena.length < 8) {
-      setError("La contraseña debe tener menos de 8 caracteres");
-      return;
-    }
-
-    if (telefono.length < 9) {
-      setError("El teléfono debe tener menos de 9 caracteres");
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Por favor, ingresa un formato de email válido.");
-      return;
-    }
-
-    if (!/^[a-zA-Z]+$/.test(nombre)) {
-      setError("El nombre solo debe contener letras");
-      return;
-    }
-
-    if (!/^[a-zA-Z]+$/.test(apellido)) {
-      setError("El apellido solo debe contener letras");
-      return;
-    }
-
-    if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(direccion)) {
-      setError(
-        "La dirección debe contener tanto letras como números (ej: Calle 123)"
-      );
-      return;
-    }
-
-    if (!/^[a-zA-Z]+$/.test(comuna)) {
-      setError("La comuna solo debe contener letras");
-      return;
-    }
-
-    const usuarios = getUsuarios();
-    const nuevoId =
-      usuarios.length > 0 ? Math.max(...usuarios.map((u) => u.id)) + 1 : 1;
-
-    const nuevoUsuario = {
-      id: nuevoId,
+    // Arma el payload desde tus estados
+    const payload = {
       nombre,
       apellido,
       email,
       contrasena,
+      contrasenaConfirma,
       telefono,
       direccion,
       comuna,
-      tipo: "usuario",
     };
 
-    const emailExiste = usuarios.some((usuario) => usuario.email === email);
-    if (emailExiste) {
-      setError("Este email ya está registrado");
+    // Llama a la lógica pura
+    const res = window.RegistroLogic.registrarUsuario(payload, usuarios);
+
+    // Si hay errores, muestra el primero
+    if (!res.ok) {
+      const firstKey = Object.keys(res.errors || {})[0];
+      const msg =
+        (firstKey && res.errors[firstKey]) ||
+        "Revisa los campos del formulario";
+      setError(msg);
       return;
     }
-    setUsuarios([...usuarios, nuevoUsuario]);
-    navigate("/login");
+
+    // Éxito: guarda la nueva lista y navega
+    setUsuarios(res.lista);
+    navigate(res.redirectPath || "/login");
   };
 
   return (

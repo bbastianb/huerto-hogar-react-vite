@@ -1,10 +1,16 @@
+// src/components/BarraAdmin.jsx
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../assets/styles/BarraAdmin.css";
 import logo from "../assets/img/logo.png";
 
+import { useUser } from "../pages/UserContext.jsx";
+import { useCallback } from "react";
+
 export default function BarraAdmin() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { logout } = useUser();
+
   const menuItems = [
     {
       path: "/admin",
@@ -90,18 +96,17 @@ export default function BarraAdmin() {
     },
   ];
 
-  const isActive = (path, exact = false) => {
-    if (exact) {
-      return location.pathname === path;
-    }
-    return location.pathname.startsWith(path);
-  };
+  const isActive = (path, exact = false) =>
+    exact ? location.pathname === path : location.pathname.startsWith(path);
 
-  const handleLogout = (e) => {
-    e.preventDefault();
-    localStorage.removeItem("usuarioActual");
-    navigate("/login");
-  };
+  const handleLogout = useCallback(
+    (e) => {
+      e.preventDefault();
+      logout();
+      navigate("/login", { replace: true });
+    },
+    [logout, navigate]
+  );
 
   const LogoutIcon = () => (
     <svg
@@ -149,7 +154,7 @@ export default function BarraAdmin() {
       </nav>
 
       <div className="sidebar-footer">
-        <Link to="/admin" className="menu-link">
+        <Link to="/" className="menu-link">
           <span className="menu-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -169,19 +174,8 @@ export default function BarraAdmin() {
         </Link>
 
         <button
-          onClick={(e) => {
-            e.preventDefault();
-            console.log(
-              "Antes de eliminar:",
-              localStorage.getItem("usuarioActual")
-            );
-            localStorage.removeItem("usuarioActual");
-            console.log(
-              "Después de eliminar:",
-              localStorage.getItem("usuarioActual")
-            );
-            navigate("/login");
-          }}
+          type="button"
+          onClick={handleLogout}
           className="menu-link logout-link"
           style={{
             background: "none",
