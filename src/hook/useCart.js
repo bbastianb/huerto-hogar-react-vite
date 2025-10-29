@@ -1,64 +1,50 @@
 // src/hooks/useCart.js
 import { useState, useEffect } from 'react';
+import '../utils/UseCart.logic.js'; // <-- Importa la lógica antes de usarla
 
 export const useCart = () => {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  // Carga inicial del carrito desde localStorage usando lógica testeable
   useEffect(() => {
-    const savedCart = localStorage.getItem('carrito');
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
+    const loaded = window.UseCartLogic.loadSavedCart(localStorage);
+    setCart(loaded);
   }, []);
 
+  // Agregar al carrito delegando en la lógica pura (inmutable) + persistencia
   const addToCart = (product, quantity = 1) => {
-    setCart(prevCart => {
-      const existing = prevCart.find(item => item.title === product.nombre);
-      let newCart;
-      
-      if (existing) {
-        newCart = prevCart.map(item =>
-          item.title === product.nombre 
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        newCart = [...prevCart, {
-          quantity,
-          title: product.nombre,
-          price: product.precio,
-          id: product.id
-        }];
-      }
-      
-      localStorage.setItem('carrito', JSON.stringify(newCart));
+    setCart((prevCart) => {
+      const newCart = window.UseCartLogic.addItem(prevCart, product, quantity);
+      window.UseCartLogic.persistCart(newCart, localStorage);
       return newCart;
     });
   };
 
+  // Eliminar del carrito delegando en la lógica pura + persistencia
   const removeFromCart = (productTitle) => {
-    setCart(prevCart => {
-      const newCart = prevCart.filter(item => item.title !== productTitle);
-      localStorage.setItem('carrito', JSON.stringify(newCart));
+    setCart((prevCart) => {
+      const newCart = window.UseCartLogic.removeItem(prevCart, productTitle);
+      window.UseCartLogic.persistCart(newCart, localStorage);
       return newCart;
     });
   };
 
+  // Abrir/cerrar el carrito con helpers testeables
   const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
+    setIsCartOpen((prev) => window.UseCartLogic.toggleCartState(prev));
   };
 
   const closeCart = () => {
-    setIsCartOpen(false);
+    setIsCartOpen(window.UseCartLogic.closeCartState());
   };
 
-  return { 
-    cart, 
-    addToCart, 
-    removeFromCart, 
-    isCartOpen, 
-    toggleCart, 
-    closeCart 
+  return {
+    cart,
+    addToCart,
+    removeFromCart,
+    isCartOpen,
+    toggleCart,
+    closeCart,
   };
 };

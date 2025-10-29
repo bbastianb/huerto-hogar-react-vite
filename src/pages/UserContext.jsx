@@ -1,75 +1,71 @@
 // src/UserContext/UserContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { getUsuarioActual, setUsuarioActual, getUsuarios } from '../utils/Usuarios';
+import '../utils/UserContext.logic.js'; // <-- Importa la lógica antes de usarla
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    // Cargar usuario desde tu sistema actual
-    useEffect(() => {
-        const usuario = getUsuarioActual();
-        if (usuario) {
-            setUser(usuario);
-        }
-        setIsLoading(false);
-    }, []);
+  // Carga inicial del usuario usando la lógica externa (testeable)
+  useEffect(() => {
+    const usuario = window.UserContextLogic.loadInitialUser(getUsuarioActual);
+    if (usuario) setUser(usuario);
+    setIsLoading(false);
+  }, []);
 
-    const login = (userData) => {
-        setUser(userData);
-        setUsuarioActual(userData);
-    };
+  // Login delegando en lógica externa
+  const login = (userData) => {
+    const res = window.UserContextLogic.loginUser(userData, setUsuarioActual);
+    setUser(res.user);
+  };
 
-    const logout = () => {
-        setUser(null);
-        localStorage.removeItem('usuarioActual');
-    };
+  // Logout delegando en lógica externa
+  const logout = () => {
+    setUser(null);
+    window.UserContextLogic.logoutUser(localStorage);
+  };
 
-    const updateUser = (updatedData) => {
-        const newUser = { ...user, ...updatedData };
-        setUser(newUser);
-        setUsuarioActual(newUser);
-        
-        // Actualizar también en la lista de usuarios
-        const usuarios = getUsuarios();
-        const updatedUsuarios = usuarios.map(u => 
-            u.id === newUser.id ? newUser : u
-        );
-        localStorage.setItem('usuarios', JSON.stringify(updatedUsuarios));
-    };
-    // 🔄 Mantener el contexto sincronizado con localStorage
-useEffect(() => {
-    const syncUser = () => {
-      const u = getUsuarioActual();
+  // Update user delegando en lógica externa
+  const updateUser = (updatedData) => {
+    const newUser = window.UserContextLogic.buildUpdatedUser(user, updatedData);
+    setUser(newUser);
+    setUsuarioActual(newUser);
+
+    const usuarios = getUsuarios();
+    const updatedUsuarios = window.UserContextLogic.updateUserList(usuarios, newUser);
+    window.UserContextLogic.persistUsuarios(updatedUsuarios, localStorage);
+  };
+
+  // Sincronización entre pestañas y dentro del mismo tab usando helpers testeables
+  useEffect(() => {
+    const syncUser = (e) => {
+      // Si viene de 'storage', solo reaccionar a la clave correcta
+      if (e && e.key && e.key !== 'usuarioActual') return;
+      const u = window.UserContextLogic.getSyncUser(getUsuarioActual);
       setUser(u || null);
     };
-  
-    // Mismo tab (nuestro evento) y entre pestañas (evento nativo de storage)
-    window.addEventListener("usuarioActual:changed", syncUser);
-    const onStorage = (e) => { if (e.key === "usuarioActual") syncUser(); };
-    window.addEventListener("storage", onStorage);
-  
-    return () => {
-      window.removeEventListener("usuarioActual:changed", syncUser);
-      window.removeEventListener("storage", onStorage);
-    };
-  }, []);
-  
 
-    return (
-        <UserContext.Provider value={{
-            user,
-            login,
-            logout,
-            updateUser,
-            isLoading,
-            isAuthenticated: !!user
-        }}>
-            {children}
-        </UserContext.Provider>
-    );
+    const cleanup = window.UserContextLogic.addUserSyncListeners(syncUser, window);
+    return () => { cleanup(); };
+  }, []);
+
+  return (
+    <UserContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        updateUser,
+        isLoading,
+        isAuthenticated: !!user,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export const useUser = () => useContext(UserContext);
