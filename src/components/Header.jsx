@@ -1,21 +1,50 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
+
 import logo from "../assets/img/logo.png";
+
 import "../assets/styles/Header.css";
+
 import { useCart } from "../pages/CartContext.jsx";
+
 import { useUser } from "../pages/UserContext.jsx";
-import { FaShoppingCart } from "react-icons/fa";
-import { useState } from "react";
+
+import { useEffect, useState, useRef } from "react";
+
 export default function Header() {
   const { cartCount } = useCart();
+
   const { user, logout } = useUser(); // 👈 lee el usuario desde el contexto
+
   const navigate = useNavigate();
 
-  const [openMenu, setOpenMenu] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const handleLogout = () => {
     logout(); // limpia contexto y localStorage (ya lo hace tu UserContext)
+
     navigate("/"); // vuelve al inicio
   };
+
   const displayName =
     user?.nombre ||
     user?.name ||
@@ -35,36 +64,53 @@ export default function Header() {
               Inicio
             </NavLink>
           </li>
+
           <li>
             <NavLink to="/contacto">Contacto</NavLink>
           </li>
+
           <li>
             <NavLink to="/noticias">Noticias</NavLink>
           </li>
+
           <li>
             <NavLink to="/nosotros">Nosotros</NavLink>
           </li>
+
           <li>
             <NavLink to="/blog">Blog</NavLink>
           </li>
+
           <li>
             <NavLink to="/productos">Catalogo</NavLink>
           </li>
 
           {/* 👉 Zona de usuario */}
+
           {!user ? (
             // Si NO hay usuario: muestra Iniciar sesión
+
             <li>
               <NavLink to="/login">Iniciar Sesión</NavLink>
             </li>
           ) : (
-            <li className="user-menu">
-              <button type="button" className="user-menu__button">
+            <li className="user-menu" ref={menuRef}>
+              <button
+                type="button"
+                className="user-menu__button"
+                onClick={toggleMenu}
+              >
                 {displayName}
+
                 <span className="user-menu__chev">▾</span>
               </button>
-              <div className="user-menu__dropdown">
+
+              <div
+                className="user-menu__dropdown"
+                style={{ display: isMenuOpen ? "block" : "none" }}
+              >
                 <span className="user-menu__hello">Hola, {displayName}</span>
+
                 <button
                   type="button"
                   className="user-menu__logout"
@@ -77,6 +123,7 @@ export default function Header() {
           )}
 
           {/* Carrito */}
+
           <li>
             <Link
               to="/carrito"
