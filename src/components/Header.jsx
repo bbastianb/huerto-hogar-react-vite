@@ -1,55 +1,48 @@
+// src/components/Header.jsx
 import { Link, NavLink, useNavigate } from "react-router-dom";
-
 import logo from "../assets/img/logo.png";
-
 import "../assets/styles/Header.css";
-
 import { useCart } from "../pages/CartContext.jsx";
-
 import { useUser } from "../pages/UserContext.jsx";
-
 import { useEffect, useState, useRef } from "react";
+
+// 🔐 Importa la lógica pura ANTES de usarla (necesario para los tests)
+import "../utils/Header.logic.js";
 
 export default function Header() {
   const { cartCount } = useCart();
-
   const { user, logout } = useUser(); // 👈 lee el usuario desde el contexto
-
   const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const menuRef = useRef(null);
 
+  // Cerrar menú al hacer click fuera, delegando la decisión en la lógica externa
   useEffect(() => {
     function handleClickOutside(event) {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
+      if (window.HeaderLogic.shouldCloseOnDocumentMouseDown(event.target, menuRef.current)) {
         setIsMenuOpen(false);
       }
     }
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+  // Toggle del menú usando la lógica externa (testeable)
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+    setIsMenuOpen((prev) => window.HeaderLogic.toggleMenuState(prev));
   };
 
+  // Logout + navegación usando la lógica externa (testeable)
   const handleLogout = () => {
-    logout(); // limpia contexto y localStorage (ya lo hace tu UserContext)
-
-    navigate("/"); // vuelve al inicio
+    window.HeaderLogic.handleLogout(logout, navigate);
   };
 
-  const displayName =
-    user?.nombre ||
-    user?.name ||
-    user?.username ||
-    (user?.email ? user.email.split("@")[0] : "Mi cuenta");
+  // Nombre a mostrar calculado por la lógica externa (prioridad: nombre > name > username > email local-part > "Mi cuenta")
+  const displayName = window.HeaderLogic.computeDisplayName(user);
 
   return (
     <header className="header-login">
@@ -86,10 +79,8 @@ export default function Header() {
           </li>
 
           {/* 👉 Zona de usuario */}
-
           {!user ? (
             // Si NO hay usuario: muestra Iniciar sesión
-
             <li>
               <NavLink to="/login">Iniciar Sesión</NavLink>
             </li>
@@ -101,7 +92,6 @@ export default function Header() {
                 onClick={toggleMenu}
               >
                 {displayName}
-
                 <span className="user-menu__chev">▾</span>
               </button>
 
@@ -123,7 +113,6 @@ export default function Header() {
           )}
 
           {/* Carrito */}
-
           <li>
             <Link
               to="/carrito"
