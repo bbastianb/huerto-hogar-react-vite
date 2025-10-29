@@ -5,8 +5,8 @@ import { useCart } from '../pages/CartContext';
 import { getProducts } from '../utils/products'; // ✅ Importar la función
 import RelatedProducts from '../components/RelatedProducts';
 import '../assets/styles/style-detalle.css';
-import { FaStar } from 'react-icons/fa';
-import { FaStarHalfAlt } from 'react-icons/fa';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
+import '../utils/DetalleProd.logic.js'; // <-- Importa la lógica antes de usarla
 
 const DetalleProd = () => {
     const { id } = useParams();
@@ -16,9 +16,8 @@ const DetalleProd = () => {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     
-    // ✅ Cargar productos desde localStorage
     useEffect(() => {
-        const productos = getProducts(); // Esto obtiene los productos actualizados
+        const productos = getProducts();
         const productoEncontrado = productos.find(p => p.id === id);
         setProduct(productoEncontrado);
         setLoading(false);
@@ -45,17 +44,6 @@ const DetalleProd = () => {
             </div>
         );
     }
-
-    const handleAddToCart = () => {
-        for (let i = 0; i < quantity; i++) {
-            agregarAlCarrito(product);
-        }
-        setAddedToCart(true);
-        
-        setTimeout(() => {
-            setAddedToCart(false);
-        }, 1200);
-    };
 
     return (
         <div className="content-all">
@@ -85,12 +73,12 @@ const DetalleProd = () => {
                         type="number" 
                         value={quantity}
                         min="1"
-                        onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                        onChange={(e) => window.DetalleProdLogic.handleQuantityChange(e, setQuantity)}
                     />
                     
                     <button 
                         className={`btn-add-cart2 ${addedToCart ? 'added' : ''}`} 
-                        onClick={handleAddToCart}
+                        onClick={() => window.DetalleProdLogic.handleAddToCart(product, quantity, agregarAlCarrito, setAddedToCart)}
                         disabled={addedToCart}
                     >
                         {addedToCart ? '¡Añadido!' : 'Añadir al carrito'}
