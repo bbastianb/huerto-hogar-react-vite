@@ -1,9 +1,12 @@
-// src/pages/Checkout.jsx (actualizado con tus campos)
+// src/pages/Checkout.jsx
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
 import { useUser } from '../pages/UserContext';
 import '../assets/styles/style-Checkout.css';
+
+// 🧠 Importar la lógica externa
+import '../utils/Checkout.logic.js'; // <-- Importa la lógica antes de usarla
 
 const Checkout = () => {
     const navigate = useNavigate();
@@ -11,7 +14,6 @@ const Checkout = () => {
     const { user, isAuthenticated, updateUser } = useUser();
 
     const [formData, setFormData] = useState({
-        // Usando tus campos exactos
         nombre: user?.nombre || '',
         apellido: user?.apellido || '',
         email: user?.email || '',
@@ -25,66 +27,33 @@ const Checkout = () => {
     const [errors, setErrors] = useState({});
     const [saveAddress, setSaveAddress] = useState(isAuthenticated);
 
-    // Calcular totales
+    // 🧮 Calcular totales
     const subtotal = carrito.reduce((acc, producto) => 
         acc + producto.precio * producto.cantidad, 0
     );
-    
     const costoEnvio = formData.metodoEnvio === 'express' ? 20 : 10;
     const total = subtotal + costoEnvio;
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-        
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
-        }
-    };
+    // 🧠 Usar funciones desde la lógica externa
+    const handleInputChange = (e) =>
+        window.CheckoutLogic.handleInputChange(e, setFormData, errors, setErrors);
 
-    const validateForm = () => {
-        const newErrors = {};
-        
-        if (!formData.nombre.trim()) newErrors.nombre = 'El nombre es requerido';
-        if (!formData.apellido.trim()) newErrors.apellido = 'El apellido es requerido';
-        if (!formData.email.trim()) newErrors.email = 'El email es requerido';
-        if (!formData.fono) newErrors.fono = 'El teléfono es requerido';
-        if (!formData.direccion.trim()) newErrors.direccion = 'La dirección es requerida';
-        if (!formData.comuna.trim()) newErrors.comuna = 'La comuna es requerida';
+    const validateForm = () =>
+        window.CheckoutLogic.validateForm(formData, setErrors);
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+    const handleSubmit = (e) =>
+        window.CheckoutLogic.handleSubmit(
+            e,
+            formData,
+            isAuthenticated,
+            saveAddress,
+            updateUser,
+            navigate,
+            validateForm,
+            setErrors
+        );
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        if (validateForm()) {
-            // Si el usuario está autenticado y quiere guardar la dirección, actualizar
-            if (isAuthenticated && saveAddress) {
-                updateUser({
-                    nombre: formData.nombre,
-                    apellido: formData.apellido,
-                    fono: formData.fono,
-                    direccion: formData.direccion,
-                    comuna: formData.comuna
-                });
-            }
-
-            // Guardar datos de envío temporalmente
-            localStorage.setItem('shippingData', JSON.stringify(formData));
-            
-            // Redirigir al resumen del pedido
-            navigate('/resumen-pedido');
-        }
-    };
-
+    // 🛒 Si el carrito está vacío
     if (carrito.length === 0) {
         return (
             <div className="checkout-container">
@@ -99,6 +68,7 @@ const Checkout = () => {
         );
     }
 
+    // 🧾 Render principal
     return (
         <div className="checkout-container">
             <div className="checkout-content">
@@ -241,7 +211,7 @@ const Checkout = () => {
                         </form>
                     </div>
 
-                    {/* Resumen del pedido (igual que antes) */}
+                    {/* 🧾 Resumen del pedido */}
                     <div className="checkout-summary-section">
                         <div className="order-summary-card">
                             <h3>Resumen del Pedido</h3>

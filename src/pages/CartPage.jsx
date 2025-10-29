@@ -1,12 +1,16 @@
 // src/pages/CartPage.jsx
 import React from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
-import '../assets/styles/style-CarPage.css'
+import '../assets/styles/style-CarPage.css';
 import { FaTrash } from 'react-icons/fa';
+
+// 💡 Importa la lógica pura antes de usarla
+import '../utils/CartPage.logic.js'; // <-- Importante para acceder a window.CartPageLogic
+
 const CartPage = () => {
     const { carrito, actualizarCantidad, eliminarProducto } = useCart(); 
-    const navigate = useNavigate(); // ← Agregar esto
+    const navigate = useNavigate();
 
     const costoDeEnvio = 10;
     const subTotal = carrito.reduce((acc, producto) => 
@@ -14,32 +18,18 @@ const CartPage = () => {
     );
     const total = subTotal + costoDeEnvio;
 
-    const handleAumentarCantidad = (productoId) => {
-        actualizarCantidad(productoId, 1);
-    };
+    // 🧠 Funciones actualizadas para usar la lógica externa
+    const handleAumentarCantidad = (productoId) => 
+        window.CartPageLogic.handleAumentarCantidad(actualizarCantidad, productoId);
 
-    const handleDisminuirCantidad = (productoId) => {
-        const producto = carrito.find((item) => item.id === productoId);
-        if (producto.cantidad > 1) {
-            actualizarCantidad(productoId, -1);
-        } else {
-            eliminarProducto(productoId);
-        }
-    };
+    const handleDisminuirCantidad = (productoId) => 
+        window.CartPageLogic.handleDisminuirCantidad(carrito, actualizarCantidad, eliminarProducto, productoId);
 
-    const handleEliminarProducto = (productoId) => {
-        if (window.confirm('¿Estás seguro de que quieres eliminar este producto del carrito?')) {
-            eliminarProducto(productoId);
-        }
-    };
+    const handleEliminarProducto = (productoId) => 
+        window.CartPageLogic.handleEliminarProducto(eliminarProducto, productoId, window.confirm);
 
-    const handleCheckout = () => {
-        if (carrito.length === 0) {
-            alert('Tu carrito está vacío. Agrega productos antes de proceder al pago.');
-            return;
-        }
-        navigate('/checkout'); // ← Esta es la función importante
-    };
+    const handleCheckout = () => 
+        window.CartPageLogic.handleCheckout(carrito, navigate, window.alert);
 
     return (
         <div className="cart-page-container">
@@ -145,10 +135,9 @@ const CartPage = () => {
                                     <span>${total.toFixed(2)}</span>
                                 </div>
 
-                                {/* BOTÓN CORREGIDO */}
                                 <button 
                                     className="checkout-btn"
-                                    onClick={handleCheckout} // ← Usar la función handleCheckout
+                                    onClick={handleCheckout}
                                 >
                                     PROCEDER AL PAGO
                                 </button>
