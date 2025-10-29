@@ -3,6 +3,9 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import fondo2 from "../assets/img/fondo2.png";
 import { getUsuarios, setUsuarioActual } from "../utils/Usuarios.js";
+import "../utils/Login.logic.js";
+
+const { validarFormatoEmail, autenticarUsuario } = window.LoginLogic;
 
 export const encontrarUsuarioValido = (email, usuarios) => {
   return usuarios.find((u) => u.email.toLowerCase() === email.toLowerCase());
@@ -18,6 +21,7 @@ export default function Login() {
     e.preventDefault();
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     if (!emailRegex.test(email)) {
       setError("Por favor, ingresa un formato de email válido.");
       return;
