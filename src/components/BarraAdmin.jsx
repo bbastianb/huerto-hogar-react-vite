@@ -154,7 +154,7 @@ export default function BarraAdmin() {
       </nav>
 
       <div className="sidebar-footer">
-        <Link to="/" className="menu-link">
+        <Link to="/admin" className="menu-link">
           <span className="menu-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import BarraAdmin from "../../components/BarraAdmin";
 import "../../assets/styles/ConfiAdmin.css";
-import {
-  getUsuarios,
-  setUsuarios,
-  getUsuarioActual,
-  setUsuarioActual,
-} from "../../utils/Usuarios";
+import { getUsuarios, actualizarUsuario } from "../../services/UsuarioService";
 
 const ConfiguracionAdmin = () => {
   const [datosFormulario, setDatosFormulario] = useState({
@@ -18,6 +13,8 @@ const ConfiguracionAdmin = () => {
     direccion: "",
     contraseña: "",
     confirmarContraseña: "",
+    region: "",
+    rol: "admin",
   });
   const [mensaje, setMensaje] = useState("");
   const [idAdmin, setIdAdmin] = useState(null);
@@ -26,40 +23,43 @@ const ConfiguracionAdmin = () => {
     cargarDatosAdministrador();
   }, []);
 
-  const cargarDatosAdministrador = () => {
-    const usuarioActual = getUsuarioActual();
+  const cargarDatosAdministrador = async () => {
+    try {
+      const usuarioStorage = JSON.parse(localStorage.getItem("usuarioActual"));
 
-    if (usuarioActual && usuarioActual.tipo === "admin") {
-      setIdAdmin(usuarioActual.id);
+      const usuarios = await getUsuarios();
+
+      let admin = null;
+
+      if (usuarioStorage) {
+        admin =
+          usuarios.find((u) => u.id === usuarioStorage.id) ||
+          usuarios.find(
+            (u) => u.email.toLowerCase() === usuarioStorage.email.toLowerCase()
+          );
+      }
+
+      if (!admin) {
+        setMensaje("No se encontró el administrador.");
+        return;
+      }
+
+      setIdAdmin(admin.id);
       setDatosFormulario({
-        nombre: usuarioActual.nombre || "",
-        apellido: usuarioActual.apellido || "",
-        email: usuarioActual.email || "",
-        telefono: usuarioActual.fono || "",
-        comuna: usuarioActual.comuna || "",
-        direccion: usuarioActual.direccion || "",
+        nombre: admin.nombre || "",
+        apellido: admin.apellido || "",
+        email: admin.email || "",
+        telefono: admin.telefono || "",
+        comuna: admin.comuna || "",
+        direccion: admin.direccion || "",
         contraseña: "",
         confirmarContraseña: "",
+        region: admin.region || "",
+        rol: admin.rol || "admin",
       });
-    } else {
-      const usuarios = getUsuarios();
-      const administrador = usuarios.find(
-        (usuario) => usuario.tipo === "admin"
-      );
-
-      if (administrador) {
-        setIdAdmin(administrador.id);
-        setDatosFormulario({
-          nombre: administrador.nombre || "",
-          apellido: administrador.apellido || "",
-          email: administrador.email || "",
-          telefono: administrador.fono || "",
-          comuna: administrador.comuna || "",
-          direccion: administrador.direccion || "",
-          contraseña: "",
-          confirmarContraseña: "",
-        });
-      }
+    } catch (err) {
+      console.error("Error al cargar datos de administrador:", err);
+      setMensaje("Error al cargar datos de administrador");
     }
   };
 
@@ -71,7 +71,7 @@ const ConfiguracionAdmin = () => {
     }));
   };
 
-  const manejarEnvio = (evento) => {
+  const manejarEnvio = async (evento) => {
     evento.preventDefault();
     setMensaje("");
 
@@ -83,60 +83,67 @@ const ConfiguracionAdmin = () => {
       return;
     }
 
-    if (datosFormulario.contraseña && datosFormulario.contraseña.length < 6) {
-      setMensaje("La contraseña debe tener al menos 6 caracteres");
+    if (datosFormulario.contraseña && datosFormulario.contraseña.length < 8) {
+      setMensaje("La contraseña debe tener al menos 8 caracteres");
       return;
     }
 
-    const usuarioActual = getUsuarioActual();
-    if (!usuarioActual) {
-      setMensaje("Error: No hay usuario en sesión");
+    if (!idAdmin) {
+      setMensaje("No se pudo identificar al administrador.");
       return;
     }
 
-    const usuarios = getUsuarios();
-    const usuariosActualizados = usuarios.map((usuario) => {
-      if (usuario.id === usuarioActual.id) {
-        const usuarioActualizado = {
-          ...usuario,
-          nombre: datosFormulario.nombre,
-          apellido: datosFormulario.apellido,
-          email: datosFormulario.email,
-          fono: datosFormulario.telefono,
-          comuna: datosFormulario.comuna,
-          direccion: datosFormulario.direccion,
-        };
+    const payload = {
+      nombre: datosFormulario.nombre,
+      apellido: datosFormulario.apellido,
+      email: datosFormulario.email,
+      telefono: datosFormulario.telefono,
+      comuna: datosFormulario.comuna,
+      direccion: datosFormulario.direccion,
+      region: datosFormulario.region,
+      rol: datosFormulario.rol,
+    };
 
-        if (datosFormulario.contraseña) {
-          usuarioActualizado.contrasena = datosFormulario.contraseña;
-        }
+    if (datosFormulario.contraseña) {
+      payload.contrasenna = datosFormulario.contraseña;
+    }
 
-        return usuarioActualizado;
+    try {
+      const adminActualizado = await actualizarUsuario(idAdmin, payload);
+      const usuarioActualStorage = {
+        id: adminActualizado.id,
+        nombre: adminActualizado.nombre,
+        apellido: adminActualizado.apellido,
+        email: adminActualizado.email,
+        rol: adminActualizado.rol,
+      };
+
+      localStorage.setItem(
+        "usuarioActual",
+        JSON.stringify(usuarioActualStorage)
+      );
+
+      setMensaje("Perfil actualizado correctamente");
+
+      setDatosFormulario((previo) => ({
+        ...previo,
+        contraseña: "",
+        confirmarContraseña: "",
+      }));
+
+      cargarDatosAdministrador();
+
+      setTimeout(() => {
+        setMensaje("");
+      }, 3000);
+    } catch (err) {
+      console.error("Error al actualizar el perfil:", err);
+      let msg = "Error al actualizar el perfil.";
+      if (err.response && err.response.data) {
+        msg = err.response.data.message || err.response.data;
       }
-      return usuario;
-    });
-
-    setUsuarios(usuariosActualizados);
-
-    const usuarioActualizadoSesion = usuariosActualizados.find(
-      (usuario) => usuario.id === usuarioActual.id
-    );
-    if (usuarioActualizadoSesion) {
-      setUsuarioActual(usuarioActualizadoSesion);
+      setMensaje("msg");
     }
-
-    setMensaje("Perfil actualizado correctamente");
-
-    setDatosFormulario((previo) => ({
-      ...previo,
-      contraseña: "",
-      confirmarContraseña: "",
-    }));
-    cargarDatosAdministrador();
-
-    setTimeout(() => {
-      setMensaje("");
-    }, 3000);
   };
 
   const manejarCancelar = () => {

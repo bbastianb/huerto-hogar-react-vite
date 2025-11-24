@@ -2,14 +2,7 @@ import "../assets/styles/Login.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import fondo2 from "../assets/img/fondo2.png";
-import { getUsuarios, setUsuarioActual } from "../utils/Usuarios.js";
-import "../utils/Login.logic.js";
-
-const { validarFormatoEmail, autenticarUsuario } = window.LoginLogic;
-
-export const encontrarUsuarioValido = (email, usuarios) => {
-  return usuarios.find((u) => u.email.toLowerCase() === email.toLowerCase());
-};
+import { loginUsuario } from "../services/UsuarioService";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -17,8 +10,9 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -26,28 +20,40 @@ export default function Login() {
       setError("Por favor, ingresa un formato de email válido.");
       return;
     }
-    const usuarios = getUsuarios();
-    const usuariovalido = usuarios.find(
-      (u) => u.email.toLowerCase() === email.toLowerCase()
-    );
 
-    if (usuariovalido && usuariovalido.contrasena === contrasena) {
-      setError("");
+    if (!contrasena.trim()) {
+      setError("La contraseña es obligatoria.");
+      return;
+    }
+
+    try {
+      const usuarioValido = await loginUsuario(email, contrasena);
+
       const usuarioParaGuardar = {
-        id: usuariovalido.id,
-        nombre: usuariovalido.nombre,
-        apellido: usuariovalido.apellido,
-        email: usuariovalido.email,
-        tipo: usuariovalido.tipo,
+        id: usuarioValido.id,
+        nombre: usuarioValido.nombre,
+        apellido: usuarioValido.apellido,
+        email: usuarioValido.email,
+        rol: usuarioValido.rol,
       };
-      if (usuariovalido.tipo === "admin") {
+
+      // Guardar en localStorage el usuario actual
+      localStorage.setItem("usuarioActual", JSON.stringify(usuarioParaGuardar));
+
+      // Redirigir según el rol del usuario
+      if (usuarioValido.rol && usuarioValido.rol.toLowerCase() === "admin") {
         navigate("/admin");
       } else {
         navigate("/");
       }
-      setUsuarioActual(usuarioParaGuardar);
-    } else {
-      setError("Email o contraseña incorrectos");
+    } catch (err) {
+      console.error("Error al intentar iniciar sesión:", err);
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data ||
+        err.message ||
+        "Error al conectar con el servidor. Intenta nuevamente.";
+      setError(msg);
     }
   };
 

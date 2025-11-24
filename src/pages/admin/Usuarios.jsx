@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import BarraAdmin from "../../components/BarraAdmin.jsx";
 import "../../assets/styles/UsuariosAdmin.css";
-import { getUsuarios, setUsuarios } from "../../utils/Usuarios.js";
+import { getUsuarios, eliminarUsuario } from "../../services/UsuarioService.js";
 
 export default function UsuariosAdmin() {
   const [usuarios, setUsuariosState] = useState([]);
   const [filtro, setFiltro] = useState("");
 
   useEffect(() => {
-    const usuariosData = getUsuarios();
-    setUsuariosState(usuariosData);
+    const cargarUsuarios = async () => {
+      const usuariosData = await getUsuarios();
+      setUsuariosState(usuariosData);
+    };
+    cargarUsuarios();
   }, []);
 
   const clientesFiltrados = usuarios.filter((usuario) => {
@@ -23,13 +26,18 @@ export default function UsuariosAdmin() {
     return coincideBusqueda;
   });
 
-  const eliminarCliente = (id) => {
+  const eliminarCliente = async (id) => {
     if (window.confirm("¿Estás seguro de que quieres eliminar este cliente?")) {
-      const usuariosActualizados = usuarios.filter(
-        (usuario) => usuario.id !== id
-      );
-      setUsuariosState(usuariosActualizados);
-      setUsuarios(usuariosActualizados);
+      try {
+        await eliminarUsuario(id);
+        const usuariosActualizados = usuarios.filter(
+          (usuario) => usuario.id !== id
+        );
+        setUsuariosState(usuariosActualizados);
+      } catch (error) {
+        console.error("Error al eliminar cliente:", error);
+        alert("No se pudo eliminar el cliente. Intenta nuevamente.");
+      }
     }
   };
 
