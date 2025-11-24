@@ -1,10 +1,28 @@
-import { Link } from "react-router-dom";
 import "../assets/styles/Registro.css";
-import { getUsuarios, setUsuarios } from "../utils/Usuarios.js";
+//import { getUsuarios, setUsuarios } from "../utils/Usuarios.js";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import { useEffect, useState } from "react";
-import "../utils/Registro.logic.js";
+import { guardarUsuario } from "../services/UsuarioService"; //  la función guardarUsuario de UsuarioService
+
+const REGION_OPTIONS = [
+  { value: "ARICA_Y_PARINACOTA", label: "Arica y Parinacota" },
+  { value: "TARAPACA", label: "Tarapacá" },
+  { value: "ANTOFAGASTA", label: "Antofagasta" },
+  { value: "ATACAMA", label: "Atacama" },
+  { value: "COQUIMBO", label: "Coquimbo" },
+  { value: "VALPARAISO", label: "Valparaíso" },
+  { value: "METROPOLITANA", label: "Metropolitana de Santiago" },
+  { value: "O_HIGGINS", label: "Libertador Gral. Bernardo O'Higgins" },
+  { value: "MAULE", label: "Maule" },
+  { value: "NUBLE", label: "Ñuble" },
+  { value: "BIOBIO", label: "Biobío" },
+  { value: "ARAUCANIA", label: "La Araucanía" },
+  { value: "LOS_RIOS", label: "Los Ríos" },
+  { value: "LOS_LAGOS", label: "Los Lagos" },
+  { value: "AYSEN", label: "Aysén" },
+  { value: "MAGALLANES", label: "Magallanes y Antártica Chilena" },
+];
 
 export default function Registro() {
   const [nombre, setNombre] = useState("");
@@ -15,6 +33,7 @@ export default function Registro() {
   const [telefono, setTelefono] = useState("");
   const [direccion, setDireccion] = useState("");
   const [comuna, setComuna] = useState("");
+  const [region, setRegion] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -31,45 +50,54 @@ export default function Registro() {
     telefono,
     direccion,
     comuna,
+    region,
   ]);
 
-  const valform = (e) => {
+  const valform = async (e) => {
     e.preventDefault();
 
     // Limpia mensajes previos
     setError("");
 
-    // Trae usuarios actuales de tu storage/util
-    const usuarios = Array.isArray(getUsuarios()) ? getUsuarios() : [];
-
-    // Arma el payload desde tus estados
-    const payload = {
-      nombre,
-      apellido,
-      email,
-      contrasena,
-      contrasenaConfirma,
-      telefono,
-      direccion,
-      comuna,
-    };
-
-    // Llama a la lógica pura
-    const res = window.RegistroLogic.registrarUsuario(payload, usuarios);
-
-    // Si hay errores, muestra el primero
-    if (!res.ok) {
-      const firstKey = Object.keys(res.errors || {})[0];
-      const msg =
-        (firstKey && res.errors[firstKey]) ||
-        "Revisa los campos del formulario";
-      setError(msg);
+    if (contrasena !== contrasenaConfirma) {
+      setError("Las contraseñas no coinciden.");
       return;
     }
 
-    // Éxito: guarda la nueva lista y navega
-    setUsuarios(res.lista);
-    navigate(res.redirectPath || "/login");
+    if (contrasena.length < 8) {
+      setError("La contraseña debe tener al menos 8 caracteres.");
+      return;
+    }
+
+    const nuevoUsuario = {
+      nombre,
+      apellido,
+      email,
+      contrasenna: contrasena,
+      telefono,
+      direccion,
+      comuna,
+      region,
+    };
+
+    try {
+      await guardarUsuario(nuevoUsuario);
+      navigate("/login");
+    } catch (err) {
+      console.error("Error al registrar usuario:", err);
+      let mensaje = "";
+
+      if (err.response && err.response.data) {
+        const data = err.response.data;
+
+        if (typeof data === "string") {
+          mensaje = data;
+        } else if (data.message) {
+          mensaje = data.message;
+        }
+        setError(mensaje);
+      }
+    }
   };
 
   return (
@@ -165,6 +193,23 @@ export default function Registro() {
               value={comuna}
               onChange={(e) => setComuna(e.target.value)}
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="region">Región</label>
+            <select
+              id="region"
+              className="form-input"
+              required
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+            >
+              <option value="">Selecciona una región</option>
+              {REGION_OPTIONS.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.label}
+                </option>
+              ))}
+            </select>
           </div>
           <button type="submit" className="registro-btn">
             Registrarse

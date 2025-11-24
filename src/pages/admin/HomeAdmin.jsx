@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { getUsuarios } from "../../utils/Usuarios.js";
+import { getUsuarios } from "../../services/UsuarioService.js";
 import { getProducts } from "../../utils/products.js";
 import TarjetaEstadistica from "../../components/TarjetaEstadistica.jsx";
 import BarraAdmin from "../../components/BarraAdmin.jsx";
 import "../../assets/styles/HomeAdmin.css";
 import { Link } from "react-router-dom";
-import { encontrarUsuarioValido } from "../../pages/Login.jsx";
 
 export default function HomeAdmin() {
   const [estadisticas, setEstadisticas] = useState({
@@ -53,26 +52,31 @@ export default function HomeAdmin() {
   );
 
   useEffect(() => {
-    const products = getProducts();
-    const totalProductos = products.length;
-    const usuarios = getUsuarios();
-    const totalUsuarios = usuarios.length;
-    const usuariosRecientes = usuarios.slice(-5).reverse();
+    const cargarDatos = async () => {
+      try {
+        // Los productos siguen desde los js Falta completar
+        const products = getProducts();
+        const totalProductos = products.length;
 
-    const usuarioStorage = JSON.parse(localStorage.getItem("usuarioActual"));
-    if (usuarioStorage) {
-      const usuarioEncontrado = encontrarUsuarioValido(
-        usuarioStorage.email,
-        usuarios
-      );
-      setUsuarioActual(usuarioEncontrado);
-    }
+        const usuarios = await getUsuarios();
+        const totalUsuarios = usuarios.length;
+        const usuariosRecientes = usuarios.slice(-5).reverse();
 
-    setEstadisticas({
-      totalUsuarios,
-      usuariosRecientes,
-      totalProductos,
-    });
+        const usuarioStorage = JSON.parse(
+          localStorage.getItem("usuarioActual")
+        );
+        setUsuarioActual(usuarioStorage || null);
+
+        setEstadisticas({
+          totalUsuarios,
+          usuariosRecientes,
+          totalProductos,
+        });
+      } catch (error) {
+        console.error("Error al cargar datos de estadísticas:", error);
+      }
+    };
+    cargarDatos();
   }, []);
 
   return (
