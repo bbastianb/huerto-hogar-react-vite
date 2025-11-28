@@ -110,6 +110,20 @@ export const products = [
     desc: "Pura y local, rica en antioxidantes.",
   },
 ];
+const imageMapById = {
+  FR001: manzanas,
+  FR003: naranja,
+  FR002: platanos,
+  FR004: frutillas,
+  FR005: kiwi,
+  VR001: zanahoria,
+  VR002: espinaca,
+  VR003: pimenton,
+  VR004: limon,
+  VR005: cebolla,
+  PO001: miel,
+};
+
 
 export const getCategory = (product) => {
   if (!product || !product.id) return "otros";
@@ -162,4 +176,17 @@ export const importProducts = (jsonData) => {
     console.error("Error importing products:", error);
     return false;
   }
+};
+export const getImageForProduct = (productOrId) => {
+  if (!productOrId) return null;
+
+  const id =
+    typeof productOrId === "string"
+      ? productOrId
+      : productOrId.id;
+
+  if (!id) return null;
+
+  const cleanId = id.toString().trim().toUpperCase();
+  return imageMapById[cleanId] || null;
 };

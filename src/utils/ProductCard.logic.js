@@ -75,6 +75,6 @@
     if (!product || product.id == null) return null;
     var id = String(product.id).trim();
     if (!id) return null;
-    return "/productos/" + id;
+    return "/detalle/" + id;
   };
 })(window);

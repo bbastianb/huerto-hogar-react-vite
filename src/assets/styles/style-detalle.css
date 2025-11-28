@@ -89,6 +89,7 @@
 #prodetails .single-pro-details span {
   line-height: 25px;
   color: #555;
+  font-size: 20px;
 }
 
 /* Related Products */
@@ -368,6 +369,8 @@
 }
 
 .related-item {
+  font-size: 1.1rem;
+  color: #050505;
   background: white;
   border-radius: 15px;
   padding: 1rem;
@@ -378,7 +381,12 @@
   display: block;
 }
 
+.related-item h4:hover{
+  color: #2E8B57;
+
+}
 .related-item:hover {
+  
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   text-decoration: none;
@@ -391,7 +399,6 @@
   border-radius: 10px;
   margin-bottom: 1rem;
 }
-
 .related-item h3 {
   font-size: 1.1rem;
   color: #333;

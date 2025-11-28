@@ -1,9 +1,9 @@
-// src/pages/CartPage.jsx
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../pages/CartContext";
 import "../assets/styles/style-CarPage.css";
 import { FaTrash } from "react-icons/fa";
+import { getImageForProduct } from "../utils/products";
 
 import "../utils/CartPage.logic.js";
 
@@ -18,6 +18,7 @@ const CartPage = () => {
   );
   const total = subTotal + costoDeEnvio;
 
+  // Funciones que usan la lógica externa
   const handleAumentarCantidad = (productoId) =>
     window.CartPageLogic.handleAumentarCantidad(actualizarCantidad, productoId);
 
@@ -69,15 +70,18 @@ const CartPage = () => {
               <div className="cart-items-list">
                 {carrito.map((producto) => {
                   const totalPrecio = producto.precio * producto.cantidad;
+
+                  const imageSrc =
+                    getImageForProduct(producto) ||
+                    producto.img ||
+                    producto.imagen ||
+                    "https://via.placeholder.com/150?text=Sin+imagen";
+
                   return (
                     <div className="cart-item-card" key={producto.id}>
                       <div className="product-info">
                         <img
-                          src={
-                            producto.img ||
-                            producto.imagen ||
-                            "https://via.placeholder.com/150"
-                          }
+                          src={imageSrc}
                           alt={producto.nombre}
                           className="product-image"
                         />

@@ -1,12 +1,12 @@
 // src/pages/ListadoProd.jsx
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../hook/useCart';
-import { getProducts, getCategory } from '../utils/products';
+import { getCategory } from '../utils/products';
+import { getProductos } from '../services/ProductoService.js';
 import { ProductCard } from '../components/ProductCard';
 import FilterBar from '../components/FilterBar';
 import '../assets/styles/style-listado.css';
 
-// 🔐 Importa la lógica pura ANTES de usarla (necesario para los tests)
 import '../utils/ListadoProd.logic.js';
 
 const ListadoProd = () => {
@@ -16,11 +16,18 @@ const ListadoProd = () => {
   const [activeCategory, setActiveCategory] = useState('todos');
 
   useEffect(() => {
-    // Cargar productos de forma segura usando la lógica externa
-    const loadedProducts = window.ListadoProdLogic.loadProducts(getProducts);
-    setProducts(loadedProducts);
-  }, []);
+    const cargarProductos = async () => {
+      try {
+        const data = await getProductos();
+        console.log("Productos desde API:", data);
+        setProducts(data);
+      } catch (error) {
+        console.error("Error cargando productos desde API:", error);
+      }
+    };
 
+    cargarProductos();
+  }, []);
   // Filtrado delegando en la lógica externa (testeable con Jasmine)
   const filteredProducts = window.ListadoProdLogic.filterByCategory(
     products,

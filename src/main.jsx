@@ -49,7 +49,7 @@ const router = createBrowserRouter([
       { path: "admin/usuarios", element: <Usuarios /> },
       { path: "admin/productos", element: <ProductosAdmin /> },
       { path: "admin/confiAdmin", element: <ConfiAdmin /> },
-      { path: "productos/:id", element: <DetalleProd /> },
+      { path: "detalle/:id", element: <DetalleProd /> },
       { path: "carrito", element: <CartPage /> },
       { path: "checkout", element: <Checkout /> },
       { path: "resumen-pedido", element: <OrderSummary /> },
