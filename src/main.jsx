@@ -4,9 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import "leaflet/dist/leaflet.css";
 
-
-
-
 // Páginas de TU parte
 import Home from "./pages/Home.jsx";
 
@@ -31,6 +28,8 @@ import OrderSummary from "./pages/OrderSummary.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentFailed from "./pages/PaymentFailed.jsx";
 import { UserProvider } from "./pages/UserContext";
+import RecuperarContrasenna from "./pages/RecuperarContrasenna.jsx";
+import ActualizarContrasenna from "./pages/ActualizarContrasenna.jsx";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +55,8 @@ const router = createBrowserRouter([
       { path: "resumen-pedido", element: <OrderSummary /> },
       { path: "pago-exitoso", element: <PaymentSuccess /> },
       { path: "pago-fallido", element: <PaymentFailed /> },
+      { path: "recuperar-contrasenna", element: <RecuperarContrasenna /> },
+      { path: "actualizar-contrasenna", element: <ActualizarContrasenna /> },
     ],
   },
 ]);

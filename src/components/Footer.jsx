@@ -17,7 +17,9 @@ export default function Footer() {
           <ul>
             <li>
               Email:{" "}
-              <a href="mailto:hola@huertohogar.cl">hola@huertohogar.cl</a>
+              <a href="mailto:huertohogar25@gmail.com">
+                huertohogar25@gmail.com
+              </a>
             </li>
             <li>
               WhatsApp: <a href="#">+56 9 1234 5678</a>

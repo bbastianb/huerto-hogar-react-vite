@@ -102,7 +102,7 @@ export default function Login() {
               />
             </div>
             <div className="form-links">
-              <Link to="/forgot-password" className="forgot-form-link">
+              <Link to="/recuperar-contrasenna" className="forgot-form-link">
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
