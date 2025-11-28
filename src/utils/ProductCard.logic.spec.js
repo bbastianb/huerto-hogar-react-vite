@@ -77,7 +77,7 @@ describe('ProductCard.logic', function () {
     it('construye ruta válida cuando hay id (entrada válida)', function () {
       var p = { id: 'ABC123' };
       var path = logic.getProductDetailPath(p);
-      expect(path).toBe('/productos/ABC123');
+      expect(path).toBe('/detalle/ABC123');
     });
 
     it('retorna null si no hay product o id (entrada nula/incorrecta)', function () {
@@ -90,7 +90,7 @@ describe('ProductCard.logic', function () {
     it('acepta id numérico y lo convierte a string (caso borde)', function () {
       var p = { id: 99 };
       var path = logic.getProductDetailPath(p);
-      expect(path).toBe('/productos/99');
+      expect(path).toBe('/detalle/99');
     });
   });
 });

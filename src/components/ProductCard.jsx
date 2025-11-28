@@ -2,6 +2,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
+import imagenDefault from "../assets/img/default.jpg";
+
+import { getImageForProduct } from "../utils/products";
+
 import '../utils/ProductCard.logic.js'; // <-- Importa la lógica antes de usarla
 
 export const ProductCard = ({ product }) => {
@@ -13,6 +17,11 @@ export const ProductCard = ({ product }) => {
 
   const detailPath = window.ProductCardLogic.getProductDetailPath(product) ?? '#';
 
+  const imageSrc =
+  getImageForProduct(product) ||
+  (product.img && product.img.trim() !== "" ? product.img : null) ||
+  imagenDefault;
+
   return (
     <div className="item">
       <Link
@@ -22,7 +31,7 @@ export const ProductCard = ({ product }) => {
       >
         <figure>
           <img
-            src={product?.img}
+            src={imageSrc}
             alt={product?.nombre ?? 'Producto'}
             onError={(e) =>
               window.ProductCardLogic.onImageError(
