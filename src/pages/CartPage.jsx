@@ -4,38 +4,41 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
 import '../assets/styles/style-CarPage.css';
 import { FaTrash } from 'react-icons/fa';
+import { getImageForProduct } from '../utils/products';
+
 
 // 💡 Importa la lógica pura antes de usarla
 import '../utils/CartPage.logic.js'; // <-- Importante para acceder a window.CartPageLogic
 
 const CartPage = () => {
-    const { carrito, actualizarCantidad, eliminarProducto } = useCart(); 
+    const { carrito, actualizarCantidad, eliminarProducto } = useCart();
     const navigate = useNavigate();
 
     const costoDeEnvio = 10;
-    const subTotal = carrito.reduce((acc, producto) => 
+    const subTotal = carrito.reduce((acc, producto) =>
         acc + producto.precio * producto.cantidad, 0
     );
     const total = subTotal + costoDeEnvio;
 
     // 🧠 Funciones actualizadas para usar la lógica externa
-    const handleAumentarCantidad = (productoId) => 
+    const handleAumentarCantidad = (productoId) =>
         window.CartPageLogic.handleAumentarCantidad(actualizarCantidad, productoId);
 
-    const handleDisminuirCantidad = (productoId) => 
+    const handleDisminuirCantidad = (productoId) =>
         window.CartPageLogic.handleDisminuirCantidad(carrito, actualizarCantidad, eliminarProducto, productoId);
 
-    const handleEliminarProducto = (productoId) => 
+    const handleEliminarProducto = (productoId) =>
         window.CartPageLogic.handleEliminarProducto(eliminarProducto, productoId, window.confirm);
 
-    const handleCheckout = () => 
+    const handleCheckout = () =>
         window.CartPageLogic.handleCheckout(carrito, navigate, window.alert);
+
 
     return (
         <div className="cart-page-container">
             <div className="cart-page-content">
                 <h1>TU <span>CARRITO</span></h1>
-                
+
                 {carrito.length === 0 ? (
                     <div className="cart-empty-state">
                         <h2>Tu carrito está vacío</h2>
@@ -55,33 +58,38 @@ const CartPage = () => {
                                 <span>Total</span>
                                 <span>Acción</span>
                             </div>
-                            
+
                             <div className="cart-items-list">
                                 {carrito.map((producto) => {
                                     const totalPrecio = producto.precio * producto.cantidad;
+                                    const imageSrc =
+                                        getImageForProduct(producto) ||
+                                        producto.img ||
+                                        producto.imagen ||
+                                        "https://via.placeholder.com/150?text=Sin+imagen";
                                     return (
                                         <div className="cart-item-card" key={producto.id}>
                                             <div className="product-info">
-                                                <img 
-                                                    src={producto.img || producto.imagen || "https://via.placeholder.com/150"} 
+                                                <img
+                                                    src={imageSrc}
                                                     alt={producto.nombre}
                                                     className="product-image"
                                                 />
                                                 <div className="product-details">
                                                     <h3>{producto.nombre}</h3>
                                                     <p className="product-category">
-                                                        {producto.id.startsWith('FR') ? 'Fruta' : 
-                                                         producto.id.startsWith('VR') ? 'Verdura' : 'Otro'}
+                                                        {producto.id.startsWith('FR') ? 'Fruta' :
+                                                            producto.id.startsWith('VR') ? 'Verdura' : 'Otro'}
                                                     </p>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="product-price">
                                                 ${producto.precio}
                                             </div>
 
                                             <div className="quantity-controls">
-                                                <button 
+                                                <button
                                                     className="quantity-btn"
                                                     onClick={() => handleDisminuirCantidad(producto.id)}
                                                 >
@@ -90,7 +98,7 @@ const CartPage = () => {
                                                 <span className="quantity-display">
                                                     {producto.cantidad}
                                                 </span>
-                                                <button 
+                                                <button
                                                     className="quantity-btn"
                                                     onClick={() => handleAumentarCantidad(producto.id)}
                                                 >
@@ -102,7 +110,7 @@ const CartPage = () => {
                                                 ${totalPrecio.toFixed(2)}
                                             </div>
 
-                                            <button 
+                                            <button
                                                 className="delete-btn"
                                                 onClick={() => handleEliminarProducto(producto.id)}
                                                 title="Eliminar producto"
@@ -119,23 +127,23 @@ const CartPage = () => {
                         <div className="cart-summary-section">
                             <div className="summary-card">
                                 <h2>RESUMEN DEL PEDIDO</h2>
-                                
+
                                 <div className="summary-line">
                                     <span>Subtotal:</span>
                                     <span>${subTotal.toFixed(2)}</span>
                                 </div>
-                                
+
                                 <div className="summary-line">
                                     <span>Tarifa de envío:</span>
                                     <span>${costoDeEnvio.toFixed(2)}</span>
                                 </div>
-                                
+
                                 <div className="summary-line total">
                                     <span>Total:</span>
                                     <span>${total.toFixed(2)}</span>
                                 </div>
 
-                                <button 
+                                <button
                                     className="checkout-btn"
                                     onClick={handleCheckout}
                                 >

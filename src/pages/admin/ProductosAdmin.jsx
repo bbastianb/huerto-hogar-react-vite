@@ -1,9 +1,15 @@
 import { useState, useEffect } from "react";
 import BarraAdmin from "../../components/BarraAdmin";
 import "../../assets/styles/ProductosAdmin.css";
-import { getProducts, setProducts } from "../../utils/products";
+import {
+  getProductos,
+  crearProducto,
+  actualizarProducto,
+  eliminarProducto as eliminarProductoApi,
+} from "../../services/ProductoService.js";
 // ✅ Importa la imagen por defecto
 import imagenDefault from "../../assets/img/default.jpg";
+import { getImageForProduct } from "../../utils/products";
 
 const ProductosAdmin = () => {
   const [productos, setProductos] = useState([]);
@@ -17,29 +23,95 @@ const ProductosAdmin = () => {
     cargarProductos();
   }, []);
 
-  const cargarProductos = () => {
-    const datos = getProducts();
-    setProductos(datos);
-  };
-
-  const guardarProductos = (nuevosProductos) => {
-    setProducts(nuevosProductos);
-    setProductos(nuevosProductos);
-  };
-
-  const eliminarProducto = (id, nombre) => {
-    if (window.confirm(`¿Eliminar "${nombre}"?`)) {
-      const actualizados = productos.filter((p) => p.id !== id);
-      guardarProductos(actualizados);
-      mostrarNotificacion(`Producto "${nombre}" eliminado correctamente`);
+  const cargarProductos = async () => {
+    try {
+      const datos = await getProductos();
+      setProductos(datos);
+    } catch (error) {
+      console.error("Error cargando productos desde API:", error);
     }
   };
 
+
+  const guardarProducto = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+
+    const categoria = formData.get("categoria");
+    const esEdicion = Boolean(productoEditando);
+
+    const id =
+      esEdicion && productoEditando?.id
+        ? productoEditando.id
+        : generarId(categoria);
+
+    const productoPayload = {
+      id,
+      nombre: formData.get("nombre"),
+      precio: Number(formData.get("precio")),
+      unidad: formData.get("unidad"),
+      stock: formData.get("stock"),
+      img: formData.get("img") || "", // opcional
+      // 👇 OJO: al backend le mandamos "descripcion", no "desc"
+      descripcion: formData.get("desc"),
+    };
+
+    try {
+      let productoGuardado;
+
+      if (esEdicion) {
+        // PUT /api/productos/{id}
+        productoGuardado = await actualizarProducto(id, productoPayload);
+        setProductos((prev) =>
+          prev.map((p) => (p.id === id ? productoGuardado : p))
+        );
+        mostrarNotificacion("Producto actualizado");
+      } else {
+        // POST /api/productos
+        productoGuardado = await crearProducto(productoPayload);
+        setProductos((prev) => [...prev, productoGuardado]);
+        mostrarNotificacion("Producto creado");
+      }
+
+      cerrarForm();
+    } catch (error) {
+      console.error("Error guardando producto:", error);
+      mostrarNotificacion("Error al guardar el producto");
+    }
+  };
+
+
+  const eliminarProducto = async (id, nombre) => {
+    if (!window.confirm(`¿Eliminar "${nombre}"?`)) return;
+
+    try {
+      await eliminarProductoApi(id); // DELETE al backend
+      const actualizados = productos.filter((p) => p.id !== id);
+      setProductos(actualizados);
+      mostrarNotificacion(`Producto "${nombre}" eliminado correctamente`);
+    } catch (error) {
+      console.error("Error eliminando producto:", error);
+      mostrarNotificacion("Error al eliminar el producto");
+    }
+  };
+
+
   const abrirEditar = (producto) => {
     setProductoEditando(producto);
-    setImagenPreview(producto.img || imagenDefault);
+
+    const cleanedImg = (producto.img || "").trim();
+    const customImg = cleanedImg !== "" ? cleanedImg : null;
+
+    const imagen =
+      getImageForProduct(producto) ||  // si es FR001, VR001, etc.
+      customImg ||                     // si el admin guardó una URL
+      imagenDefault;                   // si no hay nada
+
+    setImagenPreview(imagen);
     setMostrarForm(true);
   };
+
+
 
   const abrirNuevo = () => {
     setProductoEditando(null);
@@ -73,49 +145,21 @@ const ProductosAdmin = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Actualizar vista previa si cambia la imagen
     if (name === "img") {
       setImagenPreview(value || imagenDefault);
     }
   };
 
-  const guardarProducto = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
+  const productosFiltrados = productos.filter((producto) => {
+    const termino = busqueda.toLowerCase();
+    const nombre = (producto.nombre || "").toLowerCase();
+    const descripcion = (producto.descripcion || "").toLowerCase();
 
-    const producto = {
-      id: productoEditando ? productoEditando.id : generarId(formData.get("categoria")),
-      nombre: formData.get("nombre"),
-      precio: Number(formData.get("precio")),
-      unidad: formData.get("unidad"),
-      stock: formData.get("stock"),
-      // ✅ Usa la imagen del input O la imagen por defecto importada
-      img: formData.get("img") || imagenDefault,
-      desc: formData.get("desc"),
-    };
+    return nombre.includes(termino) || descripcion.includes(termino);
+  });
 
-    let nuevosProductos;
-    if (productoEditando) {
-      nuevosProductos = productos.map((p) =>
-        p.id === productoEditando.id ? producto : p
-      );
-    } else {
-      nuevosProductos = [...productos, producto];
-    }
-
-    guardarProductos(nuevosProductos);
-    cerrarForm();
-    mostrarNotificacion(
-      productoEditando ? "Producto actualizado" : "Producto creado"
-    );
-  };
-
-  const productosFiltrados = productos.filter(
-    (producto) =>
-      producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      producto.desc.toLowerCase().includes(busqueda.toLowerCase())
-  );
 
   return (
     <div className="pagina-admin">
@@ -172,7 +216,7 @@ const ProductosAdmin = () => {
                   <input
                     type="text"
                     name="nombre"
-                    defaultValue={productoEditando?.nombre}
+                    defaultValue={productoEditando?.nombre || ""}
                     required
                   />
                 </div>
@@ -202,12 +246,12 @@ const ProductosAdmin = () => {
                   <small>
                     Si dejas vacío, se usará la imagen por defecto automáticamente
                   </small>
-                  
+
                   {/* Vista previa de la imagen */}
                   <div className="vista-previa">
-                    <img 
-                      src={imagenPreview} 
-                      alt="Vista previa" 
+                    <img
+                      src={imagenPreview}
+                      alt="Vista previa"
                       onError={(e) => {
                         // Si falla la imagen, usar la por defecto
                         e.target.src = imagenDefault;
@@ -253,7 +297,7 @@ const ProductosAdmin = () => {
                   <label>Descripción</label>
                   <textarea
                     name="desc"
-                    defaultValue={productoEditando?.desc}
+                    defaultValue={productoEditando?.descripcion}
                     rows="3"
                     required
                   />
@@ -289,18 +333,30 @@ const ProductosAdmin = () => {
             productosFiltrados.map((producto) => (
               <div key={producto.id} className="tarjeta-producto">
                 <div className="imagen-producto">
-                  <img 
-                    src={producto.img} 
-                    alt={producto.nombre}
-                    onError={(e) => {
-                      e.target.src = imagenDefault;
-                    }}
-                  />
+                  {(() => {
+                    const cleanedImg = (producto.img || "").trim();
+                    const customImg = cleanedImg !== "" ? cleanedImg : null;
+
+                    const imageSrc =
+                      getImageForProduct(producto) || // FR001, VR001, etc.
+                      customImg ||                    // URL guardada por admin
+                      imagenDefault;
+
+                    return (
+                      <img
+                        src={imageSrc}
+                        alt={producto.nombre}
+                        onError={(e) => {
+                          e.target.src = imagenDefault;
+                        }}
+                      />
+                    );
+                  })()}
                 </div>
 
                 <div className="info-producto">
                   <h3>{producto.nombre}</h3>
-                  <p className="descripcion">{producto.desc}</p>
+                  <p className="descripcion">{producto.descripcion}</p>
 
                   <div className="detalles">
                     <span className="precio">
