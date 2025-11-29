@@ -2,6 +2,24 @@ import axios from "axios";
 
 const baseURL = "http://localhost:8080/api/usuario";
 
+// PUT /api/usuario/actualizar-contrasenna
+export const resetearContrasena = async (email, codigo, contrasennaNueva) => {
+  const { data } = await axios.put(`${baseURL}/actualizar-contrasenna`, {
+    email,
+    codigo,
+    contrasennaNueva,
+  });
+  return data; // "Contraseña actualizado correctamente."
+};
+
+// POST /api/usuario/recuperar-contrasenna
+export const solicitarCodigoRecuperacion = async (email) => {
+  const { data } = await axios.post(`${baseURL}/recuperar-contrasenna`, {
+    email,
+  });
+  return data;
+};
+
 // GET /api/usuario
 export const getUsuarios = async () => {
   const { data } = await axios.get(baseURL);

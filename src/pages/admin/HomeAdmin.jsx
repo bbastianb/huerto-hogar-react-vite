@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUsuarios } from "../../services/UsuarioService.js";
-import { getProducts } from "../../utils/products.js";
+import { getProductos } from "../../services/ProductoService.js";
 import TarjetaEstadistica from "../../components/TarjetaEstadistica.jsx";
 import BarraAdmin from "../../components/BarraAdmin.jsx";
 import "../../assets/styles/HomeAdmin.css";
@@ -55,7 +55,7 @@ export default function HomeAdmin() {
     const cargarDatos = async () => {
       try {
         // Los productos siguen desde los js Falta completar
-        const products = getProducts();
+        const products = await getProductos();
         const totalProductos = products.length;
 
         const usuarios = await getUsuarios();

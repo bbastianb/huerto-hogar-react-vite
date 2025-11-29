@@ -1,19 +1,18 @@
-// src/pages/ListadoProd.jsx
-import React, { useState, useEffect } from 'react';
-import { useCart } from '../hook/useCart';
-import { getCategory } from '../utils/products';
-import { getProductos } from '../services/ProductoService.js';
-import { ProductCard } from '../components/ProductCard';
-import FilterBar from '../components/FilterBar';
-import '../assets/styles/style-listado.css';
+import React, { useState, useEffect } from "react";
+import { useCart } from "../hook/useCart";
+import { getCategory } from "../utils/products";
+import { getProductos } from "../services/ProductoService.js";
+import { ProductCard } from "../components/ProductCard";
+import FilterBar from "../components/FilterBar";
+import "../assets/styles/style-listado.css";
 
-import '../utils/ListadoProd.logic.js';
+import "../utils/ListadoProd.logic.js";
 
 const ListadoProd = () => {
   const { addToCart } = useCart();
 
   const [products, setProducts] = useState([]);
-  const [activeCategory, setActiveCategory] = useState('todos');
+  const [activeCategory, setActiveCategory] = useState("todos");
 
   useEffect(() => {
     const cargarProductos = async () => {

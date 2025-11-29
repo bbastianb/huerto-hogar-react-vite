@@ -4,10 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import "leaflet/dist/leaflet.css";
 
-
-
-
-// Páginas de TU parte
 import Home from "./pages/Home.jsx";
 
 import Nosotros from "./pages/Nosotros.jsx";
@@ -22,6 +18,7 @@ import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
 import Usuarios from "./pages/admin/Usuarios.jsx";
 import ProductosAdmin from "./pages/admin/ProductosAdmin.jsx";
 import ConfiAdmin from "./pages/admin/ConfiAdmin.jsx";
+import OrdenesAdmin from "./pages/admin/OrdenesAdmin.jsx";
 
 import DetalleProd from "./pages/DetalleProd.jsx";
 import { CartProvider } from "./pages/CartContext.jsx";
@@ -31,6 +28,8 @@ import OrderSummary from "./pages/OrderSummary.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentFailed from "./pages/PaymentFailed.jsx";
 import { UserProvider } from "./pages/UserContext";
+import RecuperarContrasenna from "./pages/RecuperarContrasenna.jsx";
+import ActualizarContrasenna from "./pages/ActualizarContrasenna.jsx";
 
 const router = createBrowserRouter([
   {
@@ -50,12 +49,15 @@ const router = createBrowserRouter([
       { path: "admin/usuarios", element: <Usuarios /> },
       { path: "admin/productos", element: <ProductosAdmin /> },
       { path: "admin/confiAdmin", element: <ConfiAdmin /> },
+      { path: "admin/ordenes", element: <OrdenesAdmin /> },
       { path: "detalle/:id", element: <DetalleProd /> },
       { path: "carrito", element: <CartPage /> },
       { path: "checkout", element: <Checkout /> },
       { path: "resumen-pedido", element: <OrderSummary /> },
       { path: "pago-exitoso", element: <PaymentSuccess /> },
       { path: "pago-fallido", element: <PaymentFailed /> },
+      { path: "recuperar-contrasenna", element: <RecuperarContrasenna /> },
+      { path: "actualizar-contrasenna", element: <ActualizarContrasenna /> },
     ],
   },
 ]);
