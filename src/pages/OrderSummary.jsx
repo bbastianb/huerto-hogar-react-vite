@@ -4,6 +4,9 @@ import { useCart } from "../pages/CartContext";
 import { useUser } from "../pages/UserContext";
 import "../assets/styles/style-Checkout.css";
 import { crearOrden } from "../services/OrdenService";
+import { getImageForProduct } from "../utils/products";
+import imagenDefault from "../assets/img/default.jpg";
+
 
 const OrderSummary = () => {
   const navigate = useNavigate();
@@ -23,7 +26,6 @@ const OrderSummary = () => {
 
   const costoEnvio = shippingData.metodoEnvio === "express" ? 20 : 10;
   const total = subtotal + costoEnvio;
-
   const handlePayment = async () => {
     if (!carrito || carrito.length === 0) {
       alert("No hay productos en el carrito.");
@@ -88,7 +90,7 @@ const OrderSummary = () => {
         console.error("Error al guardar la orden en el backend:", error);
         alert(
           "El pago fue exitoso, pero no se pudo registrar la orden en el sistema.\n" +
-            "Coméntale esto al profesor o revisa el backend."
+          "Coméntale esto al profesor o revisa el backend."
         );
       }
 
@@ -191,27 +193,36 @@ const OrderSummary = () => {
             <div className="order-items-card">
               <h3>Productos en el Pedido</h3>
               <div className="order-items-list">
-                {carrito.map((producto) => (
-                  <div key={producto.id} className="order-item-detailed">
-                    <img
-                      src={producto.img}
-                      alt={producto.nombre}
-                      className="item-image"
-                      onError={(e) => {
-                        e.target.src =
-                          "https://via.placeholder.com/60x60?text=Imagen";
-                      }}
-                    />
-                    <div className="item-details">
-                      <h4>{producto.nombre}</h4>
-                      <p>Cantidad: {producto.cantidad}</p>
-                      <p>Precio unitario: ${producto.precio}</p>
+                {carrito.map((producto) => {
+                  const cleanedImg = (producto.img || "").trim();
+                  const customImg = cleanedImg !== "" ? cleanedImg : null;
+
+                  const imageSrc =
+                    getImageForProduct(producto) || // FR001, VR001, etc.
+                    customImg ||                    // URL que venga desde la BD
+                    imagenDefault;                  // fallback
+
+                  return (
+                    <div key={producto.id} className="order-item-detailed">
+                      <img
+                        src={imageSrc}
+                        alt={producto.nombre ?? "Producto"}
+                        className="item-image"
+                        onError={(e) => {
+                          e.target.src = imagenDefault;
+                        }}
+                      />
+                      <div className="item-details">
+                        <h4>{producto.nombre}</h4>
+                        <p>Cantidad: {producto.cantidad}</p>
+                        <p>Precio unitario: ${producto.precio}</p>
+                      </div>
+                      <div className="item-total">
+                        ${(producto.precio * producto.cantidad).toFixed(2)}
+                      </div>
                     </div>
-                    <div className="item-total">
-                      ${(producto.precio * producto.cantidad).toFixed(2)}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

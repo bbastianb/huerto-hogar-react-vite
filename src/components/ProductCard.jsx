@@ -1,5 +1,5 @@
 // src/components/ProductCard.jsx
-import React from 'react';
+import React,{useState,useEffect}from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../pages/CartContext';
 import imagenDefault from "../assets/img/default.jpg";
@@ -13,6 +13,7 @@ export const ProductCard = ({ product }) => {
 
   const handleAddToCart = (e) => {
     window.ProductCardLogic.safeAddToCart(e, agregarAlCarrito, product);
+    setAgregado(true)
   };
 
   const detailPath = window.ProductCardLogic.getProductDetailPath(product) ?? '#';
@@ -21,6 +22,12 @@ export const ProductCard = ({ product }) => {
   getImageForProduct(product) ||
   (product.img && product.img.trim() !== "" ? product.img : null) ||
   imagenDefault;
+  const [agregado, setAgregado] = useState(false);
+  useEffect(() => {
+    if (!agregado) return;
+    const timer = setTimeout(() => setAgregado(false), 2000);
+    return () => clearTimeout(timer);
+  }, [agregado]);
 
   return (
     <div className="item">
@@ -55,6 +62,7 @@ export const ProductCard = ({ product }) => {
         <button className="btn-add-cart" onClick={handleAddToCart}>
           Añadir al carrito
         </button>
+        {agregado && <p className="mensaje-agregado">¡Producto agregado al carrito!</p>}
       </div>
     </div>
   );
