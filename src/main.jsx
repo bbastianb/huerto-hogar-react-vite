@@ -4,7 +4,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import "leaflet/dist/leaflet.css";
 
-// Páginas de TU parte
 import Home from "./pages/Home.jsx";
 
 import Nosotros from "./pages/Nosotros.jsx";
@@ -19,6 +18,7 @@ import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
 import Usuarios from "./pages/admin/Usuarios.jsx";
 import ProductosAdmin from "./pages/admin/ProductosAdmin.jsx";
 import ConfiAdmin from "./pages/admin/ConfiAdmin.jsx";
+import OrdenesAdmin from "./pages/admin/OrdenesAdmin.jsx";
 
 import DetalleProd from "./pages/DetalleProd.jsx";
 import { CartProvider } from "./pages/CartContext.jsx";
@@ -49,6 +49,7 @@ const router = createBrowserRouter([
       { path: "admin/usuarios", element: <Usuarios /> },
       { path: "admin/productos", element: <ProductosAdmin /> },
       { path: "admin/confiAdmin", element: <ConfiAdmin /> },
+      { path: "admin/ordenes", element: <OrdenesAdmin /> },
       { path: "detalle/:id", element: <DetalleProd /> },
       { path: "carrito", element: <CartPage /> },
       { path: "checkout", element: <Checkout /> },

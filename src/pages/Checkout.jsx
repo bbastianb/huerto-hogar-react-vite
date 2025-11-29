@@ -4,7 +4,7 @@ import { useCart } from "../pages/CartContext";
 import { useUser } from "../pages/UserContext";
 import "../assets/styles/style-Checkout.css";
 
-import "../utils/Checkout.logic.js"; // <-- Importa la lógica antes de usarla
+import "../utils/Checkout.logic.js";
 
 const Checkout = () => {
   const navigate = useNavigate();

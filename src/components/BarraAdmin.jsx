@@ -1,4 +1,3 @@
-// src/components/BarraAdmin.jsx
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../assets/styles/BarraAdmin.css";
 import logo from "../assets/img/logo.png";
@@ -69,6 +68,25 @@ export default function BarraAdmin() {
         </svg>
       ),
       label: "Productos",
+    },
+    {
+      path: "/admin/ordenes",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 4.5h16.5v4.75a2.25 2.25 0 1 0 0 4.5v4.75H3.75v-4.75a2.25 2.25 0 1 0 0-4.5V4.5Z"
+          />
+        </svg>
+      ),
+      label: "Órdenes",
     },
     {
       path: "/admin/confiAdmin",

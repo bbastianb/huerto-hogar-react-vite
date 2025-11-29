@@ -25,17 +25,28 @@ const OrderSummary = () => {
   const total = subtotal + costoEnvio;
 
   const handlePayment = async () => {
+    if (!carrito || carrito.length === 0) {
+      alert("No hay productos en el carrito.");
+      return;
+    }
+
+    if (!isAuthenticated || !user?.id) {
+      alert("Debes iniciar sesión para completar la compra.");
+      navigate("/login");
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
-      // Simular procesamiento de pago (2 segundos)
       await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // Para testing: 50% éxito, 50% fallo
-      const isSuccess = Math.random() > 0.5;
+      //const isSuccess = Math.random() > 0.5;
+
+      const isSuccess = true; // Siempre éxito para pruebas reales
 
       if (!isSuccess) {
-        // Tipos de error para testing
         const errorTypes = [
           "Tarjeta rechazada",
           "Fondos insuficientes",
@@ -54,33 +65,33 @@ const OrderSummary = () => {
         return;
       }
 
-      // Verificar que el usuario esté autenticado
-      if (!isAuthenticated) {
-        alert("Debes iniciar sesión para completar la compra.");
-        navigate("/login");
-        return;
-      }
+      const fechaHoy = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
 
-      const usuarioId = user?.id;
+      const ordenPayload = {
+        fecha_orden: fechaHoy,
+        estado_orden: "Pendiente",
+        total: total,
+        usuario: {
+          id: user.id,
+        },
+        productos: carrito.map((p) => ({
+          id: p.id,
+        })),
+      };
+
       let ordenBackend = null;
 
-      if (usuarioId) {
-        const fechaHoy = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-
-        const ordenPayload = {
-          fecha_orden: fechaHoy,
-          estado_orden: "Pendiente",
-          usuario: {
-            id: usuarioId,
-          },
-        };
-
+      try {
         ordenBackend = await crearOrden(ordenPayload);
-      } else {
-        console.warn(
-          "No se encontró id de usuario en el contexto, no se creará la orden en el backend."
+        console.log("Orden guardada en backend:", ordenBackend);
+      } catch (error) {
+        console.error("Error al guardar la orden en el backend:", error);
+        alert(
+          "El pago fue exitoso, pero no se pudo registrar la orden en el sistema.\n" +
+            "Coméntale esto al profesor o revisa el backend."
         );
       }
+
       const order = {
         id:
           ordenBackend?.id_orden ||
@@ -90,7 +101,7 @@ const OrderSummary = () => {
         productos: [...carrito],
         shipping: shippingData,
         total: total,
-        estado: ordenBackend?.estado_orden || "completado",
+        estado: ordenBackend?.estado_orden || "Completado",
       };
 
       const orders = JSON.parse(localStorage.getItem("orders") || "[]");
@@ -268,10 +279,6 @@ const OrderSummary = () => {
                 Pago 100% seguro y encriptado
               </p>
             </div>
-
-            <Link to="/checkout" className="back-to-checkout">
-              ← Volver a checkout
-            </Link>
           </div>
         </div>
       </div>
