@@ -6,12 +6,12 @@ import { useCart } from "../pages/CartContext.jsx";
 import { useUser } from "../pages/UserContext.jsx";
 import { useEffect, useState, useRef } from "react";
 
-// 🔐 Importa la lógica pura ANTES de usarla (necesario para los tests)
+// Importa la lógica pura ANTES de usarla (necesario para los tests)
 import "../utils/Header.logic.js";
 
 export default function Header() {
   const { cartCount } = useCart();
-  const { user, logout } = useUser(); // 👈 lee el usuario desde el contexto
+  const { user, logout } = useUser(); // lee el usuario desde el contexto
   const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,7 +20,12 @@ export default function Header() {
   // Cerrar menú al hacer click fuera, delegando la decisión en la lógica externa
   useEffect(() => {
     function handleClickOutside(event) {
-      if (window.HeaderLogic.shouldCloseOnDocumentMouseDown(event.target, menuRef.current)) {
+      if (
+        window.HeaderLogic.shouldCloseOnDocumentMouseDown(
+          event.target,
+          menuRef.current
+        )
+      ) {
         setIsMenuOpen(false);
       }
     }
@@ -78,7 +83,6 @@ export default function Header() {
             <NavLink to="/productos">Catalogo</NavLink>
           </li>
 
-          {/* 👉 Zona de usuario */}
           {!user ? (
             // Si NO hay usuario: muestra Iniciar sesión
             <li>

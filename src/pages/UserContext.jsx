@@ -1,7 +1,7 @@
 // src/UserContext/UserContext.jsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { getUsuarioActual, setUsuarioActual, getUsuarios } from '../utils/Usuarios';
-import '../utils/UserContext.logic.js'; // <-- Importa la lógica antes de usarla
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { getUsuarioActual, setUsuarioActual } from "../utils/Usuarios";
+import "../utils/UserContext.logic.js";
 
 const UserContext = createContext();
 
@@ -9,7 +9,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Carga inicial del usuario usando la lógica externa (testeable)
   useEffect(() => {
     const usuario = window.UserContextLogic.loadInitialUser(getUsuarioActual);
     if (usuario) setUser(usuario);
@@ -35,7 +34,10 @@ export const UserProvider = ({ children }) => {
     setUsuarioActual(newUser);
 
     const usuarios = getUsuarios();
-    const updatedUsuarios = window.UserContextLogic.updateUserList(usuarios, newUser);
+    const updatedUsuarios = window.UserContextLogic.updateUserList(
+      usuarios,
+      newUser
+    );
     window.UserContextLogic.persistUsuarios(updatedUsuarios, localStorage);
   };
 
@@ -43,13 +45,18 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const syncUser = (e) => {
       // Si viene de 'storage', solo reaccionar a la clave correcta
-      if (e && e.key && e.key !== 'usuarioActual') return;
+      if (e && e.key && e.key !== "usuarioActual") return;
       const u = window.UserContextLogic.getSyncUser(getUsuarioActual);
       setUser(u || null);
     };
 
-    const cleanup = window.UserContextLogic.addUserSyncListeners(syncUser, window);
-    return () => { cleanup(); };
+    const cleanup = window.UserContextLogic.addUserSyncListeners(
+      syncUser,
+      window
+    );
+    return () => {
+      cleanup();
+    };
   }, []);
 
   return (

@@ -58,3 +58,9 @@ export const loginUsuario = async (email, contrasenna) => {
   });
   return data;
 };
+
+// GET /api/usuario/buscar/{id}
+export const getUsuarioPorId = async (id) => {
+  const { data } = await axios.get(`${baseURL}/buscar/${id}`);
+  return data;
+};

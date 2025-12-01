@@ -1,4 +1,3 @@
-// src/pages/Blog.jsx
 import cover1 from "../assets/img/manzanas-manos.jpg";
 import cover2 from "../assets/img/miel3.jpg";
 import cover3 from "../assets/img/frutillas.jpg";
@@ -27,22 +26,22 @@ const posts = [
   },
 ];
 
-export default function Blog(){
+export default function Blog() {
   return (
     <main className="section">
       <div className="container">
-        <h1 style={{color:'var(--title)'}}>Blog</h1>
+        <h1 style={{ color: "var(--title)" }}>Blog</h1>
 
-        <div className="card-grid" style={{marginTop:16}}>
-          {posts.map(p => (
+        <div className="card-grid" style={{ marginTop: 16 }}>
+          {posts.map((p) => (
             <article className="card" key={p.id}>
-              <img src={p.cover} alt={p.title}/>
+              <img src={p.cover} alt={p.title} />
               <div className="card_body">
                 <div className="card_meta">
                   <span>{new Date(p.date).toLocaleDateString()}</span>
                 </div>
-                <h3 style={{margin:"6px 0"}}>{p.title}</h3>
-                <p style={{color:'var(--text2)'}}>{p.excerpt}</p>
+                <h3 style={{ margin: "6px 0" }}>{p.title}</h3>
+                <p style={{ color: "var(--text2)" }}>{p.excerpt}</p>
               </div>
             </article>
           ))}

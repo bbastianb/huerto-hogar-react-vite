@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../pages/CartContext";
 import { useUser } from "../pages/UserContext";
 import "../assets/styles/style-Checkout.css";
+import { getUsuarioPorId } from "../services/UsuarioService";
 
 import "../utils/Checkout.logic.js";
 
@@ -18,12 +19,37 @@ const Checkout = () => {
     fono: user?.fono || "",
     direccion: user?.direccion || "",
     comuna: user?.comuna || "",
+    region: user?.region || "",
     metodoEnvio: "estandar",
     notas: "",
   });
 
+  useEffect(() => {
+    const cargarDatosUsuario = async () => {
+      if (!isAuthenticated || !user?.id) return;
+
+      try {
+        const usuarioBack = await getUsuarioPorId(user.id);
+
+        setFormData((prev) => ({
+          ...prev,
+          nombre: usuarioBack.nombre || "",
+          apellido: usuarioBack.apellido || "",
+          email: usuarioBack.email || "",
+          fono: usuarioBack.telefono || "",
+          direccion: usuarioBack.direccion || "",
+          comuna: usuarioBack.comuna || "",
+          region: usuarioBack.region || "",
+        }));
+      } catch (err) {
+        console.error("Error al cargar usuario real en checkout:", err);
+      }
+    };
+
+    cargarDatosUsuario();
+  }, [isAuthenticated, user?.id]);
+
   const [errors, setErrors] = useState({});
-  const [saveAddress, setSaveAddress] = useState(isAuthenticated);
 
   // Calcular totales
   const subtotal = carrito.reduce(
@@ -45,9 +71,9 @@ const Checkout = () => {
       e,
       formData,
       isAuthenticated,
-      saveAddress,
+      false,
       user,
-      updateUser,
+      null,
       navigate,
       validateForm,
       setErrors
@@ -67,6 +93,25 @@ const Checkout = () => {
       </div>
     );
   }
+
+  const REGION_OPTIONS = [
+    { value: "ARICA_Y_PARINACOTA", label: "Arica y Parinacota" },
+    { value: "TARAPACA", label: "Tarapacá" },
+    { value: "ANTOFAGASTA", label: "Antofagasta" },
+    { value: "ATACAMA", label: "Atacama" },
+    { value: "COQUIMBO", label: "Coquimbo" },
+    { value: "VALPARAISO", label: "Valparaíso" },
+    { value: "METROPOLITANA", label: "Metropolitana de Santiago" },
+    { value: "O_HIGGINS", label: "Libertador Gral. Bernardo O'Higgins" },
+    { value: "MAULE", label: "Maule" },
+    { value: "NUBLE", label: "Ñuble" },
+    { value: "BIOBIO", label: "Biobío" },
+    { value: "ARAUCANIA", label: "La Araucanía" },
+    { value: "LOS_RIOS", label: "Los Ríos" },
+    { value: "LOS_LAGOS", label: "Los Lagos" },
+    { value: "AYSEN", label: "Aysén" },
+    { value: "MAGALLANES", label: "Magallanes y Antártica Chilena" },
+  ];
 
   return (
     <div className="checkout-container">
@@ -179,6 +224,29 @@ const Checkout = () => {
               </div>
 
               <div className="form-group">
+                <label htmlFor="region">Región *</label>
+                <select
+                  id="region"
+                  name="region"
+                  value={formData.region}
+                  onChange={handleInputChange}
+                  className={errors.region ? "error" : ""}
+                >
+                  <option value="">Selecciona una región</option>
+
+                  {REGION_OPTIONS.map((r) => (
+                    <option key={r.value} value={r.value}>
+                      {r.label}
+                    </option>
+                  ))}
+                </select>
+
+                {errors.region && (
+                  <span className="error-text">{errors.region}</span>
+                )}
+              </div>
+
+              <div className="form-group">
                 <label htmlFor="metodoEnvio">Método de envío</label>
                 <select
                   id="metodoEnvio"
@@ -206,20 +274,6 @@ const Checkout = () => {
                   rows="3"
                 />
               </div>
-
-              {isAuthenticated && (
-                <div className="form-group checkbox-group">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      checked={saveAddress}
-                      onChange={(e) => setSaveAddress(e.target.checked)}
-                    />
-                    Guardar esta dirección para futuras compras
-                  </label>
-                </div>
-              )}
-
               <button type="submit" className="checkout-submit-btn">
                 Continuar al Resumen
               </button>

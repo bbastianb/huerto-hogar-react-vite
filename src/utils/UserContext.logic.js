@@ -50,15 +50,15 @@
    * @returns {boolean} true si se pudo eliminar; false en caso contrario.
    */
   ns.logoutUser = function logoutUser(storage) {
-  // ✅ Sin fallback: si no recibimos un storage válido, retornamos false.
-  if (!storage || typeof storage.removeItem !== "function") return false;
-  try {
-    storage.removeItem("usuarioActual");
-    return true;
-  } catch (_) {
-    return false;
-  }
-};
+    // Sin fallback: si no recibimos un storage válido, retornamos false.
+    if (!storage || typeof storage.removeItem !== "function") return false;
+    try {
+      storage.removeItem("usuarioActual");
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
 
   /**
    * buildUpdatedUser(user, updatedData)
@@ -69,13 +69,16 @@
    */
   ns.buildUpdatedUser = function buildUpdatedUser(user, updatedData) {
     var base = user && typeof user === "object" ? user : {};
-    var delta = updatedData && typeof updatedData === "object" ? updatedData : {};
+    var delta =
+      updatedData && typeof updatedData === "object" ? updatedData : {};
     // copia superficial para no mutar referencias
     var out = {};
     // merge base
-    for (var k in base) if (Object.prototype.hasOwnProperty.call(base, k)) out[k] = base[k];
+    for (var k in base)
+      if (Object.prototype.hasOwnProperty.call(base, k)) out[k] = base[k];
     // merge delta
-    for (var k2 in delta) if (Object.prototype.hasOwnProperty.call(delta, k2)) out[k2] = delta[k2];
+    for (var k2 in delta)
+      if (Object.prototype.hasOwnProperty.call(delta, k2)) out[k2] = delta[k2];
     return out;
   };
 
@@ -106,20 +109,20 @@
    * @param {{setItem:Function}=} storage - por defecto window.localStorage
    * @returns {boolean} true si se guardó; false si falla.
    */
- ns.persistUsuarios = function persistUsuarios(usuarios, storage) {
-  // ✅ Sin fallback: si no recibimos un storage válido, retornamos false.
-  if (!storage || typeof storage.setItem !== "function") return false;
-  try {
-    // ✅ Serializa exactamente lo que nos pasan.
-    // Si usuarios es circular o no serializable, JSON.stringify lanzará
-    // y retornaremos false, como esperan los tests.
-    var json = JSON.stringify(usuarios);
-    storage.setItem("usuarios", json);
-    return true;
-  } catch (_) {
-    return false;
-  }
-};
+  ns.persistUsuarios = function persistUsuarios(usuarios, storage) {
+    // Sin fallback: si no recibimos un storage válido, retornamos false.
+    if (!storage || typeof storage.setItem !== "function") return false;
+    try {
+      // Serializa exactamente lo que nos pasan.
+      // Si usuarios es circular o no serializable, JSON.stringify lanzará
+      // y retornaremos false, como esperan los tests.
+      var json = JSON.stringify(usuarios);
+      storage.setItem("usuarios", json);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
 
   /**
    * getSyncUser(getUsuarioActualFn)
@@ -156,19 +159,33 @@
    */
   ns.addUserSyncListeners = function addUserSyncListeners(syncFn, win) {
     var w = win || global;
-    if (!w || typeof w.addEventListener !== "function" || typeof w.removeEventListener !== "function") {
+    if (
+      !w ||
+      typeof w.addEventListener !== "function" ||
+      typeof w.removeEventListener !== "function"
+    ) {
       return function () {};
     }
-    var customHandler = function () { try { syncFn && syncFn(); } catch (_) {} };
+    var customHandler = function () {
+      try {
+        syncFn && syncFn();
+      } catch (_) {}
+    };
     var storageHandler = function (e) {
-      try { syncFn && syncFn(e); } catch (_) {}
+      try {
+        syncFn && syncFn(e);
+      } catch (_) {}
     };
     w.addEventListener("usuarioActual:changed", customHandler);
     w.addEventListener("storage", storageHandler);
 
     return function cleanup() {
-      try { w.removeEventListener("usuarioActual:changed", customHandler); } catch (_) {}
-      try { w.removeEventListener("storage", storageHandler); } catch (_) {}
+      try {
+        w.removeEventListener("usuarioActual:changed", customHandler);
+      } catch (_) {}
+      try {
+        w.removeEventListener("storage", storageHandler);
+      } catch (_) {}
     };
   };
 })(window);
