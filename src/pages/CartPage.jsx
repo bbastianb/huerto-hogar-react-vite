@@ -1,4 +1,5 @@
-import React from "react";
+// src/pages/CartPage.jsx
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../pages/CartContext";
 import "../assets/styles/style-CarPage.css";
@@ -11,12 +12,23 @@ const CartPage = () => {
   const { carrito, actualizarCantidad, eliminarProducto } = useCart();
   const navigate = useNavigate();
 
-  const costoDeEnvio = 10;
+  // 🔔 Estado del modal de confirmación
+  const [confirmData, setConfirmData] = useState({
+    open: false,
+    id: null,
+    nombre: "",
+  });
+
+  const cantidadProd = carrito.reduce(
+    (acc, producto) => acc + producto.cantidad,
+    0
+  );
+
   const subTotal = carrito.reduce(
     (acc, producto) => acc + producto.precio * producto.cantidad,
     0
   );
-  const total = subTotal + costoDeEnvio;
+  const total = subTotal;
 
   // Funciones que usan la lógica externa
   const handleAumentarCantidad = (productoId) =>
@@ -30,12 +42,35 @@ const CartPage = () => {
       productoId
     );
 
-  const handleEliminarProducto = (productoId) =>
-    window.CartPageLogic.handleEliminarProducto(
-      eliminarProducto,
-      productoId,
-      window.confirm
-    );
+  // 🚮 Abrir modal (NO elimina todavía)
+  const handleEliminarProducto = (producto) => {
+    setConfirmData({
+      open: true,
+      id: producto.id,
+      nombre: producto.nombre,
+    });
+  };
+
+  // ✅ Cerrar modal sin hacer nada
+  const cancelarEliminar = () => {
+    setConfirmData({
+      open: false,
+      id: null,
+      nombre: "",
+    });
+  };
+
+  // ✅ Confirmar y eliminar
+  const confirmarEliminar = () => {
+    if (confirmData.id) {
+      eliminarProducto(confirmData.id);
+    }
+    setConfirmData({
+      open: false,
+      id: null,
+      nombre: "",
+    });
+  };
 
   const handleCheckout = () =>
     window.CartPageLogic.handleCheckout(carrito, navigate, window.alert);
@@ -123,7 +158,7 @@ const CartPage = () => {
 
                       <button
                         className="delete-btn"
-                        onClick={() => handleEliminarProducto(producto.id)}
+                        onClick={() => handleEliminarProducto(producto)}
                         title="Eliminar producto"
                       >
                         <FaTrash />
@@ -143,12 +178,10 @@ const CartPage = () => {
                   <span>Subtotal:</span>
                   <span>${subTotal.toFixed(2)}</span>
                 </div>
-
                 <div className="summary-line">
-                  <span>Tarifa de envío:</span>
-                  <span>${costoDeEnvio.toFixed(2)}</span>
+                  <span>Cantidad de Productos:</span>
+                  <span>{cantidadProd}</span>
                 </div>
-
                 <div className="summary-line total">
                   <span>Total:</span>
                   <span>${total.toFixed(2)}</span>
@@ -166,6 +199,28 @@ const CartPage = () => {
           </div>
         )}
       </div>
+
+      {/* 🌟 Modal de confirmación */}
+      {confirmData.open && (
+        <div className="cart-confirm-overlay">
+          <div className="cart-confirm-modal">
+            <h3>Eliminar producto</h3>
+            <p>
+              ¿Seguro que quieres eliminar{" "}
+              <strong>{confirmData.nombre}</strong> del carrito?
+            </p>
+
+            <div className="cart-confirm-actions">
+              <button className="btn-cancelar" onClick={cancelarEliminar}>
+                Cancelar
+              </button>
+              <button className="btn-eliminar" onClick={confirmarEliminar}>
+                Sí, eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
