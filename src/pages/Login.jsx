@@ -3,12 +3,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import fondo2 from "../assets/img/fondo2.png";
 import { loginUsuario } from "../services/UsuarioService";
+import { useUser } from "../pages/UserContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [contrasena, setContrasena] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,8 +39,7 @@ export default function Login() {
         rol: usuarioValido.rol,
       };
 
-      // Guardar en localStorage el usuario actual
-      localStorage.setItem("usuarioActual", JSON.stringify(usuarioParaGuardar));
+      login(usuarioParaGuardar);
 
       // Redirigir según el rol del usuario
       if (usuarioValido.rol && usuarioValido.rol.toLowerCase() === "admin") {

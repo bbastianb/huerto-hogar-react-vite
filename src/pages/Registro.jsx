@@ -1,9 +1,8 @@
 import "../assets/styles/Registro.css";
-//import { getUsuarios, setUsuarios } from "../utils/Usuarios.js";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import { useEffect, useState } from "react";
-import { guardarUsuario } from "../services/UsuarioService"; //  la función guardarUsuario de UsuarioService
+import { guardarUsuario } from "../services/UsuarioService";
 
 const REGION_OPTIONS = [
   { value: "ARICA_Y_PARINACOTA", label: "Arica y Parinacota" },

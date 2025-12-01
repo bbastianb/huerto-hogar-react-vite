@@ -7,7 +7,6 @@ import {
   actualizarProducto,
   eliminarProducto as eliminarProductoApi,
 } from "../../services/ProductoService.js";
-// ✅ Importa la imagen por defecto
 import imagenDefault from "../../assets/img/default.jpg";
 import { getImageForProduct } from "../../utils/products";
 
@@ -16,7 +15,7 @@ const ProductosAdmin = () => {
   const [busqueda, setBusqueda] = useState("");
   const [mostrarForm, setMostrarForm] = useState(false);
   const [productoEditando, setProductoEditando] = useState(null);
-  const [notificacion, setNotificacion] = useState('');
+  const [notificacion, setNotificacion] = useState("");
   const [imagenPreview, setImagenPreview] = useState(imagenDefault);
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const ProductosAdmin = () => {
       console.error("Error cargando productos desde API:", error);
     }
   };
-
 
   const guardarProducto = async (e) => {
     e.preventDefault();
@@ -52,7 +50,6 @@ const ProductosAdmin = () => {
       unidad: formData.get("unidad"),
       stock: formData.get("stock"),
       img: formData.get("img") || "", // opcional
-      // 👇 OJO: al backend le mandamos "descripcion", no "desc"
       descripcion: formData.get("desc"),
     };
 
@@ -80,7 +77,6 @@ const ProductosAdmin = () => {
     }
   };
 
-
   const eliminarProducto = async (id, nombre) => {
     if (!window.confirm(`¿Eliminar "${nombre}"?`)) return;
 
@@ -95,7 +91,6 @@ const ProductosAdmin = () => {
     }
   };
 
-
   const abrirEditar = (producto) => {
     setProductoEditando(producto);
 
@@ -103,15 +98,13 @@ const ProductosAdmin = () => {
     const customImg = cleanedImg !== "" ? cleanedImg : null;
 
     const imagen =
-      getImageForProduct(producto) ||  // si es FR001, VR001, etc.
-      customImg ||                     // si el admin guardó una URL
-      imagenDefault;                   // si no hay nada
+      getImageForProduct(producto) || // si es FR001, VR001, etc.
+      customImg || // si el admin guardó una URL
+      imagenDefault; // si no hay nada
 
     setImagenPreview(imagen);
     setMostrarForm(true);
   };
-
-
 
   const abrirNuevo = () => {
     setProductoEditando(null);
@@ -127,19 +120,21 @@ const ProductosAdmin = () => {
 
   const mostrarNotificacion = (mensaje) => {
     setNotificacion(mensaje);
-    setTimeout(() => setNotificacion(''), 3000);
+    setTimeout(() => setNotificacion(""), 3000);
   };
 
   const generarId = (categoria) => {
     const categorias = {
       frutas: "FR",
       verduras: "VR",
-      otros: "PO"
+      otros: "PO",
     };
 
     const prefijo = categorias[categoria] || "PR";
-    const productosCategoria = productos.filter(p => p.id.startsWith(prefijo));
-    const numero = (productosCategoria.length + 1).toString().padStart(3, '0');
+    const productosCategoria = productos.filter((p) =>
+      p.id.startsWith(prefijo)
+    );
+    const numero = (productosCategoria.length + 1).toString().padStart(3, "0");
     return `${prefijo}${numero}`;
   };
 
@@ -159,7 +154,6 @@ const ProductosAdmin = () => {
 
     return nombre.includes(termino) || descripcion.includes(termino);
   });
-
 
   return (
     <div className="pagina-admin">
@@ -199,11 +193,7 @@ const ProductosAdmin = () => {
           </span>
         </div>
 
-        {notificacion && (
-          <div className="notificacion">
-            {notificacion}
-          </div>
-        )}
+        {notificacion && <div className="notificacion">{notificacion}</div>}
 
         {mostrarForm && (
           <div className="modal-overlay">
@@ -225,7 +215,11 @@ const ProductosAdmin = () => {
                   <label>Categoría</label>
                   <select
                     name="categoria"
-                    defaultValue={productoEditando ? getCategory(productoEditando) : "frutas"}
+                    defaultValue={
+                      productoEditando
+                        ? getCategory(productoEditando)
+                        : "frutas"
+                    }
                     required
                   >
                     <option value="frutas">Frutas</option>
@@ -244,7 +238,8 @@ const ProductosAdmin = () => {
                     placeholder="Dejar vacío para usar imagen por defecto"
                   />
                   <small>
-                    Si dejas vacío, se usará la imagen por defecto automáticamente
+                    Si dejas vacío, se usará la imagen por defecto
+                    automáticamente
                   </small>
 
                   {/* Vista previa de la imagen */}
@@ -339,7 +334,7 @@ const ProductosAdmin = () => {
 
                     const imageSrc =
                       getImageForProduct(producto) || // FR001, VR001, etc.
-                      customImg ||                    // URL guardada por admin
+                      customImg || // URL guardada por admin
                       imagenDefault;
 
                     return (
@@ -394,7 +389,7 @@ const ProductosAdmin = () => {
 
 // Función auxiliar para obtener categoría (agrégala si no existe)
 const getCategory = (product) => {
-  if (!product || !product.id) return 'otros';
+  if (!product || !product.id) return "otros";
   const pref = String(product.id).slice(0, 2).toUpperCase();
   if (pref === "FR") return "frutas";
   if (pref === "VR") return "verduras";
