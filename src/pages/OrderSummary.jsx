@@ -7,7 +7,7 @@ import { crearOrden } from "../services/OrdenService";
 
 const OrderSummary = () => {
   const navigate = useNavigate();
-  const { carrito, eliminarProducto } = useCart();
+  const { carrito, eliminarProducto, limpiarCarrito } = useCart();
   const { user, isAuthenticated } = useUser();
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -30,106 +30,68 @@ const OrderSummary = () => {
       return;
     }
 
-    if (!isAuthenticated || !user?.id) {
-      alert("Debes iniciar sesión para completar la compra.");
+    if (!isAuthenticated || !user || user.id == null) {
+      alert("Debes iniciar sesión para confirmar el pedido.");
       navigate("/login");
+      return;
+    }
+
+    if (
+      !shippingData ||
+      !shippingData.nombre ||
+      !shippingData.apellido ||
+      !shippingData.direccion ||
+      !shippingData.comuna ||
+      !shippingData.region ||
+      !shippingData.metodoEnvio
+    ) {
+      alert("Faltan datos de envío. Vuelve al paso anterior.");
+      navigate("/checkout");
       return;
     }
 
     setIsProcessing(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // Para testing: 50% éxito, 50% fallo
-      //const isSuccess = Math.random() > 0.5;
-
-      const isSuccess = true; // Siempre éxito para pruebas reales
-
-      if (!isSuccess) {
-        const errorTypes = [
-          "Tarjeta rechazada",
-          "Fondos insuficientes",
-          "Error de conexión",
-          "Tiempo de espera agotado",
-        ];
-        const randomError =
-          errorTypes[Math.floor(Math.random() * errorTypes.length)];
-
-        navigate("/pago-fallido", {
-          state: {
-            errorType: randomError,
-            orderId: "ORD-" + Date.now().toString().slice(-6),
-          },
-        });
-        return;
-      }
-
-      const fechaHoy = new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
-
       const ordenPayload = {
-        fecha_orden: fechaHoy,
-        estado_orden: "Pendiente",
-        total: total,
+        total,
+        fecha_orden: new Date().toISOString().slice(0, 10),
         usuario: {
           id: user.id,
         },
-        productos: carrito.map((p) => ({
-          id: p.id,
+        detalles: carrito.map((item) => ({
+          idProducto: String(item.id),
+          nombreProducto: item.nombre,
+          precioUnitario: item.precio,
+          cantidad: item.cantidad,
         })),
-      };
-
-      let ordenBackend = null;
-
-      try {
-        ordenBackend = await crearOrden(ordenPayload);
-        console.log("Orden guardada en backend:", ordenBackend);
-      } catch (error) {
-        console.error("Error al guardar la orden en el backend:", error);
-        alert(
-          "El pago fue exitoso, pero no se pudo registrar la orden en el sistema.\n" +
-            "Coméntale esto al profesor o revisa el backend."
-        );
-      }
-
-      const order = {
-        id:
-          ordenBackend?.id_orden ||
-          ordenBackend?.id ||
-          "ORD-" + Date.now().toString().slice(-6),
-        fecha: ordenBackend?.fecha_orden || new Date().toISOString(),
-        productos: [...carrito],
-        shipping: shippingData,
-        total: total,
-        estado: ordenBackend?.estado_orden || "Completado",
-      };
-
-      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-      orders.push(order);
-      localStorage.setItem("orders", JSON.stringify(orders));
-
-      // Limpiar carrito correctamente
-      carrito.forEach((producto) => {
-        eliminarProducto(producto.id);
-      });
-
-      // Redirigir a éxito
-      navigate("/pago-exitoso", { state: { order } });
-    } catch (error) {
-      console.error("Error al procesar el pago / crear la orden:", error);
-
-      navigate("/pago-fallido", {
-        state: {
-          errorType: "No se pudo registrar la orden en el servidor",
-          orderId: "ORD-" + Date.now().toString().slice(-6),
+        detalleEnvio: {
+          direccion: shippingData.direccion,
+          comuna: shippingData.comuna,
+          region: shippingData.region,
+          metodo_envio: shippingData.metodoEnvio,
+          estado_envio: "Pendiente",
         },
-      });
+      };
+
+      const ordenCreada = await crearOrden(ordenPayload);
+      console.log("Orden creada:", ordenCreada);
+
+      localStorage.removeItem("shippingData");
+      limpiarCarrito();
+
+      navigate(`/resumen-pedido-exito/${ordenCreada.id || ""}`);
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+      alert(
+        error?.response?.data?.message ||
+          "Ocurrió un error al procesar el pago. Intenta nuevamente."
+      );
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Manejo seguro si no hay carrito
   if (!carrito || carrito.length === 0) {
     return (
       <div className="checkout-container">
