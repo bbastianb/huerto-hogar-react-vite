@@ -89,6 +89,25 @@ export default function BarraAdmin() {
       label: "Órdenes",
     },
     {
+      path: "/admin/contactos",              // 👈 NUEVO
+      icon: (
+        <svg                                  // icono de sobre / mensaje
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15A2.25 2.25 0 0 1 2.25 17.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-6.75 4.05a2.25 2.25 0 0 1-2.31 0l-6.75-4.05A2.25 2.25 0 0 1 2.25 6.993V6.75"
+          />
+        </svg>
+      ),
+      label: "Mensajes",
+    },
+    {
       path: "/admin/confiAdmin",
       icon: (
         <svg

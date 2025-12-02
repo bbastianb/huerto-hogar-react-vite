@@ -1,0 +1,84 @@
+.contactos-admin {
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: "Montserrat", sans-serif;
+  }
+  
+  .contactos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .contactos-header h1 {
+    font-size: 1.8rem;
+    color: #256d46;
+  }
+  
+  .contactos-recargar {
+    background-color: #256d46;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  
+  .contactos-recargar:hover {
+    background-color: #1c5234;
+  }
+  
+  .contactos-error {
+    color: #d9534f;
+  }
+  
+  .contactos-table-wrapper {
+    overflow-x: auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  }
+  
+  .contactos-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  
+  .contactos-table th,
+  .contactos-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #eeeeee;
+    text-align: left;
+    vertical-align: top;
+  }
+  
+  .contactos-table th {
+    background-color: #f7faf7;
+    font-weight: 600;
+    color: #256d46;
+  }
+  
+  .contactos-mensaje {
+    max-width: 260px;
+  }
+  
+  .btn-eliminar-contacto {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  
+  .btn-eliminar-contacto:hover {
+    background-color: #c0392b;
+  }
+  

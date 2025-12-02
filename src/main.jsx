@@ -5,7 +5,6 @@ import App from "./App.jsx";
 import "leaflet/dist/leaflet.css";
 
 import Home from "./pages/Home.jsx";
-
 import Nosotros from "./pages/Nosotros.jsx";
 import Contacto from "./pages/Contacto.jsx";
 import Blog from "./pages/Blog.jsx";
@@ -14,11 +13,13 @@ import Noticias from "./pages/Noticias.jsx";
 import Login from "./pages/Login.jsx";
 import ListadoProd from "./pages/ListadoProd.jsx";
 import Registro from "./pages/Registro.jsx";
+
 import HomeAdmin from "./pages/admin/HomeAdmin.jsx";
 import Usuarios from "./pages/admin/Usuarios.jsx";
 import ProductosAdmin from "./pages/admin/ProductosAdmin.jsx";
 import ConfiAdmin from "./pages/admin/ConfiAdmin.jsx";
 import OrdenesAdmin from "./pages/admin/OrdenesAdmin.jsx";
+import ContactosAdmin from "./pages/admin/ContactosAdmin.jsx";
 
 import DetalleProd from "./pages/DetalleProd.jsx";
 import { CartProvider } from "./pages/CartContext.jsx";
@@ -45,11 +46,15 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "productos", element: <ListadoProd /> },
       { path: "registro", element: <Registro /> },
-      { path: "admin", element: <HomeAdmin /> }, // Todas las que tiene admin no muestran el header ni el footer
+
+      // 🧅 Rutas admin (sin header/footer, lo maneja App)
+      { path: "admin", element: <HomeAdmin /> },
       { path: "admin/usuarios", element: <Usuarios /> },
       { path: "admin/productos", element: <ProductosAdmin /> },
-      { path: "admin/confiAdmin", element: <ConfiAdmin /> },
       { path: "admin/ordenes", element: <OrdenesAdmin /> },
+      { path: "admin/contactos", element: <ContactosAdmin /> }, // 👈 AQUÍ TU MÓDULO
+      { path: "admin/confiAdmin", element: <ConfiAdmin /> },
+
       { path: "detalle/:id", element: <DetalleProd /> },
       { path: "carrito", element: <CartPage /> },
       { path: "checkout", element: <Checkout /> },
