@@ -4,17 +4,17 @@ const BASE_URL = "http://localhost:8080/api/contacto"; // misma ruta del backend
 
 export async function enviarContacto(contactoData) {
   console.log("Enviando contacto al backend:", contactoData);
-  const response = await axios.post(BASE_URL, contactoData);
+  const response = await axios.post(`${BASE_URL}/crear`, contactoData);
   return response.data;
 }
 
-// 👉 NUEVO: obtener todos los mensajes de contacto
+//obtener todos los mensajes de contacto
 export async function getContactos() {
-  const response = await axios.get(`${BASE_URL}/buscar/${id}`);
+  const response = await axios.get(BASE_URL);
   return response.data;
 }
 
-// 👉 NUEVO: eliminar un mensaje por ID
+//eliminar un mensaje por ID
 export async function deleteContacto(id) {
   await axios.delete(`${BASE_URL}/eliminar/${id}`);
 }

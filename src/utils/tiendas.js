@@ -1,6 +1,6 @@
 // src/utils/tiendas.js
 // Listado detallado de tiendas/puntos con dirección, horario y teléfono.
-// 👉 Ajusta address/hours/phone a tus datos reales cuando los tengas.
+//  Ajusta address/hours/phone a tus datos reales cuando los tengas.
 
 export const TIENDAS = [
   {
@@ -43,7 +43,7 @@ export const TIENDAS = [
     id: "vina-del-mar",
     name: "Viña del Mar",
     lat: -33.0153,
-    lng: -71.5500,
+    lng: -71.55,
     address: "Centro, Viña del Mar (referencial)",
     hours: "Lun–Vie 11:00–19:30",
     phone: "+56 9 5555 5555",

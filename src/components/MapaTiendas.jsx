@@ -5,7 +5,7 @@ import { TIENDAS } from "../utils/tiendas";
 
 // Fix íconos (Vite)
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon   from "leaflet/dist/images/marker-icon.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -20,10 +20,10 @@ export default function MapaTiendas({ height = 420 }) {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    console.log("TIENDAS (Mapa):", TIENDAS); // 👈 debe mostrar address/hours/phone también
+    console.log("TIENDAS (Mapa):", TIENDAS); //  debe mostrar address/hours/phone también
 
     const map = L.map(containerRef.current);
-    const bounds = L.latLngBounds(TIENDAS.map(t => [t.lat, t.lng]));
+    const bounds = L.latLngBounds(TIENDAS.map((t) => [t.lat, t.lng]));
     map.fitBounds(bounds, { padding: [30, 30] });
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -31,11 +31,11 @@ export default function MapaTiendas({ height = 420 }) {
       attribution: "&copy; OpenStreetMap contributors",
     }).addTo(map);
 
-    TIENDAS.forEach(t => {
+    TIENDAS.forEach((t) => {
       // usa valores con fallback para NO ocultar nada
       const addr = t.address ?? "(sin dirección)";
-      const hrs  = t.hours   ?? "(sin horario)";
-      const tel  = t.phone   ?? "";
+      const hrs = t.hours ?? "(sin horario)";
+      const tel = t.phone ?? "";
       const telHref = tel ? tel.replace(/\s+/g, "") : "";
 
       const html = `

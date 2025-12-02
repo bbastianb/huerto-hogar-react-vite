@@ -47,12 +47,12 @@ const router = createBrowserRouter([
       { path: "productos", element: <ListadoProd /> },
       { path: "registro", element: <Registro /> },
 
-      // 🧅 Rutas admin (sin header/footer, lo maneja App)
+      // Rutas admin (sin header/footer, lo maneja App)
       { path: "admin", element: <HomeAdmin /> },
       { path: "admin/usuarios", element: <Usuarios /> },
       { path: "admin/productos", element: <ProductosAdmin /> },
       { path: "admin/ordenes", element: <OrdenesAdmin /> },
-      { path: "admin/contactos", element: <ContactosAdmin /> }, // 👈 AQUÍ TU MÓDULO
+      { path: "admin/contactos", element: <ContactosAdmin /> },
       { path: "admin/confiAdmin", element: <ConfiAdmin /> },
 
       { path: "detalle/:id", element: <DetalleProd /> },

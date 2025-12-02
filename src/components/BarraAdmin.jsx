@@ -89,9 +89,9 @@ export default function BarraAdmin() {
       label: "Órdenes",
     },
     {
-      path: "/admin/contactos",              // 👈 NUEVO
+      path: "/admin/contactos",
       icon: (
-        <svg                                  // icono de sobre / mensaje
+        <svg // icono de sobre / mensaje
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
