@@ -2,7 +2,6 @@ import "../assets/styles/Login.css";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import fondo2 from "../assets/img/fondo2.png";
-import { loginUsuario } from "../services/UsuarioService";
 import { useUser } from "../pages/UserContext";
 
 export default function Login() {
@@ -29,20 +28,14 @@ export default function Login() {
     }
 
     try {
-      const usuarioValido = await loginUsuario(email, contrasena);
+      const usuarioLogueado = await login({
+        email,
+        contrasenna: contrasena,
+      });
 
-      const usuarioParaGuardar = {
-        id: usuarioValido.id,
-        nombre: usuarioValido.nombre,
-        apellido: usuarioValido.apellido,
-        email: usuarioValido.email,
-        rol: usuarioValido.rol,
-      };
+      const rol = usuarioLogueado?.rol?.toLowerCase();
 
-      login(usuarioParaGuardar);
-
-      // Redirigir según el rol del usuario
-      if (usuarioValido.rol && usuarioValido.rol.toLowerCase() === "admin") {
+      if (rol === "admin") {
         navigate("/admin");
       } else {
         navigate("/");

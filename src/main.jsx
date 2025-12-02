@@ -1,6 +1,10 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import App from "./App.jsx";
 import "leaflet/dist/leaflet.css";
 
@@ -28,9 +32,46 @@ import Checkout from "./pages/Checkout.jsx";
 import OrderSummary from "./pages/OrderSummary.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import PaymentFailed from "./pages/PaymentFailed.jsx";
-import { UserProvider } from "./pages/UserContext";
+
+import { UserProvider, useUser } from "./pages/UserContext";
 import RecuperarContrasenna from "./pages/RecuperarContrasenna.jsx";
 import ActualizarContrasenna from "./pages/ActualizarContrasenna.jsx";
+
+const AdminRoute = ({ children }) => {
+  const { isLoading, isAuthenticated, isAdmin } = useUser();
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
+
+const UsuarioRoute = ({ children }) => {
+  const { isLoading, isAuthenticated, isUsuario } = useUser();
+
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isUsuario) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 const router = createBrowserRouter([
   {
@@ -47,20 +88,93 @@ const router = createBrowserRouter([
       { path: "productos", element: <ListadoProd /> },
       { path: "registro", element: <Registro /> },
 
-      // 🧅 Rutas admin (sin header/footer, lo maneja App)
-      { path: "admin", element: <HomeAdmin /> },
-      { path: "admin/usuarios", element: <Usuarios /> },
-      { path: "admin/productos", element: <ProductosAdmin /> },
-      { path: "admin/ordenes", element: <OrdenesAdmin /> },
-      { path: "admin/contactos", element: <ContactosAdmin /> }, // 👈 AQUÍ TU MÓDULO
-      { path: "admin/confiAdmin", element: <ConfiAdmin /> },
+      // Rutas admin (rol "admin")
+      {
+        path: "admin",
+        element: (
+          <AdminRoute>
+            <HomeAdmin />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/usuarios",
+        element: (
+          <AdminRoute>
+            <Usuarios />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/productos",
+        element: (
+          <AdminRoute>
+            <ProductosAdmin />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/ordenes",
+        element: (
+          <AdminRoute>
+            <OrdenesAdmin />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/contactos",
+        element: (
+          <AdminRoute>
+            <ContactosAdmin />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "admin/confiAdmin",
+        element: (
+          <AdminRoute>
+            <ConfiAdmin />
+          </AdminRoute>
+        ),
+      },
 
       { path: "detalle/:id", element: <DetalleProd /> },
       { path: "carrito", element: <CartPage /> },
-      { path: "checkout", element: <Checkout /> },
-      { path: "resumen-pedido", element: <OrderSummary /> },
-      { path: "pago-exitoso", element: <PaymentSuccess /> },
-      { path: "pago-fallido", element: <PaymentFailed /> },
+
+      // Rutas de compra → rol "usuario"
+      {
+        path: "checkout",
+        element: (
+          <UsuarioRoute>
+            <Checkout />
+          </UsuarioRoute>
+        ),
+      },
+      {
+        path: "resumen-pedido",
+        element: (
+          <UsuarioRoute>
+            <OrderSummary />
+          </UsuarioRoute>
+        ),
+      },
+      {
+        path: "pago-exitoso",
+        element: (
+          <UsuarioRoute>
+            <PaymentSuccess />
+          </UsuarioRoute>
+        ),
+      },
+      {
+        path: "pago-fallido",
+        element: (
+          <UsuarioRoute>
+            <PaymentFailed />
+          </UsuarioRoute>
+        ),
+      },
+
       { path: "recuperar-contrasenna", element: <RecuperarContrasenna /> },
       { path: "actualizar-contrasenna", element: <ActualizarContrasenna /> },
     ],
