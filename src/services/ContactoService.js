@@ -10,11 +10,11 @@ export async function enviarContacto(contactoData) {
 
 // 👉 NUEVO: obtener todos los mensajes de contacto
 export async function getContactos() {
-  const response = await axios.get(BASE_URL);
+  const response = await axios.get(`${BASE_URL}/buscar/${id}`);
   return response.data;
 }
 
 // 👉 NUEVO: eliminar un mensaje por ID
 export async function deleteContacto(id) {
-  await axios.delete(`${BASE_URL}/${id}`);
+  await axios.delete(`${BASE_URL}/eliminar/${id}`);
 }
