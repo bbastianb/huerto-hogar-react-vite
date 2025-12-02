@@ -8,20 +8,20 @@ export const getProductos = async () => {
 };
 
 export const getProductoPorId = async (id) => {
-  const { data } = await axios.get(`${baseURL}/${id}`);
+  const { data } = await axios.get(`${baseURL}/buscar/${id}`);
   return data;
 };
 
 export const crearProducto = async (producto) => {
-  const { data } = await axios.post(baseURL, producto);
+  const { data } = await axios.post(`${baseURL}/crear`, producto);
   return data;
 };
 
 export const actualizarProducto = async (id, producto) => {
-  const { data } = await axios.put(`${baseURL}/${id}`, producto);
+  const { data } = await axios.put(`${baseURL}/actualizar/${id}`, producto);
   return data;
 };
 
 export const eliminarProducto = async (id) => {
-  await axios.delete(`${baseURL}/${id}`);
+  await axios.delete(`${baseURL}/eliminar/${id}`);
 };
