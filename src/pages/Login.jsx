@@ -48,7 +48,6 @@ export default function Login() {
         navigate("/");
       }
     } catch (err) {
-      console.error("Error al intentar iniciar sesión:", err);
       const msg =
         err.response?.data?.message ||
         err.response?.data ||

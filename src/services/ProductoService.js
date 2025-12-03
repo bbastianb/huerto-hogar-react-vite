@@ -1,7 +1,9 @@
 import axios from "axios";
+import { axiosAuth, baseURLProducto } from "./api";
 
-const baseURL = "http://localhost:8080/api/productos";
+const baseURL = baseURLProducto;
 
+// GET públicos
 export const getProductos = async () => {
   const { data } = await axios.get(baseURL);
   return data;
@@ -12,16 +14,17 @@ export const getProductoPorId = async (id) => {
   return data;
 };
 
+// ADMIN (necesitan token)
 export const crearProducto = async (producto) => {
-  const { data } = await axios.post(`${baseURL}/crear`, producto);
+  const { data } = await axiosAuth.post(`${baseURL}/crear`, producto);
   return data;
 };
 
 export const actualizarProducto = async (id, producto) => {
-  const { data } = await axios.put(`${baseURL}/actualizar/${id}`, producto);
+  const { data } = await axiosAuth.put(`${baseURL}/actualizar/${id}`, producto);
   return data;
 };
 
 export const eliminarProducto = async (id) => {
-  await axios.delete(`${baseURL}/eliminar/${id}`);
+  await axiosAuth.delete(`${baseURL}/eliminar/${id}`);
 };

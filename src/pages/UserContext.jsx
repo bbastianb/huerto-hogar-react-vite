@@ -1,4 +1,3 @@
-// src/UserContext/UserContext.jsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getUsuarioActual, setUsuarioActual } from "../utils/Usuarios";
 import "../utils/UserContext.logic.js";
@@ -21,10 +20,17 @@ export const UserProvider = ({ children }) => {
     setUser(res.user);
   };
 
-  // Logout delegando en lógica externa
   const logout = () => {
+    // Limpiar usuario en memoria
     setUser(null);
-    window.UserContextLogic.logoutUser(localStorage);
+
+    // Borrar datos en localStorage que mantienen la sesión
+    localStorage.removeItem("usuarioActual");
+    localStorage.removeItem("token");
+
+    if (window.UserContextLogic?.logoutUser) {
+      window.UserContextLogic.logoutUser(localStorage);
+    }
   };
 
   // Update user delegando en lógica externa
